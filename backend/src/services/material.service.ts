@@ -6,7 +6,6 @@ import Material, {
   UpdateMaterialInput,
 } from "../entities/material.entity";
 import CategoryService from "./category.service";
-//import { CreateMaterialInput } from "../entities/material.entity";
 
 export default class MaterialService {
   db: Repository<Material>;

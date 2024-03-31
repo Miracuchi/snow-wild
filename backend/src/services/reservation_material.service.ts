@@ -31,6 +31,7 @@ export default class ReservationMaterialService {
     }
     return reservationMaterial;
   }
+
   async createResMat(data: {
     reservation: Reservation;
     quantity: number;

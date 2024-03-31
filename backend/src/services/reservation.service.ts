@@ -47,10 +47,7 @@ export default class ReservationService {
   }
 
   async deleteReservation(id: string) {
-    console.log("Hello World", id);
-
     const reservationToDelete = (await this.find(id)) as Reservation;
-    console.log("HELLOOOOOOOOOOOOOOO: =====>", reservationToDelete);
 
     await this.db.remove(reservationToDelete);
     return { ...reservationToDelete, id };

@@ -18,6 +18,10 @@ export enum StatutReservation {
   FINISHED = "terminée",
 }
 
+// =================================================================
+//                           OBJECT TYPE
+// =================================================================
+
 @ObjectType()
 @Entity()
 export default class Reservation {
@@ -59,6 +63,23 @@ export default class Reservation {
   reservationMaterials: ReservationMaterial[];
 }
 
+// Quand on fait un ObjectType à supprimer, ne pas mettre d'id. Il sera supprimé, donc pas de retour.
+@ObjectType()
+export class ReservationDeleted {
+  @Field(() => User)
+  user: User;
+
+  @Field(() => [ReservationMaterial])
+  reservationMaterials: ReservationMaterial[]; // Liste des matériels réservés avec leur quantité
+
+  @Field()
+  status: StatutReservation.CANCEL;
+}
+
+// =================================================================
+//                           INPUT TYPE
+// =================================================================
+
 @InputType()
 export class ReservationMaterialInput {
   @Field()
@@ -90,17 +111,4 @@ export class CreateReservationInput {
 
   @Field()
   end_date: Date;
-}
-
-// Quand on fait un ObjectType à supprimer, ne pas mettre d'id. Il sera supprimé, donc pas de retour.
-@ObjectType()
-export class ReservationDeleted {
-  @Field(() => User)
-  user: User;
-
-  @Field(() => [ReservationMaterial])
-  reservationMaterials: ReservationMaterial[]; // Liste des matériels réservés avec leur quantité
-
-  @Field()
-  status: StatutReservation.CANCEL;
 }

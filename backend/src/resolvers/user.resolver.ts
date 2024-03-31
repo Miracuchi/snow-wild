@@ -1,17 +1,15 @@
+import * as argon2 from "argon2";
+import Cookies from "cookies";
+import { SignJWT } from "jose";
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
-import UserService from "../services/user.service";
+import { MyContext } from "..";
 import User, {
   InputLogin,
   InputRegister,
   Message,
   UserWithoutPassword,
-  InputRegisterWithoutPassword,
 } from "../entities/user.entity";
-import * as argon2 from "argon2";
-import { SignJWT } from "jose";
-import express from "express";
-import Cookies from "cookies";
-import { MyContext } from "..";
+import UserService from "../services/user.service";
 @Resolver()
 export default class UserResolver {
   @Query(() => [User])

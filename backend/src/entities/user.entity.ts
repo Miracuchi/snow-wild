@@ -18,6 +18,9 @@ export enum UserRoleEnum {
   user = "USER",
 }
 
+// =================================================================
+//                           OBJECT TYPE
+// =================================================================
 @ObjectType()
 @Entity()
 export default class User {
@@ -81,30 +84,6 @@ export class Message {
   message: string;
 }
 
-@InputType()
-export class InputRegister extends User {
-  @Field({ nullable: false })
-  firstName: string;
-
-  @Field({ nullable: false })
-  lastName: string;
-
-  @Field({ nullable: false })
-  email: string;
-
-  @Field({ nullable: false })
-  password: string;
-
-  @Field({ nullable: false })
-  phone: string;
-}
-
-@InputType()
-export class InputRegisterWithoutPassword {
-  @Field({ nullable: false })
-  email: string;
-}
-
 @ObjectType()
 export class UserWithoutPassword
   implements
@@ -130,6 +109,33 @@ export class InputLogin {
 
   @Field({ nullable: false })
   password: string;
+}
+
+// =================================================================
+//                           INPUT TYPE
+// =================================================================
+@InputType()
+export class InputRegister extends User {
+  @Field({ nullable: false })
+  firstName: string;
+
+  @Field({ nullable: false })
+  lastName: string;
+
+  @Field({ nullable: false })
+  email: string;
+
+  @Field({ nullable: false })
+  password: string;
+
+  @Field({ nullable: false })
+  phone: string;
+}
+
+@InputType()
+export class InputRegisterWithoutPassword {
+  @Field({ nullable: false })
+  email: string;
 }
 
 @InputType()

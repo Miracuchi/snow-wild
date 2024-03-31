@@ -10,6 +10,9 @@ import {
 import Material from "./material.entity";
 import Reservation from "./reservation.entity";
 
+// =================================================================
+//                           OBJECT TYPE
+// =================================================================
 @ObjectType()
 @Entity()
 export class ReservationMaterial {
@@ -38,6 +41,9 @@ export class ReservationMaterial {
   material: Material;
 }
 
+// =================================================================
+//                           INPUT TYPE
+// =================================================================
 @InputType()
 export class CreateReservationMaterialInput {
   @Field()
