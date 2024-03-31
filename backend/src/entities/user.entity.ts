@@ -1,15 +1,16 @@
+import * as argon2 from "argon2";
+import { Field, InputType, ObjectType } from "type-graphql";
 import {
   BeforeInsert,
   BeforeUpdate,
   Column,
   Entity,
+  JoinColumn,
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Field, InputType, Int, ObjectType } from "type-graphql";
-import * as argon2 from "argon2";
 
-import { IsEmail, Min, Max } from "class-validator";
+import { IsEmail, Max, Min } from "class-validator";
 import Reservation from "./reservation.entity";
 
 export enum UserRoleEnum {
@@ -33,7 +34,8 @@ export default class User {
   id: string;
 
   @Field(() => [Reservation])
-  @OneToMany(() => Reservation, (reservation) => reservation.userId)
+  @JoinColumn()
+  @OneToMany(() => Reservation, (reservation) => reservation.user)
   reservations: Reservation[];
 
   @Field()

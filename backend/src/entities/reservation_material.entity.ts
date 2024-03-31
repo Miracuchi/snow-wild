@@ -1,19 +1,18 @@
+import { Field, InputType, ObjectType } from "type-graphql";
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  ManyToOne,
   Column,
-  BaseEntity,
+  Entity,
   JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
 } from "typeorm";
-import { Field, ID, InputType, ObjectType } from "type-graphql";
 
 import Material from "./material.entity";
 import Reservation from "./reservation.entity";
 
 @ObjectType()
 @Entity()
-export class ReservationMaterial extends BaseEntity {
+export class ReservationMaterial {
   @Field()
   @PrimaryGeneratedColumn("uuid")
   id: string;
@@ -24,12 +23,18 @@ export class ReservationMaterial extends BaseEntity {
 
   @Field(() => Reservation)
   @JoinColumn()
-  @ManyToOne(() => Reservation, (reservation) => reservation.id)
+  @ManyToOne(() => Reservation, (reservation) => reservation.id, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
   reservation: Reservation;
 
   @Field(() => Material)
   @JoinColumn()
-  @ManyToOne(() => Material, (material) => material.id)
+  @ManyToOne(() => Material, (material) => material.id, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
   material: Material;
 }
 

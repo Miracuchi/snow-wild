@@ -1,11 +1,10 @@
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
-import ReservationService from "../services/reservation.service";
 import Reservation, {
   CreateReservationInput,
+  ReservationDeleted,
 } from "../entities/reservation.entity";
+import ReservationService from "../services/reservation.service";
 import ReservationMaterialService from "../services/reservation_material.service";
-import { resolveReadonlyArrayThunk } from "graphql";
-import { ReservationMaterial } from "../entities/reservation_material.entity";
 
 @Resolver()
 export default class ReservationResolver {
@@ -40,5 +39,14 @@ export default class ReservationResolver {
 
     newReservation.reservationMaterials = reservationMaterials;
     return newReservation;
+  }
+
+  @Mutation(() => ReservationDeleted)
+  async deleteReservation(@Arg("id") id: string) {
+    const { id: idReservation, ...reservation } =
+      await new ReservationService().deleteReservation(id);
+    console.log("BUEEEENO", reservation);
+
+    return { ...reservation };
   }
 }

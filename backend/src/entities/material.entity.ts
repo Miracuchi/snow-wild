@@ -1,17 +1,13 @@
+import { Field, Float, ID, InputType, ObjectType } from "type-graphql";
 import {
   Column,
   Entity,
   JoinColumn,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Field, Float, ID, InputType, Int, ObjectType } from "type-graphql";
-import { Length } from "class-validator";
 import Category from "./category.entity";
-import Reservation from "./reservation.entity";
-import CategoryResolver from "../resolvers/category.resolver";
 import { ReservationMaterial } from "./reservation_material.entity";
 
 @ObjectType()
@@ -53,7 +49,7 @@ export default class Material {
 
   @Field(() => [ReservationMaterial])
   @JoinColumn()
-  @OneToMany(() => ReservationMaterial, (r) => r.reservation.id)
+  @OneToMany(() => ReservationMaterial, (r) => r.material)
   reservationMaterials: ReservationMaterial[];
 }
 
@@ -105,11 +101,9 @@ export class UpdateMaterialInput {
   category: PartialCategoryInput;
 }
 
+// Quand on fait un ObjectType à supprimer, ne pas mettre d'id. Il sera supprimé, donc pas de retour.
 @ObjectType()
 export class MaterialDeleted {
-  @Field(() => ID)
-  id: string;
-
   @Field({ nullable: true })
   name: string;
 
