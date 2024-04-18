@@ -19,8 +19,7 @@ export default function Home() {
           <p>
             {/* Get started by editing&nbsp;
             <code className={styles.code}>src/pages/index.tsx</code> */}
-            Hello Snow wild
-            How are you
+            Hello Snow wild How are you Fine
           </p>
           <div>
             <a
