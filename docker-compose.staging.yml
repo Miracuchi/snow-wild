@@ -29,6 +29,7 @@ services:
   frontend:
     # build: ./frontend
     image: snowwild/frontend-sw
+    command: "next build && next start"
     ports:
       - 3000:3000
     volumes:
@@ -44,7 +45,7 @@ services:
     image: postgres:15
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U postgres snowwild -d"]
       interval: 5s
       timeout: 40s
       retries: 15
