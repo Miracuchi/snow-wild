@@ -19,7 +19,8 @@ export default function Home() {
           <p>
             {/* Get started by editing&nbsp;
             <code className={styles.code}>src/pages/index.tsx</code> */}
-            Hello Snow wild How are you Fine Yes Megatrom scbhsbchb?
+            Hello Snow wild How are you Fine Yes Megatrom
+            scbhsbchbfffffffffffffffffffffffffffff?
           </p>
           <div>
             <a
