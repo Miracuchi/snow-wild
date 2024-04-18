@@ -1,8 +1,9 @@
 services:
   backend:
-    build:
-      context: ./backend
-      dockerfile: ./Dockerfile.production
+    # build:
+    #   context: ./backend
+    #   dockerfile: ./Dockerfile.production
+    image: snowwild/backend-sw
     ports:
       - 4000:4000
     # expose:
@@ -26,7 +27,8 @@ services:
       db:
         condition: service_healthy
   frontend:
-    build: ./frontend
+    # build: ./frontend
+    image: snowwild/frontend-sw
     ports:
       - 3000:3000
     volumes:
