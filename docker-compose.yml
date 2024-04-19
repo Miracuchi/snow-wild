@@ -34,8 +34,7 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
     env_file:
-      # - ./.env
-      - ~/backend/.env
+      - ./backend/.env
   db:
     image: postgres:15
     restart: always

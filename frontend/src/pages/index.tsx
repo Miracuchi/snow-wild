@@ -20,7 +20,8 @@ export default function Home() {
             {/* Get started by editing&nbsp;
             <code className={styles.code}>src/pages/index.tsx</code> */}
             Hello Snow wild How are you Fine Yes Megatrom
-            scbhsbchbfffffffffffffffffffffffffffff utimate megad fdffdf?
+            scbhsbchbfffffffffffffffffffffffffffff utimate megad fdffdf
+            ?!!!!!!!!!!!!!!!!!!
           </p>
           <div>
             <a
