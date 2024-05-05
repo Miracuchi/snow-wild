@@ -1,8 +1,6 @@
-import Category from "../entities/category.entity";
 import { Repository } from "typeorm";
 import datasource from "../db";
-import Book from "../entities/book.entity";
-import { CreateCategoryInput } from "../entities/category.entity";
+import Category, { CreateCategoryInput } from "../entities/category.entity";
 
 export default class CategoryService {
   db: Repository<Category>;
@@ -31,8 +29,11 @@ export default class CategoryService {
     return { ...category, id };
   }
 
-  async find (id: string) {
-    const category = await this.db.findOne({ where: { id }, relations: { material: true } });
+  async find(id: string) {
+    const category = await this.db.findOne({
+      where: { id },
+      relations: { material: true },
+    });
     if (!category) {
       throw new Error("La catégorie n'existe pas!");
     }

@@ -1,8 +1,8 @@
 import { Repository } from "typeorm";
 import datasource from "../db";
 import Reservation, {
-  StatutReservation,
   CreateReservationInput,
+  StatutReservation,
 } from "../entities/reservation.entity";
 
 export default class ReservationService {
@@ -13,6 +13,14 @@ export default class ReservationService {
 
   async listReservations() {
     return this.db.find();
+  }
+
+  async find(id: string) {
+    const reservation = await this.db.findOne({
+      where: { id },
+      relations: { reservationMaterials: true, user: true },
+    });
+    return reservation;
   }
 
   async createReservation(data: CreateReservationInput) {
@@ -36,5 +44,12 @@ export default class ReservationService {
     const creatResa = await this.db.save(newReservation);
 
     return creatResa;
+  }
+
+  async deleteReservation(id: string) {
+    const reservationToDelete = (await this.find(id)) as Reservation;
+
+    await this.db.remove(reservationToDelete);
+    return { ...reservationToDelete, id };
   }
 }

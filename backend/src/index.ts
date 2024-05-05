@@ -1,20 +1,19 @@
-import BookResolver from "./resolvers/book.resolver";
-import MaterialResolver from "./resolvers/material.resolver";
-import UserResolver from "./resolvers/user.resolver";
-import ReservationResolver from "./resolvers/reservation.resolver";
-import datasource from "./db";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import datasource from "./db";
+import BookResolver from "./resolvers/book.resolver";
+import MaterialResolver from "./resolvers/material.resolver";
+import ReservationResolver from "./resolvers/reservation.resolver";
+import UserResolver from "./resolvers/user.resolver";
 
+import cors from "cors";
 import express from "express";
 import http from "http";
-import cors from "cors";
-import { buildSchema } from "type-graphql";
-import { startStandaloneServer } from "@apollo/server/standalone";
 import "reflect-metadata";
-import CategoryResolver from "./resolvers/category.resolver";
+import { buildSchema } from "type-graphql";
 import User from "./entities/user.entity";
+import CategoryResolver from "./resolvers/category.resolver";
 
 export interface MyContext {
   req: express.Request;
