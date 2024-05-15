@@ -1,8 +1,11 @@
+import TopBar from "./Topbar";
+
 function LayoutClient ({ children }: { children: JSX.Element }){
 
     return (
         <div>
-            <h1>test</h1>
+            <TopBar />
+            {children}
         </div>
     )
 }
