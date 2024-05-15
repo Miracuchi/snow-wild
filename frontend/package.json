@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@apollo/client": "^3.10.3",
     "jose": "^5.3.0",
     "js-cookie": "^3.0.5",
     "next": "14.1.0",
