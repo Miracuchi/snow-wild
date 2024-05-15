@@ -65,8 +65,6 @@ async function main() {
         const cookies = new Cookies(req, res);
         const token = cookies.get("token");
 
-        console.log(cookies)
-
         if(token) {
           try {
             const verify = await jwtVerify<Payload>(
