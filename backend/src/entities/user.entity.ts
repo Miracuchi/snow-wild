@@ -12,11 +12,9 @@ import {
 
 import { IsEmail, Max, Min } from "class-validator";
 import Reservation from "./reservation.entity";
+import { UserRoleEnum } from "../types";
 
-export enum UserRoleEnum {
-  admin = "ADMIN",
-  user = "USER",
-}
+
 
 // =================================================================
 //                           OBJECT TYPE
