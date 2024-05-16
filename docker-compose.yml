@@ -1,6 +1,7 @@
 services:
   backend:
     build: ./backend
+    command: sh -c "npm run resetDb && npm run start"
     ports:
       - 4000:4000
     # expose:
@@ -20,7 +21,6 @@ services:
       - WDS_SOCKET_HOST=127.0.0.1
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
-    command: sh -c "npm run resetDb"
     depends_on:
       db:
         condition: service_healthy
