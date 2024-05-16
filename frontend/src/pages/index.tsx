@@ -20,7 +20,7 @@ export default function Home() {
         <div className={styles.description}>
 
           <ListMaterial />
-          <p>
+          
 
           <p  className="text-3xl font-bold underline">
 
