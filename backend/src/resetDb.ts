@@ -3,7 +3,7 @@ import User from './entities/user.entity';
 import Category from './entities/category.entity';
 import Material from './entities/material.entity';
 import { UserRoleEnum } from "./types";
-
+ 
 async function cleadDb() {
   const runner = db.createQueryRunner();
   await runner.query(`DROP TABLE IF EXISTS book`);
@@ -140,6 +140,9 @@ async function main() {
       }
     ]).execute()
   console.log("done !");
+  
+  await db.destroy();
+  process.exit(0);
 }
 
 main();
