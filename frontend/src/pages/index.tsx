@@ -17,7 +17,7 @@ export default function Home() {
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
         <div className={styles.description}>
-          <p>
+          <p  className="text-3xl font-bold underline">
             {/* Get started by editing&nbsp;
             <code className={styles.code}>src/pages/index.tsx</code> */}
             Hello Snow wild 🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞
