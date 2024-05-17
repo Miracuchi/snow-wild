@@ -22,12 +22,12 @@ export default function Home() {
           <ListMaterial />
           
 
-          <p  className="text-3xl font-bold underline">
+        
 
             {/* Get started by editing&nbsp;
             <code className={styles.code}>src/pages/index.tsx</code> 
             Hello Snow wild 🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞*/}
-          </p>
+        
           {/* Start paragraph ===> mettre dans la page LOGIN 
           <Link
             href="/auth/logout"

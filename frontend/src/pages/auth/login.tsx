@@ -53,7 +53,7 @@ function Login() {
           <input
             type="submit"
             value="Je me connecte"
-            className="w-1/2 bg-black text-white py-2 rounded-lg hover:bg-gray-500 cursor-pointer"
+            className="w-1/2 bg-black text-white py-2 rounded-lg hover:bg-neutral-100 hover:text-neutral-950 hover:font-bold cursor-pointer"
             style={{ display: "block", margin: "0 auto" }}
           />
           <div className="mt-8 text-center">

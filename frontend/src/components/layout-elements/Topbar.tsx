@@ -5,7 +5,9 @@ const TopBar: React.FC = () => {
     return (
         <div>
         <nav className="bg-white p-4 px-20 flex items-center justify-between font-poppins">
-            <Image src="/logoblanc.png" alt="logo" width={150} height={100} className="filter grayscale" />
+            <Link href="/">
+                <Image src="/logoblanc.png" alt="logo" width={150} height={100} className="filter grayscale" />
+            </Link>
             <div className="flex-1 flex justify-center">
                 <div className="flex space-x-20">
                     <Link href="/" className="text-black hover:text-gray-600">Qui sommes-nous</Link>
@@ -27,7 +29,7 @@ const TopBar: React.FC = () => {
                 </Link>
             </div>
         </nav>
-        <div className="bg-black p-1 px-20 flex items-center justify-between font-poppins">coucou</div>
+        <div className="bg-black p-5 px-20 flex items-center justify-between font-poppins"></div>
         </div>
     );
 }
