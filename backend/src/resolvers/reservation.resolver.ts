@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
+
+import { GraphQLDate } from "graphql-scalars";
 import Reservation, {
   CreateReservationInput,
   ReservationDeleted,
@@ -34,7 +36,7 @@ export default class ReservationResolver {
 
   // Get All reservation(s) by date
   @Query(() => [Reservation])
-  async reservationsByDate(@Arg("date") date: Date) {
+  async reservationsByDate(@Arg("date", () => GraphQLDate) date: Date) {
     const reservation = await new ReservationService().findReservationsByDate(
       date
     );
