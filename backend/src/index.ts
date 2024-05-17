@@ -14,6 +14,7 @@ import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import User from "./entities/user.entity";
 import CategoryResolver from "./resolvers/category.resolver";
+import ReservationMaterialResolver from "./resolvers/reservation_material.resolver";
 
 export interface MyContext {
   req: express.Request;
@@ -32,6 +33,7 @@ async function main() {
       MaterialResolver,
       UserResolver,
       ReservationResolver,
+      ReservationMaterialResolver,
     ],
     validate: false,
   });

@@ -12,7 +12,7 @@ export default class MaterialService {
   constructor() {
     this.db = datasource.getRepository(Material);
   }
-  async findMaterial(id: string) {
+  async findMaterialById(id: string) {
     const material = await this.db.findOneBy({ id });
     if (!material) {
       throw new Error("Ce matériel n'existe pas");
@@ -53,7 +53,8 @@ export default class MaterialService {
   }
 
   async updateMaterial(id: string, data: Omit<UpdateMaterialInput, "id">) {
-    const categoryToLink = await new CategoryService().find(data?.category?.id);
+    if (!data.category) return null;
+    const categoryToLink = await new CategoryService().find(data?.category.id);
 
     const materialToUpdate = await this.find(id);
     if (!materialToUpdate) {

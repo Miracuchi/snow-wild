@@ -32,7 +32,7 @@ export default class UserResolver {
         .sign(new TextEncoder().encode(`${process.env.JWT_SECRET_KEY}`));
 
       if (ctx && ctx.req && ctx.res) {
-        let cookies = new Cookies(ctx.req, ctx.res);
+        const cookies = new Cookies(ctx.req, ctx.res);
         cookies.set("token", token, { httpOnly: true });
       }
 
@@ -48,7 +48,7 @@ export default class UserResolver {
   @Query(() => Message)
   async logout(@Ctx() ctx: MyContext) {
     if (ctx.user) {
-      let cookies = new Cookies(ctx.req, ctx.res);
+      const cookies = new Cookies(ctx.req, ctx.res);
       cookies.set("token"); //sans valeur, le cookie token sera supprimé
     }
     const m = new Message();
