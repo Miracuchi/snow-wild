@@ -111,17 +111,20 @@ export class UpdateMaterialInput {
   id: string;
 
   @Field({ nullable: true })
-  name: string;
+  name?: string;
 
   @Field({ nullable: true })
-  description: string;
+  description?: string;
 
   @Field(() => Float, { nullable: true })
-  price: number;
+  quantity?: number;
+
+  @Field(() => Float, { nullable: true })
+  price?: number;
 
   @Field({ nullable: true })
-  picture: string;
+  picture?: string;
 
   @Field({ nullable: true })
-  category: PartialCategoryInput;
+  category?: PartialCategoryInput;
 }

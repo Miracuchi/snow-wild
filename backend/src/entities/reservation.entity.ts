@@ -1,6 +1,7 @@
 import { Field, ID, InputType, ObjectType } from "type-graphql";
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -46,8 +47,10 @@ export default class Reservation {
   end_date: Date;
 
   @Field()
-  @Column()
-  final_price: number;
+  @CreateDateColumn({
+    type: "date",
+  })
+  createdAt: Date;
 
   @Field()
   @Column({
@@ -87,9 +90,6 @@ export class ReservationMaterialInput {
 
   @Field()
   materialId: string;
-
-  @Field()
-  unit_price: number;
 }
 
 @InputType()
@@ -111,4 +111,16 @@ export class CreateReservationInput {
 
   @Field()
   end_date: Date;
+}
+
+@InputType()
+export class UpdateReservationInput {
+  @Field(() => ID)
+  id: string;
+
+  @Field({ nullable: true })
+  start_date?: Date;
+
+  @Field({ nullable: true })
+  end_date?: Date;
 }

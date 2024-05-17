@@ -1,4 +1,4 @@
-import { Field, InputType, ObjectType } from "type-graphql";
+import { Field, Float, ID, InputType, ObjectType } from "type-graphql";
 import {
   Column,
   Entity,
@@ -39,6 +39,12 @@ export class ReservationMaterial {
     onDelete: "CASCADE",
   })
   material: Material;
+
+  @Field(() => Float)
+  @Column({ type: "float" })
+  price: number; // mettre en float
+
+  //avoir le prix ici (prix de CE material pour CETTE réservation)
 }
 
 // =================================================================
@@ -46,12 +52,24 @@ export class ReservationMaterial {
 // =================================================================
 @InputType()
 export class CreateReservationMaterialInput {
-  @Field()
-  reservationId: string; // Identifiant de la réservation
+  @Field(() => Reservation)
+  reservation: Reservation; // Identifiant de la réservation
 
-  @Field()
-  materialId: string; // Identifiant du matériau
+  @Field(() => Material)
+  material: Material; // Identifiant du matériau
 
   @Field()
   quantity: number; // Quantité de matériel réservé
+}
+
+@InputType()
+export class UpdateReservationMaterialInput {
+  @Field(() => ID)
+  id: string;
+
+  @Field()
+  materialId?: string; // Identifiant du matériau
+
+  @Field()
+  quantity?: number; // Quantité de matériel réservé
 }

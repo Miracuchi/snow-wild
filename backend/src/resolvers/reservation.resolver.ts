@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import Reservation, {
   CreateReservationInput,
   ReservationDeleted,
+  UpdateReservationInput,
 } from "../entities/reservation.entity";
+import { ReservationMaterial } from "../entities/reservation_material.entity";
 import ReservationService from "../services/reservation.service";
 import ReservationMaterialService from "../services/reservation_material.service";
 
@@ -13,12 +16,33 @@ export default class ReservationResolver {
     return await new ReservationService().listReservations();
   }
 
-  // Create Query to get One Reaservation by ID
+  // Get One Reaservation by ID
+  @Query(() => Reservation)
+  async reservationById(@Arg("id") id: string) {
+    const reservation = await new ReservationService().findReservationById(id);
+    return reservation;
+  }
 
-  // Create Query to get One Reaservation by ID user
+  // Get All Reservation by ID user
+  @Query(() => [Reservation])
+  async reservationsByUserId(@Arg("id") id: string) {
+    const reservation = await new ReservationService().findReservationsByUserId(
+      id
+    );
+    return reservation;
+  }
+
+  // Get All reservation(s) by date
+  @Query(() => [Reservation])
+  async reservationsByDate(@Arg("date") date: Date) {
+    const reservation = await new ReservationService().findReservationsByDate(
+      date
+    );
+
+    return reservation;
+  }
 
   // Create Mutaion add one reseervation
-
   @Mutation(() => Reservation) //prévoir un object type de retour
   async createReservation(
     @Arg("data") data: CreateReservationInput
@@ -35,10 +59,28 @@ export default class ReservationResolver {
       return new ReservationMaterialService().createResMat(dataToResMat);
     });
 
-    const reservationMaterials = await Promise.all(materialsPromises);
+    const reservationMaterials = (await Promise.all(
+      materialsPromises
+    )) as ReservationMaterial[];
 
     newReservation.reservationMaterials = reservationMaterials;
     return newReservation;
+  }
+
+  // Update Reservation start_date or end_date
+  @Mutation(() => Reservation)
+  async updateReservation(
+    @Arg("data") data: UpdateReservationInput
+  ): Promise<Reservation> {
+    const { id, ...otherData } = data;
+    const reservationToUpdate =
+      await new ReservationService().updateReservation(id, otherData);
+
+    if (!reservationToUpdate) {
+      throw new Error("La reservation n'existe pas");
+    }
+
+    return reservationToUpdate;
   }
 
   // Delete ReservationById
@@ -46,7 +88,6 @@ export default class ReservationResolver {
   async deleteReservation(@Arg("id") id: string) {
     const { id: idReservation, ...reservation } =
       await new ReservationService().deleteReservation(id);
-    console.log("BUEEEENO", reservation);
 
     return { ...reservation };
   }

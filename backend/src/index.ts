@@ -16,8 +16,13 @@ import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import User from "./entities/user.entity";
 import CategoryResolver from "./resolvers/category.resolver";
+
+import ReservationMaterialResolver from "./resolvers/reservation_material.resolver";
+
+
 import { jwtVerify } from "jose";
 import { customAuthChecker } from "./lib/authChecker";
+
 export interface MyContext {
   req: express.Request;
   res: express.Response;
@@ -39,6 +44,7 @@ async function main() {
       MaterialResolver,
       UserResolver,
       ReservationResolver,
+      ReservationMaterialResolver,
     ],
     validate: false,
     authChecker: customAuthChecker,

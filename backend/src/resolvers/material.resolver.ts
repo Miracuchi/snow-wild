@@ -14,6 +14,12 @@ export default class MaterialResolver {
     return materials;
   }
 
+  @Query(() => Material)
+  async findMaterialById(@Arg("id") id: string) {
+    const materials = await new MaterialService().findMaterialById(id);
+    return materials;
+  }
+
   @Mutation(() => Material)
   async createMaterial(@Arg("data") data: CreateMaterialInput) {
     const newMaterial = await new MaterialService().createMaterial(data);
