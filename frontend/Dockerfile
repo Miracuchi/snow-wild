@@ -12,4 +12,7 @@ COPY public public
 COPY next.config.mjs .
 COPY tsconfig.json .
 
+COPY tailwind.config.js .
+COPY postcss.config.js .
+
 CMD npm run dev
