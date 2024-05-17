@@ -21,6 +21,7 @@
     "cookies": "^0.9.1",
     "cors": "^2.8.5",
     "graphql": "^16.8.1",
+    "graphql-scalars": "^1.23.0",
     "jose": "^5.2.1",
     "pg": "^8.11.3",
     "reflect-metadata": "^0.1.13",
