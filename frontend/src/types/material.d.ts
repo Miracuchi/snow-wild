@@ -13,11 +13,3 @@ export interface MaterialQuery {
     listMaterials: Material[];
 }
 
-export type MaterialQuery = {
-    material: {
-      id: string;
-      name: string;
-      description: string;
-      picture: string;
-    };
-  };

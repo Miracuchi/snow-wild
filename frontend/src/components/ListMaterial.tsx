@@ -24,7 +24,7 @@ function ListMaterial() {
             </div>
             <div className="p-6">
               
-              <p className="text-gray z-20">{item.description.slice(0, 90)}{item.description.length > 90 ? "..." : ""}
+              <p className="text-white z-20">{item.description.slice(0, 90)}{item.description.length > 90 ? "..." : ""}
               <Link className="text-gray hover:underline ml-2 hover:font-bold cursor-pointer" href={`/${item.id}`}>Voir détails</Link></p>
                 
               <div className="mt-4 flex justify-end">

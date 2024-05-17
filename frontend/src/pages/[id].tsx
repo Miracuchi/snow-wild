@@ -1,20 +1,36 @@
-import { GET_MATERIAL } from "@/requetes/queries/material.queries";
+import { GET_MATERIAL_BY_ID } from "@/requetes/queries/material.queries";
 import { useRouter } from "next/router";
-import { useQuery } from "@apollo/client";
-import { MaterialQuery } from "@/types/material";
+import { useLazyQuery, useQuery } from "@apollo/client";
+import { Material, MaterialQuery } from "@/types/material";
 import Link from "next/link";
+import { useEffect } from "react";
 
 function MaterialDetail() {
   const router = useRouter();
-  const { id } = router.query;
-  const { data, loading, error } = useQuery<MaterialQuery>(GET_MATERIAL, {
-    variables: { id }
-  });
+  // const { id } = router.query;
+  const [getAd,{ data, loading, error }] = useLazyQuery(GET_MATERIAL_BY_ID)
+  
+  useEffect(() => {
+    if (router.query.id) {
+      getAd({
+        variables: {
+          findMaterialByIdId: router.query.id,
+        },
+      });
+    }
+  }, [getAd, router.query.id]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (loading) {
+    return <div>Chargement en cours</div>;
+  }
+  if (error) {
+    return <div>{error.message}</div>;
+  }
 
-  const material = data?.material;
+
+
+  const material = data?.findMaterialById;
+  console.log(material)
 
   return (
     <main className="container mx-auto px-4 py-8 font-poppins">
@@ -33,8 +49,8 @@ function MaterialDetail() {
         </div>
       </div>
       <div className="mt-4">
-        <Link href="/">
-          <a className="text-blue-500 hover:underline">Retour à la liste</a>
+        <Link href="/" className="text-blue-500 hover:underline">
+         Retour à la liste
         </Link>
       </div>
     </main>
@@ -42,3 +58,5 @@ function MaterialDetail() {
 }
 
 export default MaterialDetail;
+
+

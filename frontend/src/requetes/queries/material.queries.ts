@@ -12,13 +12,14 @@ query ListMaterial {
 }
 `;
 
-export const GET_MATERIAL = gql`
-  query GetMaterial($id: ID!) {
-    material(id: $id) {
-      id
-      name
-      description
-      picture
-    }
+export const GET_MATERIAL_BY_ID = gql`
+  query Query($findMaterialByIdId: String!) {
+  findMaterialById(id: $findMaterialByIdId) {
+    price
+    picture
+    name
+    id
+    description
   }
+}
 `;
