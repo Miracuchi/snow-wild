@@ -6,6 +6,8 @@ import BookResolver from "./resolvers/book.resolver";
 import MaterialResolver from "./resolvers/material.resolver";
 import ReservationResolver from "./resolvers/reservation.resolver";
 import UserResolver from "./resolvers/user.resolver";
+import Cookies from "cookies";
+import UserService from "./services/user.service";
 
 import cors from "cors";
 import express from "express";
@@ -14,12 +16,21 @@ import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import User from "./entities/user.entity";
 import CategoryResolver from "./resolvers/category.resolver";
+
 import ReservationMaterialResolver from "./resolvers/reservation_material.resolver";
+
+
+import { jwtVerify } from "jose";
+import { customAuthChecker } from "./lib/authChecker";
 
 export interface MyContext {
   req: express.Request;
   res: express.Response;
   user?: User | null;
+}
+
+export interface Payload {
+  email: string;
 }
 
 const app = express();
@@ -36,6 +47,7 @@ async function main() {
       ReservationMaterialResolver,
     ],
     validate: false,
+    authChecker: customAuthChecker,
   });
 
   const server = new ApolloServer<MyContext>({
@@ -46,13 +58,33 @@ async function main() {
   await server.start();
   app.use(
     "/",
-    cors<cors.CorsRequest>({ origin: "*" }),
+    cors<cors.CorsRequest>({ 
+      origin: "*",
+      credentials: true, 
+    }),
     express.json(),
     // expressMiddleware accepts the same arguments:
     // an Apollo Server instance and optional configuration options
     expressMiddleware(server, {
       context: async ({ req, res }) => {
-        return { req, res };
+        let user: User | null = null;
+        const cookies = new Cookies(req, res);
+        const token = cookies.get("token");
+
+        if(token) {
+          try {
+            const verify = await jwtVerify<Payload>(
+              token,
+              new TextEncoder().encode(process.env.JWT_SECRET_KEY)
+            );
+            user = await new UserService().findUserByEmail(
+              verify.payload.email
+            );
+          } catch (err) {
+            console.log(err);
+          }
+        }
+        return { req, res, user };
       },
     })
   );

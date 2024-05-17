@@ -10,7 +10,8 @@
     "startjs": "cd /app/dist && node index.js",
     "fix": "yarn format && yarn lint:fix",
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
-    "lint:fix": "eslint --fix 'src/**/*.{js,jsx,ts,tsx}'"
+    "lint:fix": "eslint --fix 'src/**/*.{js,jsx,ts,tsx}'",
+    "resetDb": "ts-node-dev src/resetDb.ts"
   },
   "license": "MIT",
   "dependencies": {

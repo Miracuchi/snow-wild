@@ -5,7 +5,7 @@ import Material from "./material.entity";
 @ObjectType()
 @Entity()
 export default class Category {
-  @Field((type) => ID)
+  @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
