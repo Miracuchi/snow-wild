@@ -3,17 +3,27 @@ import type { AppProps } from "next/app";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import LayoutClient from "@/components/layout-elements/LayoutClient";
 import Head from "next/head";
+// import { AuthProvider, useAuth } from "@/auth-provider";
+import LayoutAdmin from "@/admin/components/LayoutAdmin";
+import Cookies from "js-cookie";
 
 
 const client = new ApolloClient({
   uri: "http://localhost:4000",
   cache: new InMemoryCache({ addTypename: false }),
+  credentials: "include"
   // defaultOptions: {
   // watchQuery: { fetchPolicy: "no-cache", nextFetchPolicy: "no-cache" },
   // },
 });
 
 export default function App({ Component, pageProps }: AppProps) {
+  const email = Cookies.get("email")
+  const role = Cookies.get("role")
+
+  // const auth = useAuth();
+  // console.log(auth?.user?.role)
+  // <AuthProvider></AuthProvider>
   return (
   <>
   <ApolloProvider client={client}>
@@ -23,10 +33,19 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-    <LayoutClient>
-      
-    <Component {...pageProps} />
-    </LayoutClient>
+    
+      {/* auth?.user?.role */}
+      {role && role === "ADMIN" && (
+        <LayoutAdmin>
+          <Component {...pageProps} />
+        </LayoutAdmin>
+      )}
+      {!role && (
+        <LayoutClient>
+          <Component {...pageProps} />
+        </LayoutClient>
+      )}
+    
   </ApolloProvider>
   </>
   )

@@ -1,68 +1,93 @@
 # test if ci
 name: test-ci
-on: 
+on:
+  push: # Lors du push sur toutes les branches
+    branches:
+      - "*"
   pull_request:
     branches:
       [develop,main]
       
 jobs:
-    ESLint:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v2
-        - uses: actions/setup-node@v2
-          with:
-            node-version: '20'
-        - name: install
-          run: cd backend && npm i
-        - name: ESLint init and run fix
-          run: cd backend && npm init @eslint/config && npm run fix .
-        - name: Prettier
-          run: cd backend && npm prettier --write .
+  run-linters:
+    name: Run linters
+    runs-on: ubuntu-latest
 
-    test-back:
-        needs: ESLint
-        runs-on: ubuntu-latest
-        services:
-          # Label used to access the service container
-          postgres:
-            # Docker Hub image
-            image: postgres
-            # Provide the password for postgres
-            env:
-              POSTGRES_PASSWORD: postgres
-              POSTGRES_DB: snowwild
-            # Set health checks to wait until postgres has started
-            options: >-
-              --health-cmd pg_isready
-              --health-interval 10s
-              --health-timeout 5s
-              --health-retries 5
-            ports:
-              # Maps tcp port 5432 on service container to the host
-              - 5432:5432
-        steps: 
-            - name: 👀 Check out code
-              uses: actions/checkout@v2
-            - name: Goto back and run tests
-              run: cd backend && npm i && npm run testCI
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
 
-    docker:
-        needs: test-back
-        runs-on: ubuntu-latest
-        steps:
-          - name: Set up QEMU
-            uses: docker/setup-qemu-action@v2
-          - name: Set up Docker Buildx
-            uses: docker/setup-buildx-action@v2
-          - name: Login to Docker Hub
-            uses: docker/login-action@v2
-            with:
-              username: ${{ secrets.DOCKERHUB_USERNAME }}
-              password: ${{ secrets.DOCKERHUB_TOKEN }}
-          - name: Build and push
-            uses: docker/build-push-action@v4
-            with:
-              push: true
-              context: "{{defaultContext}}:backend"
-              tags: ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
+      - name: 🛠️ Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18
+
+      - name: Install Node.js dependencies
+        run: |
+          cd backend
+          npm i
+          npm run lint
+          cd ../frontent
+          npm i
+          npm run lint
+
+      - name: Run linters back
+        uses: wearerequired/lint-action@v2
+        with:
+          eslint_dir: ./backend
+          eslint: true
+
+      - name: 🏃🏽 Run linters front
+        uses: wearerequired/lint-action@v2
+        with:
+          eslint_dir: ./frontend
+          eslint: true
+
+      - name: CI
+        run: echo "This job's status is ${{ job.status }}."
+
+  test-back:
+    needs: run-linters
+    runs-on: ubuntu-latest
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: snowwild
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+    steps: 
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Goto back and run tests
+        run: cd backend && npm i && npm run testCI
+  docker:
+    needs: test-back
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          context: "{{defaultContext}}:backend"
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest

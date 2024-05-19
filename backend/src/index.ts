@@ -5,7 +5,7 @@ import datasource from "./db";
 import BookResolver from "./resolvers/book.resolver";
 import MaterialResolver from "./resolvers/material.resolver";
 import ReservationResolver from "./resolvers/reservation.resolver";
-import UserResolver from "./resolvers/user.resolver";
+import UserResolver from './resolvers/user.resolver';
 import Cookies from "cookies";
 import UserService from "./services/user.service";
 
@@ -59,7 +59,7 @@ async function main() {
   app.use(
     "/",
     cors<cors.CorsRequest>({ 
-      origin: "*",
+      origin: ["http://localhost:3000"],
       credentials: true, 
     }),
     express.json(),
@@ -70,7 +70,8 @@ async function main() {
         let user: User | null = null;
         const cookies = new Cookies(req, res);
         const token = cookies.get("token");
-
+        // console.log("play in expressMiddleware:")
+        // console.log("token in expressMiddleware", token)
         if(token) {
           try {
             const verify = await jwtVerify<Payload>(

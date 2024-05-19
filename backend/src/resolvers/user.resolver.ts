@@ -23,19 +23,20 @@ export default class UserResolver {
     if (!user) {
       throw new Error("Vérifiez vos informations");
     }
+
     const isPasswordValid = await argon2.verify(user.password, infos.password);
+
     const m = new Message();
     if (isPasswordValid) {
-      const token = await new SignJWT({ email: user.email, role: user.role })
+      console.log("JWT_SECRET_KEY", process.env.JWT_SECRET_KEY);
+      const token = await new SignJWT({ email: user.email, role: user.role, userId: user.id })
         .setProtectedHeader({ alg: "HS256", typ: "jwt" })
         .setExpirationTime("2h")
-        .sign(new TextEncoder().encode(`${process.env.JWT_SECRET_KEY}`));
+        .sign(new TextEncoder().encode(`${ process.env.JWT_SECRET_KEY}`));
 
-      if (ctx && ctx.req && ctx.res) {
-        const cookies = new Cookies(ctx.req, ctx.res);
-        cookies.set("token", token, { httpOnly: true });
-      }
-
+      const cookies = new Cookies(ctx.req, ctx.res);
+      cookies.set("token", token, { httpOnly: true });
+      
       m.message = "Bienvenue!";
       m.success = true;
     } else {
@@ -43,7 +44,7 @@ export default class UserResolver {
       m.success = false;
     }
     return m;
-  }
+  };
 
   @Query(() => Message)
   async logout(@Ctx() ctx: MyContext) {
@@ -56,7 +57,7 @@ export default class UserResolver {
     m.success = true;
 
     return m;
-  }
+  };
 
   @Mutation(() => UserWithoutPassword)
   async register(@Arg("infos") infos: InputRegister) {
@@ -64,6 +65,11 @@ export default class UserResolver {
     if (user) {
       throw new Error("Cet email est déjà pris!");
     }
+    const hashPassword = await argon2.hash(infos.password);
+    if(hashPassword) {
+      infos.password = hashPassword;
+    }
+    
     const newUser = await new UserService().createUser(infos);
     return newUser;
   }
