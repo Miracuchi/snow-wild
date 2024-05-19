@@ -23,7 +23,7 @@ function Login() {
           variables: { infos: { email: data.email, password: data.password } },
           onCompleted(data) {
             if (data.login.success) {
-              router.push("/");
+              // router.push("/");
             }
           },
         });

@@ -18,31 +18,8 @@ export default function Home() {
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
         <div className={styles.description}>
-
           <ListMaterial />
-          
-
-        
-
-            {/* Get started by editing&nbsp;
-            <code className={styles.code}>src/pages/index.tsx</code> 
-            Hello Snow wild 🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞🤞*/}
-        
-          {/* Start paragraph ===> mettre dans la page LOGIN 
-          <Link
-            href="/auth/logout"
-            replace={true}
-            className="px-6 py-2 text-white transition duration-500 ease-out bg-red-700 rounded-lg hover:bg-red-800 hover:ease-in hover:underline"
-          >
-            Se déconnecter
-          </Link> End paragrah */}
-          
-  
         </div>
-
-       
-
-       
       </main>
     </>
   );

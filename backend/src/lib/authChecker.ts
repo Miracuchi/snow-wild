@@ -8,7 +8,10 @@ export const customAuthChecker: AuthChecker<MyContext> = (
   if (context.user) {
     //si l 'utilisateur est connecté
     //vérifier que le user à le role demandé si le tableau de roles à une longueur > 1
+    console.log('context: ', context);
     if (roles.length > 0) { // si un role est indiqué au décorateur
+      
+      console.log('role: ', roles)
       if (roles.includes(context.user.role)) { //et que le user a le role parmi ce tableau
         return true; //on laisse passer
       } else { //sinon

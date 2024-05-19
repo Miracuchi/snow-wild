@@ -1,5 +1,5 @@
 import { Field, ID, InputType, ObjectType } from "type-graphql";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import Material from "./material.entity";
 
 @ObjectType()
@@ -16,6 +16,7 @@ export default class Category {
   @Field(() => [Material])
   @OneToMany(() => Material, (m) => m.category)
   material?: Material[];
+
 }
 
 @InputType()

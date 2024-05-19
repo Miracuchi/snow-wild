@@ -9,10 +9,11 @@ interface Payload {
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || "";
 
+
 export default async function middleware(request: NextRequest) {
   const { cookies } = request;
   const token = cookies.get("token");
-  console.log("token: ", token)
+  // console.log("token in middleware: ", token)
   return await checkToken(token?.value, request);
 }
 
@@ -52,12 +53,21 @@ async function checkToken(token: string | undefined, request: NextRequest) {
       ) {
         response = NextResponse.redirect(new URL("/400", request.url));
       }
+      else if(
+        request.nextUrl.pathname.startsWith("/admin/users") &&
+        payload.role === "ADMIN"
+      ) {
+        response.cookies.set("email", payload.email);
+        response.cookies.set("role", payload.role);
+        // response = NextResponse.redirect(new URL("/admin", request.url))
+      }
 
       response.cookies.set("email", payload.email);
       response.cookies.set("role", payload.role);
 
       return response;
     }
+    //penser au cas de figure où il a un token valide, il se rend sur une route admin, mais n'a pas le rôle admin pour y accéder => rediriger vers un "Not Authorized"
     return NextResponse.redirect(new URL("/auth/login", request.url));
   } catch (err) {
     console.log('%c⧭', 'color: #e50000', err);

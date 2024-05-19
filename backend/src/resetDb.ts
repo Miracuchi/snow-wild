@@ -3,7 +3,8 @@ import User from './entities/user.entity';
 import Category from './entities/category.entity';
 import Material from './entities/material.entity';
 import { UserRoleEnum } from "./types";
- 
+ import * as argon2 from "argon2";
+
 async function cleadDb() {
   const runner = db.createQueryRunner();
   await runner.query(`DROP TABLE IF EXISTS book`);
@@ -27,7 +28,7 @@ async function main() {
         firstName: "Client1",
         lastName: "CLastname",
         email: "client1@client.com",
-        password: "123456",
+        password: `${await argon2.hash("123456")}`,
         phone: "066080398510",
         role: UserRoleEnum.user
       },
@@ -35,7 +36,7 @@ async function main() {
         firstName: "Admin1",
         lastName: "ALastname",
         email: "admin1@admin.com",
-        password: "123456",
+        password: `${await argon2.hash("123456")}`,
         phone: "068080398510",
         role: UserRoleEnum.admin
       },
