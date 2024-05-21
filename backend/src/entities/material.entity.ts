@@ -1,4 +1,4 @@
-import { Field, Float, ID, InputType, ObjectType } from "type-graphql";
+import { Field, Float, ID, InputType, ObjectType } from 'type-graphql'
 import {
   Column,
   Entity,
@@ -6,9 +6,9 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-} from "typeorm";
-import Category from "./category.entity";
-import { ReservationMaterial } from "./reservation_material.entity";
+} from 'typeorm'
+import Category from './category.entity'
+import { ReservationMaterial } from './reservation_material.entity'
 
 // =================================================================
 //                           OBJECT TYPE
@@ -17,28 +17,28 @@ import { ReservationMaterial } from "./reservation_material.entity";
 @Entity()
 export default class Material {
   @Field()
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string
 
   @Field()
   @Column({ length: 50 })
-  name: string;
+  name: string
 
   @Field()
   @Column()
-  picture: string;
+  picture: string
 
   @Field()
   @Column()
-  price: number;
+  price: number
 
   @Field()
   @Column()
-  quantity: number;
+  quantity: number
 
   @Field()
   @Column()
-  description: string;
+  description: string
 
   // @Field()
   // @Column()
@@ -48,31 +48,31 @@ export default class Material {
   @ManyToOne(() => Category, (c) => c.material, {
     cascade: true,
   })
-  category: Category;
+  category: Category
 
   @Field(() => [ReservationMaterial])
   @JoinColumn()
   @OneToMany(() => ReservationMaterial, (r) => r.material)
-  reservationMaterials: ReservationMaterial[];
+  reservationMaterials: ReservationMaterial[]
 }
 
 // Quand on fait un ObjectType à supprimer, ne pas mettre d'id. Il sera supprimé, donc pas de retour.
 @ObjectType()
 export class MaterialDeleted {
   @Field({ nullable: true })
-  name: string;
+  name: string
 
   @Field({ nullable: true })
-  description: string;
+  description: string
 
   @Field(() => Float, { nullable: true })
-  price: number;
+  price: number
 
   @Field({ nullable: true })
-  picture: string;
+  picture: string
 
   @Field(() => Category)
-  category: Category;
+  category: Category
 }
 
 // =================================================================
@@ -81,50 +81,50 @@ export class MaterialDeleted {
 @InputType()
 export class PartialCategoryInput {
   @Field(() => ID)
-  id: string;
+  id: string
 }
 
 @InputType()
 export class CreateMaterialInput {
   @Field({ nullable: false })
-  name: string;
+  name: string
 
   @Field({ nullable: true })
-  description: string;
+  description: string
 
   @Field(() => Float, { nullable: false })
-  price: number;
+  price: number
 
   @Field({ nullable: false })
-  quantity: number;
+  quantity: number
 
   @Field()
-  picture: string;
+  picture: string
 
   @Field({ nullable: false })
-  category: PartialCategoryInput;
+  category: PartialCategoryInput
 }
 
 @InputType()
 export class UpdateMaterialInput {
   @Field(() => ID)
-  id: string;
+  id: string
 
   @Field({ nullable: true })
-  name?: string;
+  name?: string
 
   @Field({ nullable: true })
-  description?: string;
+  description?: string
 
   @Field(() => Float, { nullable: true })
-  quantity?: number;
+  quantity?: number
 
   @Field(() => Float, { nullable: true })
-  price?: number;
+  price?: number
 
   @Field({ nullable: true })
-  picture?: string;
+  picture?: string
 
   @Field({ nullable: true })
-  category?: PartialCategoryInput;
+  category?: PartialCategoryInput
 }
