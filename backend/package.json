@@ -9,7 +9,7 @@
     "build": "npx tsc",
     "startjs": "cd /app/dist && node index.js",
     "fix": "npm run format && npm run lint:fix",
-    "lint": "npx eslint src",
+    "lint": "eslint src --ext .ts,.tsx",
     "lint:fix": "npm run lint -- --fix",
     "prettier": "npx prettier src --check",
     "prettier:fix": "npm run prettier -- --write",
