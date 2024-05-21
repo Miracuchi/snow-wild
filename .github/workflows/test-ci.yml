@@ -27,7 +27,7 @@ jobs:
           cd backend
           npm i
           npm run lint
-          cd ../frontent
+          cd ../frontend
           npm i
           npm run lint
 
