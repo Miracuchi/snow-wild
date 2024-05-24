@@ -97,7 +97,7 @@ describe("Test sur les catégorie", () => {
     });
   });
 
-  it("Ajout d'un livre", async () => {
+  it("Ajout une caregorie", async () => {
     const createResponse = await server.executeOperation<CreateResponseData>({
       query: CREATE_CATEGORY,
       variables: {

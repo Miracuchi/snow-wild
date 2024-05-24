@@ -10,6 +10,6 @@
     "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
     "strictPropertyInitialization": false,
     "outDir": "./dist",             /* Check for class properties that are declared but not set in the constructor. */
-    "noImplicitOverride": false
+    "noImplicitOverride": true
   }
 }
