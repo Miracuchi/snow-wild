@@ -37,7 +37,7 @@ jobs:
           eslint_dir: ./backend
           eslint: true
 
-      - name: 🏃🏽 Run linters front
+      - name: Run linters front
         uses: wearerequired/lint-action@v2
         with:
           eslint_dir: ./frontend
@@ -49,6 +49,7 @@ jobs:
   test-back:
     needs: run-linters
     runs-on: ubuntu-latest
+    using: 'node20'
     services:
       # Label used to access the service container
       postgres:
