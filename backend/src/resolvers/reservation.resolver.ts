@@ -69,7 +69,7 @@ export default class ReservationResolver {
         return newReservation
     }
 
-    // Update Reservation start_date or end_dated
+    // Update Reservation start_date or end_datedv2
     @Mutation(() => Reservation)
     async updateReservation(
         @Arg('data') data: UpdateReservationInput
