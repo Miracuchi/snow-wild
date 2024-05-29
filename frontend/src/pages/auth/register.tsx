@@ -1,8 +1,8 @@
-import { useMutation } from '@apollo/client';
-import { useRouter } from 'next/router';
-import { REGISTER } from '@/requetes/mutations/auth.mutations';
-import { RegisterInput } from '@/types/auth';
-import Link from 'next/link';
+import { REGISTER } from "@/requetes/mutations/auth.mutations";
+import { RegisterInput } from "@/types/auth";
+import { useMutation } from "@apollo/client";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 function Register() {
   const router = useRouter();
@@ -14,7 +14,13 @@ function Register() {
     const formDataObject = Object.fromEntries(formData.entries());
     const data = formDataObject as unknown as RegisterInput;
 
-    if (data.email && data.password && data.lastName && data.firstName && data.phone) {
+    if (
+      data.email &&
+      data.password &&
+      data.lastName &&
+      data.firstName &&
+      data.phone
+    ) {
       try {
         const response = await register({
           variables: {
@@ -23,26 +29,33 @@ function Register() {
               password: data.password,
               lastName: data.lastName,
               firstName: data.firstName,
-              phone: data.phone
-            }
+              phone: data.phone,
+            },
           },
         });
 
         if (response.data) {
-          router.push('/success');  
+          router.push("/success");
         }
       } catch (err) {
-        console.error('Error registering user:', err);
+        console.error("Error registering user:", err);
       }
     } else {
-      console.error('All fields are required');
+      console.error("All fields are required");
     }
   };
 
+  const errorWhenRegisterText = `Erreur lors de l'inscription`;
+
   return (
     <main className="flex min-h-3/4 m-8 flex-col items-center justify-center p-8 font-poppins">
-      <form onSubmit={handleSubmit} className="bg-white p-8 shadow-md rounded-lg w-1/2">
-        <h1 className="font-bold text-center text-2xl mb-10 text-black">Inscription</h1>
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-8 shadow-md rounded-lg w-1/2"
+      >
+        <h1 className="font-bold text-center text-2xl mb-10 text-black">
+          Inscription
+        </h1>
         <div className="mb-6">
           <input
             type="text"
@@ -96,11 +109,27 @@ function Register() {
         />
       </form>
       {loading && <p className="text-center">Inscription en cours...</p>}
-      {error && <p className="text-center text-red-500">Erreur lors de l'inscription : {error.message}</p>}
-      {data && <p className="text-center text-blue-500">Inscription réussie!</p>}
+      {error && (
+        <p className="text-center text-red-500">
+          {errorWhenRegisterText} : {error.message}
+        </p>
+      )}
+      {data && (
+        <p className="text-center text-blue-500">Inscription réussie!</p>
+      )}
       <div className="mt-8 text-center">
-        <Link href="/auth/reset" className="text-black hover:text-gray-600 block">Mot de passe oublié?</Link>
-        <Link href="/auth/login" className="text-black hover:text-gray-600 block mt-2">Déjà inscrit ? Connectez-vous</Link>
+        <Link
+          href="/auth/reset"
+          className="text-black hover:text-gray-600 block"
+        >
+          Mot de passe oublié?
+        </Link>
+        <Link
+          href="/auth/login"
+          className="text-black hover:text-gray-600 block mt-2"
+        >
+          Déjà inscrit ? Connectez-vous
+        </Link>
       </div>
     </main>
   );
