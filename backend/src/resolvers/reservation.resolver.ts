@@ -85,7 +85,8 @@ export default class ReservationResolver {
         return reservationToUpdate
     }
 
-    // Delete ReservationById
+    // Delete ReservationByIdvs
+
     @Mutation(() => ReservationDeleted)
     async deleteReservation(@Arg('id') id: string) {
         const { id: idReservation, ...reservation } =
