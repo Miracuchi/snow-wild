@@ -11,7 +11,7 @@ import {
 import Category from './category.entity'
 import Reservation from './reservation.entity'
 import { ReservationMaterial } from './reservation_material.entity'
-import { json } from 'stream/consumers'
+import { Size } from './size.entity'
 
 // =================================================================
 //                           OBJECT TYPE
@@ -46,6 +46,7 @@ export default class Material {
   @Field(() => Category)
   @ManyToOne(() => Category, (c) => c.material, {
     cascade: true,
+    nullable: false,
     nullable: false,
   })
   category: Category
@@ -116,8 +117,8 @@ export class CreateMaterialInput {
   @Field()
   picture: string
 
-  @Field(() => [SizeInput], { nullable: false })
-  sizes: SizeInput[]
+  @Field(() => [SizeInput]) // Utilisez une liste d'objets SizeInput
+  sizes: SizeInput[] // Champ sizes acceptant une liste d'objets SizeInput
 
   @Field({ nullable: false })
   category: PartialCategoryInput

@@ -41,8 +41,8 @@ export default class MaterialResolver {
 
   @Mutation(() => Material)
   async deleteMaterial(@Arg('id') id: string) {
-    const deletedMaterial = await new MaterialService().deleteMaterial(id);
-    return deletedMaterial
+    const { ...material } = await new MaterialService().deleteMaterial(id)
+    return material
   }
 
   // const categoryDeleted = await new CategoryService().deleteCategory(id)

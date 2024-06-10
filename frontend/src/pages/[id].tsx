@@ -1,5 +1,4 @@
-import { useCart } from "@/contexts/CartContext";
-import { useCart } from "@/contexts/CartContext";
+/* eslint-disable @next/next/no-img-element */
 import { GET_MATERIAL_BY_ID } from "@/requetes/queries/material.queries";
 import { Material } from "@/types/material";
 import { useLazyQuery } from "@apollo/client";
