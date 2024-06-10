@@ -25,7 +25,7 @@ function ListMaterial() {
               {item.name}
             </h2>
             <div className="relative h-48 z-10">
-              <Image
+              <img
                 src={item.picture}
                 alt={item.name}
                 layout="fill"
