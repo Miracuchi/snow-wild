@@ -53,7 +53,7 @@ export const routes: { [key: string]: Route } = {
     protected: "ADMIN",
   },
   profil: {
-    pathname: "/profile/my-profile",
+    pathname: "/profil",
     title: "Votre compte",
     protected: "PRIVATE",
   },
