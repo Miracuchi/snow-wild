@@ -84,21 +84,6 @@ export default class ReservationResolver {
     return reservationToUpdate
   }
   
-  // Update Reservation start_date or end_datedv2
-  @Mutation(() => Reservation)
-  async updateReservation(
-      @Arg('data') data: UpdateReservationInput
-  ): Promise<Reservation> {
-      const { id, ...otherData } = data
-      const reservationToUpdate =
-          await new ReservationService().updateReservation(id, otherData)
-
-      if (!reservationToUpdate) {
-          throw new Error("La reservation n'existe pas")
-      }
-
-      return reservationToUpdate
-  }
 
   // Delete ReservationById
   @Mutation(() => ReservationDeleted)
@@ -108,4 +93,4 @@ export default class ReservationResolver {
 
     return { ...reservation }
   }
-
+}
