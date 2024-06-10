@@ -9,10 +9,9 @@ on:
       [develop,main]
       
 jobs:
-  run-linters:
+  run-linters: 
     name: Run linters
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v3
@@ -49,7 +48,6 @@ jobs:
   test-back:
     needs: run-linters
     runs-on: ubuntu-latest
-    using: 'node20'
     services:
       # Label used to access the service container
       postgres:
@@ -68,7 +66,7 @@ jobs:
         ports:
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
-    steps: 
+    steps:
       - name: Check out code
         uses: actions/checkout@v2
       - name: Goto back and run tests

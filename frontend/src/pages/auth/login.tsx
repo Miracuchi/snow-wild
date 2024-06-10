@@ -5,10 +5,13 @@ import {
 import { useLazyQuery } from "@apollo/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
+import { AuthContext } from "@/contexts/authContext";
+import { useContext } from "react";
 
 function Login() {
     
-    // const context = useContext(DemoContext);
+    const { setAuthUser } = useContext(AuthContext);
   
     const router = useRouter();
     // const [login, { data, error }] = useLoginLazyQuery()
@@ -22,8 +25,14 @@ function Login() {
         login({
           variables: { infos: { email: data.email, password: data.password } },
           onCompleted(data) {
-            if (data.login.success) {
-              // router.push("/");
+            if (data) {
+              console.log(data.login)
+              setAuthUser({ ...data.login, userId: data.login.id })
+              if(data?.login?.role === "ADMIN") {
+                router.push("/admin/dashboard")
+              } else {
+                router.push("/");
+              }
             }
           },
         });
@@ -58,7 +67,7 @@ function Login() {
           />
           <div className="mt-8 text-center">
             <span className="text-red-500 block">{error?.message}</span>
-            {data?.login.success ? (
+            {data?.login?.success ? (
               <span className="text-blue-500 block">{data?.login?.message}</span>
             ) : (
               <span className="text-red-500 block">{data?.login?.message}</span>

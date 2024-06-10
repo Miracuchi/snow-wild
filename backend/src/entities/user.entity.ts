@@ -81,6 +81,18 @@ export class Message {
 }
 
 @ObjectType()
+export class UserAfterLogin {
+  @Field()
+  user: User
+
+  @Field()
+  success: boolean
+
+  @Field()
+  message: string
+}
+
+@ObjectType()
 export class UserWithoutPassword
   implements
     Omit<

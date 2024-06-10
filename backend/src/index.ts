@@ -30,6 +30,8 @@ export interface MyContext {
 
 export interface Payload {
   email: string
+  role: string
+  userId: string
 }
 
 const app = express()
@@ -58,7 +60,10 @@ async function main() {
   app.use(
     '/',
     cors<cors.CorsRequest>({
-      origin: ['http://localhost:3000'],
+      origin: [
+        'http://localhost:3000',
+        'http://localhost:8000',
+      ],
       credentials: true,
     }),
     express.json(),
