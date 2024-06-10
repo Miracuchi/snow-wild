@@ -1,6 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 import { GET_MATERIAL_BY_ID } from "@/requetes/queries/material.queries";
 import { useLazyQuery } from "@apollo/client";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -37,12 +37,7 @@ function MaterialDetail() {
       </h1>
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="relative h-48">
-          <Image
-            src={material?.picture}
-            alt={material?.name}
-            layout="fill"
-            objectFit="cover"
-          />
+          <img src={material?.picture} alt={material?.name} />
         </div>
         <div className="p-6">
           <p className="text-gray">{material?.description}</p>

@@ -1,7 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 import { LIST_MATERIAL } from "@/requetes/queries/material.queries";
 import { MaterialQuery } from "@/types/material";
 import { useQuery } from "@apollo/client";
-import Image from "next/image";
 import Link from "next/link";
 
 function ListMaterial() {
@@ -25,12 +25,7 @@ function ListMaterial() {
               {item.name}
             </h2>
             <div className="relative h-48 z-10">
-              <Image
-                src={item.picture}
-                alt={item.name}
-                layout="fill"
-                objectFit="cover"
-              />
+              <img src={item.picture} alt={item.name} />
             </div>
             <div className="p-6">
               <p className="text-white z-20">

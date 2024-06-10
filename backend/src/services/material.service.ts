@@ -5,6 +5,7 @@ import Material, {
   CreateMaterialInput,
   UpdateMaterialInput,
 } from '../entities/material.entity'
+import { Size } from '../entities/size.entity'
 import CategoryService from './category.service'
 
 export default class MaterialService {
@@ -13,20 +14,23 @@ export default class MaterialService {
     this.db = datasource.getRepository(Material)
   }
   async findMaterialById(id: string) {
-    const material = await this.db.findOneBy({ id })
+    const material = await this.db.findOne({
+      where: { id },
+      relations: { category: true },
+    })
     if (!material) {
       throw new Error("Ce matériel n'existe pas")
     }
     return material
   }
 
-  async find(id: string) {
-    const material = await this.db.findOne({
-      where: { id },
-      relations: { category: true },
-    })
-    return material
-  }
+  // async find(id: string) {
+  //   const material = await this.db.findOne({
+  //     where: { id },
+  //     relations: { category: true },
+  //   })
+  //   return material
+  // }
 
   async listMaterials() {
     return this.db.find()
@@ -37,9 +41,17 @@ export default class MaterialService {
     if (!categoryToLink) {
       throw new Error("La catégorie n'existe pas!")
     }
+    const sizes = data.sizes.map((sizeData) => {
+      const size = new Size()
+      size.size = sizeData.size
+      size.quantity = sizeData.quantity
+      return size
+    })
+
     const newMaterial = this.db.create({
       ...data,
       category: categoryToLink,
+      sizes: sizes,
     })
     const errors = await validate(newMaterial)
     console.log('ERRORS => ', errors)
@@ -47,7 +59,7 @@ export default class MaterialService {
   }
 
   async deleteMaterial(id: string) {
-    const material = (await this.find(id)) as Material
+    const material = (await this.findMaterialById(id)) as Material
     await this.db.remove(material)
     return { ...material, id }
   }
@@ -56,7 +68,7 @@ export default class MaterialService {
     if (!data.category) return null
     const categoryToLink = await new CategoryService().find(data?.category.id)
 
-    const materialToUpdate = await this.find(id)
+    const materialToUpdate = await this.findMaterialById(id)
     if (!materialToUpdate) {
       throw new Error("L'annonce n'existe pas!")
     }
