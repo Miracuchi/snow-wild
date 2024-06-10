@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+/* eslint-disable @next/next/no-img-element */
 import { useCart } from "@/contexts/CartContext";
 import Link from "next/link";
 

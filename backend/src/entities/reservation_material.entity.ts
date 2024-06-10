@@ -46,7 +46,7 @@ export class ReservationMaterial {
 
   @Field()
   @Column()
-  size: string
+  size: string // mettre en float
 
   //avoir le prix ici (prix de CE material pour CETTE réservation)
 }
