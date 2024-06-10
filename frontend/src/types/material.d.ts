@@ -1,15 +1,14 @@
 import { Category } from "./category";
 
 export interface Material {
-    imageUrl: string | undefined;
-    name: String!;
-    picture: String!;
-    id: String!;
-    description: String!;
-    category: Category;
+  imageUrl: string | undefined;
+  name: string!;
+  picture: string!;
+  id: string!;
+  description: string!;
+  category: Category;
 }
 
 export interface MaterialQuery {
-    listMaterials: Material[];
+  listMaterials: Material[];
 }
-
