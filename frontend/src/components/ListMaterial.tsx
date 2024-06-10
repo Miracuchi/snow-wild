@@ -25,7 +25,14 @@ function ListMaterial() {
               {item.name}
             </h2>
             <div className="relative h-48 z-10">
-              <img src={item.picture} alt={item.name} />
+
+              <img
+                src={item.picture}
+                alt={item.name}
+                layout="fill"
+                objectFit="cover"
+              />
+
             </div>
             <div className="p-6">
               <p className="text-white z-20">
