@@ -1,5 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import Image from "next/image";
 
 const TopBar: React.FC = () => {
     return (
@@ -35,4 +35,3 @@ const TopBar: React.FC = () => {
 }
 
 export default TopBar;
-

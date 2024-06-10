@@ -14,8 +14,8 @@ export default class Category {
   name: string
 
   @Field(() => [Material])
-  @OneToMany(() => Material, (m) => m.category)
-  material?: Material[]
+  @OneToMany(() => Material, (m) => m.category, { nullable: false })
+  material: Material[]
 }
 
 @InputType()

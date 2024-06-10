@@ -9,6 +9,7 @@ import {
 } from 'typeorm'
 import Category from './category.entity'
 import { ReservationMaterial } from './reservation_material.entity'
+import { Size } from './size.entity'
 
 // =================================================================
 //                           OBJECT TYPE
@@ -34,19 +35,23 @@ export default class Material {
 
   @Field()
   @Column()
-  quantity: number
-
-  @Field()
-  @Column()
   description: string
 
   // @Field()
   // @Column()
   // disponibility: boolean;
 
+  @Field(() => [Size]) // Utilisez le type de l'entité Size
+  @OneToMany(() => Size, (size) => size.material, {
+    cascade: true,
+    eager: true,
+  }) // Définissez la relation inverse
+  sizes: Size[] // Nommez cette propriété en fonction de la relation
+
   @Field(() => Category)
   @ManyToOne(() => Category, (c) => c.material, {
     cascade: true,
+    nullable: false,
   })
   category: Category
 
@@ -97,14 +102,23 @@ export class CreateMaterialInput {
   @Field(() => Float, { nullable: false })
   price: number
 
-  @Field({ nullable: false })
-  quantity: number
-
   @Field()
   picture: string
 
+  @Field(() => [SizeInput]) // Utilisez une liste d'objets SizeInput
+  sizes: SizeInput[] // Champ sizes acceptant une liste d'objets SizeInput
+
   @Field({ nullable: false })
   category: PartialCategoryInput
+}
+
+@InputType() // Définissez un InputType pour représenter chaque taille avec sa quantité
+class SizeInput {
+  @Field()
+  size: string // Taille du matériel
+
+  @Field()
+  quantity: number // Quantité disponible pour cette taille
 }
 
 @InputType()

@@ -90,6 +90,7 @@ export class ReservationMaterialInput {
 
   @Field()
   materialId: string
+  size: string
 }
 
 @InputType()

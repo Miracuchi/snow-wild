@@ -1,7 +1,6 @@
 import { useCart } from "@/contexts/CartContext";
 import { GET_MATERIAL_BY_ID } from "@/requetes/queries/material.queries";
 import { useLazyQuery } from "@apollo/client";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";

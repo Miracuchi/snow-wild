@@ -5,6 +5,7 @@ import Material, {
   CreateMaterialInput,
   UpdateMaterialInput,
 } from '../entities/material.entity'
+import { Size } from '../entities/size.entity'
 import CategoryService from './category.service'
 
 export default class MaterialService {
@@ -23,14 +24,6 @@ export default class MaterialService {
     return material
   }
 
-  async find(id: string) {
-    const material = await this.db.findOne({
-      where: { id },
-      relations: { category: true },
-    })
-    return material
-  }
-
   async listMaterials() {
     return this.db.find({
       relations: { category: true }
@@ -42,9 +35,17 @@ export default class MaterialService {
     if (!categoryToLink) {
       throw new Error("La catégorie n'existe pas!")
     }
+    const sizes = data.sizes.map((sizeData) => {
+      const size = new Size()
+      size.size = sizeData.size
+      size.quantity = sizeData.quantity
+      return size
+    })
+
     const newMaterial = this.db.create({
       ...data,
       category: categoryToLink,
+      sizes: sizes,
     })
     const errors = await validate(newMaterial)
     console.log('ERRORS => ', errors)
@@ -52,17 +53,16 @@ export default class MaterialService {
   }
 
   async deleteMaterial(id: string) {
-    const material = (await this.find(id)) as Material
+    const material = (await this.findMaterialById(id)) as Material
     const deletedMaterial = await this.db.remove(material)
-    console.log('deletedMaterial in service: ', deletedMaterial)
-    return { ...material, id }
+    return { ...deletedMaterial, id }
   }
 
   async updateMaterial(id: string, data: Omit<UpdateMaterialInput, 'id'>) {
     if (!data.category) return null
     const categoryToLink = await new CategoryService().find(data?.category.id)
 
-    const materialToUpdate = await this.find(id)
+    const materialToUpdate = await this.findMaterialById(id)
     if (!materialToUpdate) {
       throw new Error("L'annonce n'existe pas!")
     }

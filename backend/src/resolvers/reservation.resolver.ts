@@ -3,9 +3,9 @@ import { Arg, Mutation, Query, Resolver } from 'type-graphql'
 
 import { GraphQLDate } from 'graphql-scalars'
 import Reservation, {
-    CreateReservationInput,
-    ReservationDeleted,
-    UpdateReservationInput,
+  CreateReservationInput,
+  ReservationDeleted,
+  UpdateReservationInput,
 } from '../entities/reservation.entity'
 import { ReservationMaterial } from '../entities/reservation_material.entity'
 import ReservationService from '../services/reservation.service'
@@ -13,7 +13,6 @@ import ReservationMaterialService from '../services/reservation_material.service
 
 @Resolver()
 export default class ReservationResolver {
-
   @Query(() => [Reservation])
   async reservations() {
     return await new ReservationService().listReservations()
@@ -29,18 +28,20 @@ export default class ReservationResolver {
   // Get All Reservation by ID user
   @Query(() => [Reservation])
   async reservationsByUserId(@Arg('id') id: string) {
-      const reservation =
-          await new ReservationService().findReservationsByUserId(id)
-      return reservation
+    const reservation = await new ReservationService().findReservationsByUserId(
+      id
+    )
+    return reservation
   }
 
   // Get All reservation(s) by date
   @Query(() => [Reservation])
   async reservationsByDate(@Arg('date', () => GraphQLDate) date: Date) {
-      const reservation =
-          await new ReservationService().findReservationsByDate(date)
+    const reservation = await new ReservationService().findReservationsByDate(
+      date
+    )
 
-      return reservation
+    return reservation
   }
 
   // Create Mutaion add one reservation
@@ -56,6 +57,7 @@ export default class ReservationResolver {
         reservation: newReservation, //  {id: ...}
         quantity: material.quantity,
         material: { id: material.materialId },
+        size: material.size,
       }
       return new ReservationMaterialService().createResMat(dataToResMat)
     })
@@ -83,7 +85,6 @@ export default class ReservationResolver {
 
     return reservationToUpdate
   }
-  
 
   // Delete ReservationById
   @Mutation(() => ReservationDeleted)
