@@ -1,5 +1,4 @@
-import { useCart } from "@/contexts/CartContext";
-import { useCart } from "@/contexts/CartContext";
+/* eslint-disable @next/next/no-img-element */
 import { GET_MATERIAL_BY_ID } from "@/requetes/queries/material.queries";
 import { useLazyQuery } from "@apollo/client";
 import Link from "next/link";
@@ -41,14 +40,12 @@ function MaterialDetail() {
 
   return (
     <main className="container mx-auto px-4 py-8 font-poppins">
-      
-      <div className="bg-white flex rounded-lg shadow-lg overflow-hidden">
-        <div className="flex-auto w-64 ">
-        
-          <img 
-            src={material?.picture}
-            alt={material?.name}
-          />
+      <h1 className="text-3xl text-neutral-950 font-bold mb-8">
+        {material?.name}
+      </h1>
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div className="relative h-48">
+          <img src={material?.picture} alt={material?.name} />
         </div>
         <div className="p-6 flex-auto w-32">
           <h1 className="text-3xl text-neutral-950 font-bold mb-8">

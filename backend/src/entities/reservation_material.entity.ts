@@ -46,7 +46,7 @@ export class ReservationMaterial {
 
   @Field()
   @Column()
-  size: string
+  size: string // mettre en float
 
   //avoir le prix ici (prix de CE material pour CETTE réservation)
 }
@@ -64,6 +64,9 @@ export class CreateReservationMaterialInput {
 
   @Field()
   quantity: number // Quantité de matériel réservé
+
+  @Field()
+  size: string // Taille de matériel réservé
 
   @Field()
   size: string // Taille de matériel réservé

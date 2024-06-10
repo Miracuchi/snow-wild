@@ -45,22 +45,20 @@ export default class ReservationMaterialService {
     quantity: number
     material: { id: string }
     size: string // Ajoutez le champ size
+    size: string // Ajoutez le champ size
   }) {
     const { material, quantity, size } = data
-    const materialData: Material | null =
-      await new MaterialService().findMaterialById(material.id)
+    const materialData: Material | null = await new MaterialService().find(
+      material.id
+    )
     if (!materialData) {
       throw new Error('Matériel non disponible')
     }
 
     const sizeData = materialData.sizes.find((s) => s.size === size)
-    console.log(sizeData)
-
     if (!sizeData) {
-      await new ReservationService().deleteReservation(data.reservation.id)
       throw new Error('Taille non disponible')
     }
-
     if (sizeData.quantity < data.quantity) {
       throw new Error('Matériel non disponible en quantité suffisante.')
     }
