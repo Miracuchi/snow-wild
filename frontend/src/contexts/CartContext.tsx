@@ -35,21 +35,8 @@ interface CartProviderProps {
   children: ReactNode;
 }
 
-const CART_STORAGE_KEY = 'cart';
-
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
-  const [cart, setCart] = useState<CartItem[]>([]);
-
-  useEffect(() => {
-    const storedCart = localStorage.getItem(CART_STORAGE_KEY);
-    if (storedCart) {
-      setCart(JSON.parse(storedCart));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
-  }, [cart]);
+  const [cart, setCart] = useState<Material[]>([]);
 
   const addToCart = (item: Material) => {
     console.log("addToCard", item)
@@ -66,25 +53,8 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     console.log("cardafter", cart)
   };
 
-  const removeFromCart = (id: string) => {
-    setCart(prevCart => prevCart.filter(item => item.id !== id));
-  };
-const updateQuantity = (id: string, quantity: number) => {
-    setCart(prevCart =>
-      prevCart.map(item =>
-        item.id === id ? { ...item, quantity } : item
-      )
-    );
-  };
-
-  // utilisation d'un compteur pour le panier 
-  const getItemCount = () => {
-    return cart.reduce((total, item) => total + item.quantity, 0);
-  };
-
-
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, getItemCount }}>
+    <CartContext.Provider value={{ cart, addToCart }}>
       {children}
     </CartContext.Provider>
   );
