@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+import { useCart } from "@/contexts/CartContext";
 import { LIST_MATERIAL } from "@/requetes/queries/material.queries";
 import { MaterialQuery } from "@/types/material";
 import { useQuery } from "@apollo/client";
@@ -6,9 +6,15 @@ import Link from "next/link";
 
 function ListMaterial() {
   const { data, loading, error } = useQuery<MaterialQuery>(LIST_MATERIAL);
-  console.log(data);
+  const { addToCart } = useCart(); // Import du contexte du panier
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
+
+  const handleAddToCart = (item: any) => {
+    addToCart(item);
+    // Ici, tu peux ajouter la logique pour afficher une notification ou un message confirmant l'ajout au panier
+  };
 
   return (
     <main className="container mx-auto px-4 py-8 font-poppins">
@@ -25,22 +31,29 @@ function ListMaterial() {
               {item.name}
             </h2>
             <div className="relative h-48 z-10">
-              <img src={item.picture} alt={item.name} />
+              <img
+                src={item.picture}
+                alt={item.name}
+                className="object-cover w-full h-full"
+              />
             </div>
             <div className="p-6">
               <p className="text-white z-20">
                 {item.description.slice(0, 90)}
                 {item.description.length > 90 ? "..." : ""}
                 <Link
+                  href={`/${item.id}`} // Utilisation de la template string pour créer le lien
                   className="text-gray hover:underline ml-2 hover:font-bold cursor-pointer"
-                  href={`/${item.id}`}
                 >
                   Voir détails
                 </Link>
               </p>
 
               <div className="mt-4 flex justify-end">
-                <button className="z-20 px-4 py-2 bg-neutral-950 text-white rounded hover:bg-neutral-100 hover:text-neutral-950 hover:font-bold cursor-pointer">
+                <button
+                  className="z-20 px-4 py-2 bg-neutral-950 text-white rounded hover:bg-neutral-100 hover:text-neutral-950 hover:font-bold cursor-pointer"
+                  onClick={() => handleAddToCart(item)} // Appel de la fonction handleAddToCart avec l'article en paramètre
+                >
                   Ajouter au panier
                 </button>
               </div>

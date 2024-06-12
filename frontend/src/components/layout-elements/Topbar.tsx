@@ -6,7 +6,7 @@ const TopBar: React.FC = () => {
     <div>
       <nav className="bg-white p-4 px-20 flex items-center justify-between font-poppins">
         <Link href="/">
-          <img
+          <Image
             src="/logoblanc.png"
             alt="logo"
             width={150}
@@ -48,7 +48,7 @@ const TopBar: React.FC = () => {
               />
             </svg>
           </Link>
-          <Link href="/cart" className="text-black">
+          <Link href="/user/basket" className="text-black">
             <svg
               className="h-8 w-8"
               fill="none"
