@@ -7,6 +7,7 @@ import Head from "next/head";
 import { AuthProvider, AuthContext } from "@/contexts/authContext";
 import LayoutAdmin from "@/admin/components/LayoutAdmin";
 import Cookies from "js-cookie";
+import { CartProvider } from "@/contexts/CartContext";
 
 
 const client = new ApolloClient({
@@ -35,10 +36,13 @@ export default function App({ Component, pageProps, router }: AppProps) {
   return (
     <ApolloProvider client={client}>
       <AuthProvider>
-        <LayoutClient>
-          <Component {...pageProps} />
-        </LayoutClient>
+        <CartProvider>
+          <LayoutClient>
+            <Component {...pageProps} />
+          </LayoutClient>
+        </CartProvider>
       </AuthProvider>
     </ApolloProvider>
   )
+
 }
