@@ -52,6 +52,7 @@ export default class ReservationResolver {
     const newReservation = await new ReservationService().createReservation(
       data
     )
+
     const materialsPromises = data.materials.map((material) => {
       const dataToResMat = {
         reservation: newReservation, //  {id: ...}
@@ -59,6 +60,7 @@ export default class ReservationResolver {
         material: { id: material.materialId },
         size: material.size,
       }
+
       return new ReservationMaterialService().createResMat(dataToResMat)
     })
 
