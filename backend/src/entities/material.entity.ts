@@ -9,7 +9,6 @@ import {
 } from 'typeorm'
 import Category from './category.entity'
 import { ReservationMaterial } from './reservation_material.entity'
-import { Size } from './size.entity'
 
 // =================================================================
 //                           OBJECT TYPE
