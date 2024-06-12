@@ -1,36 +1,9 @@
 import { useCart } from "@/contexts/CartContext";
+import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 
 const Basket: React.FC = () => {
-  const { cart, removeFromCart, updateQuantity } = useCart();
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [itemToRemove, setItemToRemove] = useState<string | null>(null);
-
-  const handleQuantityChange = (id: string, quantity: number) => {
-    updateQuantity(id, quantity);
-  };
-
-  const confirmRemoveItem = (id: string) => {
-    setShowConfirmation(true);
-    setItemToRemove(id);
-  };
-
-  const handleRemoveItem = () => {
-    if (itemToRemove) {
-      removeFromCart(itemToRemove);
-      setItemToRemove(null);
-      setShowConfirmation(false);
-    }
-  };
-
-  const handleCancelRemove = () => {
-    setItemToRemove(null);
-    setShowConfirmation(false);
-  };
-
-  const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
-  const totalPrice = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const { cart } = useCart();
 
   if (cart.length === 0) {
     return (

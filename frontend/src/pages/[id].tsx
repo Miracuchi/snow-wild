@@ -1,4 +1,5 @@
 import { useCart } from "@/contexts/CartContext";
+import { useCart } from "@/contexts/CartContext";
 import { GET_MATERIAL_BY_ID } from "@/requetes/queries/material.queries";
 import { Material } from "@/types/material";
 import { useLazyQuery } from "@apollo/client";
@@ -12,7 +13,7 @@ function MaterialDetail() {
 
   const [getAd, { data, loading, error }] = useLazyQuery(GET_MATERIAL_BY_ID);
   const { addToCart } = useCart();
-  
+
   useEffect(() => {
     if (router.query.id) {
       getAd({
@@ -42,10 +43,13 @@ function MaterialDetail() {
 
 
   return (
-    <main className="container mx-auto px-4 py-8 font-poppins">  
-      <div className="bg-white py-5 flex rounded-lg shadow-lg overflow-hidden">
-        <div className="flex-auto w-64 flex items-center justify-center">
-          <img className="max-w-28 object-contain"
+    <main className="container mx-auto px-4 py-8 font-poppins">
+      <h1 className="text-3xl text-neutral-950 font-bold mb-8">
+        {material?.name}
+      </h1>
+      <div className="bg-white flex rounded-lg shadow-lg overflow-hidden">
+        
+          <img
             src={material?.picture}
             alt={material?.name}
           />
