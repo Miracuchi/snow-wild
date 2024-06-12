@@ -9,7 +9,6 @@ import {
 } from 'typeorm'
 import Category from './category.entity'
 import { ReservationMaterial } from './reservation_material.entity'
-import { Size } from './size.entity'
 
 // =================================================================
 //                           OBJECT TYPE
@@ -41,12 +40,9 @@ export default class Material {
   // @Column()
   // disponibility: boolean;
 
-  @Field(() => [Size]) // Utilisez le type de l'entité Size
-  @OneToMany(() => Size, (size) => size.material, {
-    cascade: true,
-    eager: true,
-  }) // Définissez la relation inverse
-  sizes: Size[] // Nommez cette propriété en fonction de la relation
+  @Field(() => [SizeQuantity])
+  @Column('json')
+  sizes: { size: string; quantity: number }[]
 
   @Field(() => Category)
   @ManyToOne(() => Category, (c) => c.material, {
@@ -61,6 +57,14 @@ export default class Material {
   reservationMaterials: ReservationMaterial[]
 }
 
+@ObjectType()
+class SizeQuantity {
+  @Field()
+  size: string
+
+  @Field()
+  quantity: number
+}
 // Quand on fait un ObjectType à supprimer, ne pas mettre d'id. Il sera supprimé, donc pas de retour.
 @ObjectType()
 export class MaterialDeleted {
@@ -103,8 +107,8 @@ export class CreateMaterialInput {
   @Field()
   picture: string
 
-  @Field(() => [SizeInput]) // Utilisez une liste d'objets SizeInput
-  sizes: SizeInput[] // Champ sizes acceptant une liste d'objets SizeInput
+  @Field(() => [SizeInput], { nullable: false })
+  sizes: SizeInput[]
 
   @Field({ nullable: false })
   category: PartialCategoryInput
