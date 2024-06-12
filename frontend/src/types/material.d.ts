@@ -7,6 +7,7 @@ export interface Material {
   id: string!;
   description: string!;
   category: Category;
+  price: number!;
 }
 
 export interface MaterialQuery {
