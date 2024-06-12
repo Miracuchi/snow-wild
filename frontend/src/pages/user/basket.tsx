@@ -1,62 +1,16 @@
-/* eslint-disable @next/next/no-img-element */
-import { AuthContext } from "@/contexts/authContext";
 import { useCart } from "@/contexts/CartContext";
+import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useContext, useState } from "react";
 
 const Basket: React.FC = () => {
-  const { cart, removeFromCart, updateQuantity } = useCart();
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [itemToRemove, setItemToRemove] = useState<string | null>(null);
-  const router = useRouter();
-  const { user } = useContext(AuthContext);
-  const handleQuantityChange = (id: string, newQuantity: number) => {
-    updateQuantity(id, newQuantity);
-  };
-
-  const confirmRemoveItem = (id: string) => {
-    setShowConfirmation(true);
-    setItemToRemove(id);
-  };
-
-  const handleCheckout = () => {
-    if (user?.userId) {
-      router.push("/user/reservation");
-    } else {
-      router.push("/auth/login?redirect=/user/reservation");
-    }
-  };
-
-  const handleRemoveItem = () => {
-    if (itemToRemove) {
-      removeFromCart(itemToRemove);
-      setItemToRemove(null);
-      setShowConfirmation(false);
-    }
-  };
-
-  const handleCancelRemove = () => {
-    setItemToRemove(null);
-    setShowConfirmation(false);
-  };
-  const numberOfArticleText = "Nombre d'articles";
-  const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
-  const totalPrice = cart.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
+  const { cart } = useCart();
 
   if (cart.length === 0) {
     return (
       <main className="container mx-auto px-4 py-8 font-poppins">
-        <h1 className="text-3xl text-neutral-950 font-bold mb-8">
-          Votre panier est vide
-        </h1>
+        <h1 className="text-3xl text-neutral-950 font-bold mb-8">Votre panier est vide</h1>
         <Link href="/">
-          <div className="text-blue-500 hover:underline">
-            Retour à la liste des produits
-          </div>
+          <div className="text-blue-500 hover:underline">Retour à la liste des produits</div>
         </Link>
       </main>
     );
@@ -100,15 +54,6 @@ const Basket: React.FC = () => {
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      </div>
-      <div className="col-span-1">
-        <div className="bg-white p-5 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold mb-4">Récapitulatif</h2>
-          <div className="flex justify-between items-center border-b-2 pb-2">
-            <p className="text-gray-700">{numberOfArticleText}</p>
-            <p className="text-gray-700">{totalItems}</p>
           </div>
           <div className="flex justify-between items-center pt-2">
             <p className="text-gray-700">Total :</p>

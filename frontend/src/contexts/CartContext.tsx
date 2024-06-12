@@ -1,15 +1,4 @@
-import { CART_STORAGE_KEY } from "@/constants";
-import {
-  GetFromLocalStorage,
-  SetToLocalStorage,
-} from "@/hooks/useLocalStorage";
-import React, {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { createContext, useState, useContext, ReactNode } from 'react';
 
 interface Material {
   id: string;
@@ -36,7 +25,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const useCart = (): CartContextType => {
   const context = useContext(CartContext);
   if (!context) {
-    throw new Error("useCart must be used within a CartProvider");
+    throw new Error('useCart must be used within a CartProvider');
   }
   return context;
 };
@@ -46,15 +35,7 @@ interface CartProviderProps {
 }
 
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
-  const [cart, setCart] = useState<CartItem[]>([]);
-
-  useEffect(() => {
-    GetFromLocalStorage(CART_STORAGE_KEY);
-  }, []);
-
-  useEffect(() => {
-    SetToLocalStorage(CART_STORAGE_KEY, cart);
-  }, [cart]);
+  const [cart, setCart] = useState<Material[]>([]);
 
   const addToCart = (item: Material, selectedSize: string) => {
     setCart((prevCart) => {
@@ -93,16 +74,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 
 
   return (
-    <CartContext.Provider
-      value={{
-        cart,
-        setCart,
-        addToCart,
-        getItemCount,
-        removeFromCart,
-        updateQuantity,
-      }}
-    >
+    <CartContext.Provider value={{ cart, addToCart }}>
       {children}
     </CartContext.Provider>
   );
