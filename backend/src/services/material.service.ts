@@ -5,7 +5,6 @@ import Material, {
   CreateMaterialInput,
   UpdateMaterialInput,
 } from '../entities/material.entity'
-import { Size } from '../entities/size.entity'
 import CategoryService from './category.service'
 
 export default class MaterialService {
@@ -49,7 +48,6 @@ export default class MaterialService {
     const newMaterial = this.db.create({
       ...data,
       category: categoryToLink,
-      sizes: sizes,
     })
 
     const errors = await validate(newMaterial)
