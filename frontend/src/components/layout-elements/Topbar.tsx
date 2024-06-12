@@ -6,7 +6,7 @@ const TopBar: React.FC = () => {
     <div>
       <nav className="bg-white p-4 px-20 flex items-center justify-between font-poppins">
         <Link href="/">
-          <Image
+          <img
             src="/logoblanc.png"
             alt="logo"
             width={150}
