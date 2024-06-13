@@ -11,6 +11,8 @@ const Categories: React.FC = () => {
 console.log(categoriesData)
   const [getMaterials, { data: materialsData, loading: materialsLoading, error: materialsError }] = useLazyQuery<MaterialQuery>(LIST_MATERIAL_BY_CATEGORY_ID);
 console.log(materialsData)
+
+
   const handleCategoryClick = (categoryId: string) => {
     setSelectedCategory(categoryId);
     getMaterials({ variables: { findMaterialByCategoriesId: categoryId } });
