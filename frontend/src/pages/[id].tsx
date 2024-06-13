@@ -113,7 +113,8 @@ function MaterialDetail() {
             </div>
           </div>
         </div>
-      </div>
+        </div>
+       </div>
       <div className="mt-4">
         <Link href="/" className="hover:underline">
           Retour à la liste
