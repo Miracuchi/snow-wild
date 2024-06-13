@@ -71,7 +71,8 @@ function MaterialDetail() {
             </button>
           </div>
         </div>
-      </div>
+        </div>
+       </div>
       <div className="mt-4">
         <Link href="/" className="text-blue-500 hover:underline">
           Retour à la liste
