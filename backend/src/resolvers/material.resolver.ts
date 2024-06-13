@@ -5,6 +5,7 @@ import {
 } from '../entities/material.entity'
 import MaterialService from '../services/material.service'
 import Material, { MaterialDeleted } from './../entities/material.entity'
+import CategoryService from '../services/category.service'
 
 @Resolver()
 export default class MaterialResolver {
@@ -18,6 +19,15 @@ export default class MaterialResolver {
   async findMaterialById(@Arg('id') id: string) {
     const materials = await new MaterialService().findMaterialById(id)
     return materials
+  }
+  @Query(() => Material)
+  async findMaterialByCategories(@Arg('id') id: string) {
+    const category = await new CategoryService().find(id)
+    if (!category) {
+      throw new Error("La catégorie n'existe pas");
+    }
+    const material = await new MaterialService().listByCategory(id);
+    return material;
   }
 
   @Mutation(() => Material)

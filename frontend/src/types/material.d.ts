@@ -12,4 +12,5 @@ export interface Material {
 
 export interface MaterialQuery {
   listMaterials: Material[];
+  findMaterialByCategories: Material[]; 
 }
