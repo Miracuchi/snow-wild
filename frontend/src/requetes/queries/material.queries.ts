@@ -7,7 +7,8 @@ query ListMaterial {
     name
     id
     description
-    
+    price
+   
   }
 }
 `;
