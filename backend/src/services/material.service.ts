@@ -29,6 +29,15 @@ export default class MaterialService {
     })
   }
 
+
+  async listByCategory(id: string) {
+    return await this.db.find({
+      where: { category: { id } },
+      
+    });
+  }
+
+
   async createMaterial(data: CreateMaterialInput) {
     const categoryToLink = await new CategoryService().find(data?.category?.id)
     if (!categoryToLink) {
