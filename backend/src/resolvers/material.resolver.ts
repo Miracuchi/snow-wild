@@ -6,6 +6,8 @@ import {
 import MaterialService from '../services/material.service'
 import Material from './../entities/material.entity'
 import CategoryService from '../services/category.service'
+import Material, { MaterialDeleted } from './../entities/material.entity'
+import CategoryService from '../services/category.service'
 
 @Resolver()
 export default class MaterialResolver {
