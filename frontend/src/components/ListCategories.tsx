@@ -11,6 +11,8 @@ const Categories: React.FC = () => {
 console.log(categoriesData)
   const [getMaterials, { data: materialsData, loading: materialsLoading, error: materialsError }] = useLazyQuery<MaterialQuery>(LIST_MATERIAL_BY_CATEGORY_ID);
 console.log(materialsData)
+
+
   const handleCategoryClick = (categoryId: string) => {
     setSelectedCategory(categoryId);
     getMaterials({ variables: { findMaterialByCategoriesId: categoryId } });
@@ -18,13 +20,13 @@ console.log(materialsData)
 
   return (
     <div className="p-6">
-    <h1 className="text-2xl font-bold mb-4">Liste des catégories</h1>
+   
     <div className="flex space-x-4 mb-6">
       {categoriesData?.categories.map((c) => (
         <button
           key={c.id}
           onClick={() => handleCategoryClick(c.id)}
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition"
+          className="px-4 py-2 bg-stone-950 text-white rounded-lg hover:bg-stone-700 transition"
         >
           {c.name}
         </button>

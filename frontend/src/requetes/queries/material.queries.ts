@@ -9,6 +9,7 @@ query ListMaterial {
     description
     price
    
+   
   }
 }
 `;
@@ -21,6 +22,8 @@ export const GET_MATERIAL_BY_ID = gql`
     name
     id
     description
+   
+    
   }
 }
 `;
