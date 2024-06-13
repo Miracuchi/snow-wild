@@ -13,18 +13,13 @@ export default class MaterialService {
     this.db = datasource.getRepository(Material)
   }
   async findMaterialById(id: string) {
-    const material = await this.db.findOneBy({ id })
-    if (!material) {
-      throw new Error("Ce matériel n'existe pas")
-    }
-    return material
-  }
-
-  async find(id: string) {
     const material = await this.db.findOne({
       where: { id },
       relations: { category: true },
     })
+    if (!material) {
+      throw new Error("Ce matériel n'existe pas")
+    }
     return material
   }
 
@@ -37,17 +32,19 @@ export default class MaterialService {
     if (!categoryToLink) {
       throw new Error("La catégorie n'existe pas!")
     }
+
     const newMaterial = this.db.create({
       ...data,
       category: categoryToLink,
     })
+
     const errors = await validate(newMaterial)
     console.log('ERRORS => ', errors)
     return await this.db.save(newMaterial)
   }
 
   async deleteMaterial(id: string) {
-    const material = (await this.find(id)) as Material
+    const material = (await this.findMaterialById(id)) as Material
     await this.db.remove(material)
     return { ...material, id }
   }
@@ -56,7 +53,7 @@ export default class MaterialService {
     if (!data.category) return null
     const categoryToLink = await new CategoryService().find(data?.category.id)
 
-    const materialToUpdate = await this.find(id)
+    const materialToUpdate = await this.findMaterialById(id)
     if (!materialToUpdate) {
       throw new Error("L'annonce n'existe pas!")
     }

@@ -1,11 +1,11 @@
-import Image from "next/image";
+/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 
 function Footer() {
   const helpNeededText = `Besoin d'aide ?`;
   return (
     <footer className="bg-black p-4 px-20 flex items-center justify-between font-poppins">
-      <Image
+      <img
         src="/logonoir.png"
         alt="logo"
         width={150}

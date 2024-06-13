@@ -34,19 +34,20 @@ export default class Material {
 
   @Field()
   @Column()
-  quantity: number
-
-  @Field()
-  @Column()
   description: string
 
   // @Field()
   // @Column()
   // disponibility: boolean;
 
+  @Field(() => [SizeQuantity])
+  @Column('json')
+  sizes: { size: string; quantity: number }[]
+
   @Field(() => Category)
   @ManyToOne(() => Category, (c) => c.material, {
     cascade: true,
+    nullable: false,
   })
   category: Category
 
@@ -56,6 +57,14 @@ export default class Material {
   reservationMaterials: ReservationMaterial[]
 }
 
+@ObjectType()
+class SizeQuantity {
+  @Field()
+  size: string
+
+  @Field()
+  quantity: number
+}
 // Quand on fait un ObjectType à supprimer, ne pas mettre d'id. Il sera supprimé, donc pas de retour.
 @ObjectType()
 export class MaterialDeleted {
@@ -95,14 +104,23 @@ export class CreateMaterialInput {
   @Field(() => Float, { nullable: false })
   price: number
 
-  @Field({ nullable: false })
-  quantity: number
-
   @Field()
   picture: string
 
+  @Field(() => [SizeInput], { nullable: false })
+  sizes: SizeInput[]
+
   @Field({ nullable: false })
   category: PartialCategoryInput
+}
+
+@InputType() // Définissez un InputType pour représenter chaque taille avec sa quantité
+class SizeInput {
+  @Field()
+  size: string // Taille du matériel
+
+  @Field()
+  quantity: number // Quantité disponible pour cette taille
 }
 
 @InputType()

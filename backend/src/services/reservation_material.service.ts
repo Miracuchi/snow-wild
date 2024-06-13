@@ -7,6 +7,7 @@ import {
   UpdateReservationMaterialInput,
 } from './../entities/reservation_material.entity'
 import MaterialService from './material.service'
+import ReservationService from './reservation.service'
 
 export default class ReservationMaterialService {
   db: Repository<ReservationMaterial>
@@ -43,18 +44,27 @@ export default class ReservationMaterialService {
     reservation: Reservation
     quantity: number
     material: { id: string }
+    size: string // Ajoutez le champ size
   }) {
-    const { material, quantity } = data
-    const materialData: Material | null = await new MaterialService().find(
-      material.id
-    )
+    const { material, quantity, size } = data
+    const materialData: Material | null =
+      await new MaterialService().findMaterialById(material.id)
     if (!materialData) {
       throw new Error('Matériel non disponible')
     }
 
-    if (materialData.quantity < data.quantity) {
+    const sizeData = materialData.sizes.find((s) => s.size === size)
+    console.log(sizeData)
+
+    if (!sizeData) {
+      await new ReservationService().deleteReservation(data.reservation.id)
+      throw new Error('Taille non disponible')
+    }
+
+    if (sizeData.quantity < data.quantity) {
       throw new Error('Matériel non disponible en quantité suffisante.')
     }
+
     // TODO: diminuer ou augmenter le nombre de matériel en base en fonction des départs et des retours
     // const newQuantity = materialData.quantity - data.quantity;
     // await new MaterialService().updateMaterial(materialData.id, {
@@ -65,6 +75,7 @@ export default class ReservationMaterialService {
     const newReservationMaterial = this.db.create({
       ...data,
       price: final_price,
+      size: data.size,
     })
 
     const reservationmaterial = await this.db.save(newReservationMaterial)
@@ -80,7 +91,9 @@ export default class ReservationMaterialService {
     const { materialId, quantity } = data
 
     if (!materialId) return null
-    const materialData = await new MaterialService().find(materialId)
+    const materialData = await new MaterialService().findMaterialById(
+      materialId
+    )
     if (!materialData || !quantity) return null
     const newPrice = materialData && quantity && materialData?.price * quantity
 
