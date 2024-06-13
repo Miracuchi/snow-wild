@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
+import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 
 interface Material {
   id: string;
@@ -11,14 +12,20 @@ interface Material {
 interface CartItem extends Material {
   quantity: number;
 
+  price: number; 
+}
+
+interface CartItem extends Material {
+  quantity: number;
+
 }
 
 interface CartContextType {
   cart: CartItem[];
+  cart: CartItem[];
   addToCart: (item: Material) => void;
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
-  getItemCount: () => number;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -35,8 +42,21 @@ interface CartProviderProps {
   children: ReactNode;
 }
 
+const CART_STORAGE_KEY = 'cart';
+
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
-  const [cart, setCart] = useState<Material[]>([]);
+  const [cart, setCart] = useState<CartItem[]>([]);
+
+  useEffect(() => {
+    const storedCart = localStorage.getItem(CART_STORAGE_KEY);
+    if (storedCart) {
+      setCart(JSON.parse(storedCart));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+  }, [cart]);
 
   const addToCart = (item: Material) => {
     console.log("addToCard", item)
@@ -53,8 +73,19 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     console.log("cardafter", cart)
   };
 
+  const removeFromCart = (id: string) => {
+    setCart(prevCart => prevCart.filter(item => item.id !== id));
+  };
+const updateQuantity = (id: string, quantity: number) => {
+    setCart(prevCart =>
+      prevCart.map(item =>
+        item.id === id ? { ...item, quantity } : item
+      )
+    );
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addToCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity }}>
       {children}
     </CartContext.Provider>
   );
