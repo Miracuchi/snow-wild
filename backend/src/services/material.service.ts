@@ -78,7 +78,6 @@ export default class MaterialService {
     const categoryToLink = await new CategoryService().find(data?.category.id)
 
     const materialToUpdate = await this.findMaterialById(id)
-    const materialToUpdate = await this.findMaterialById(id)
     if (!materialToUpdate) {
       throw new Error("L'annonce n'existe pas!")
     }
