@@ -8,6 +8,7 @@ export interface Material {
   description: string!;
   category: Category;
   price: number!;
+  
 }
 
 export interface MaterialQuery {
