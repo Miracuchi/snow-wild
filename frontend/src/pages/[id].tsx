@@ -12,7 +12,6 @@ function MaterialDetail() {
 
   const [getAd, { data, loading, error }] = useLazyQuery(GET_MATERIAL_BY_ID);
   const { addToCart } = useCart();
-  console.log("material",data)
 
   useEffect(() => {
     if (router.query.id) {
@@ -61,6 +60,7 @@ function MaterialDetail() {
             alt={material?.name}
           />
         </div>
+
         <div className="p-6 flex-auto w-32">
           <h1 className="text-3xl text-neutral-950 font-bold mb-1">
           <h1 className="text-3xl text-neutral-950 font-bold mb-1">
