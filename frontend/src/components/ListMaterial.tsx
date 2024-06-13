@@ -1,7 +1,7 @@
-import { useQuery } from "@apollo/client";
+import { useCart } from "@/contexts/CartContext";
 import { LIST_MATERIAL } from "@/requetes/queries/material.queries";
 import { MaterialQuery } from "@/types/material";
-import { useCart } from "@/contexts/CartContext";
+import { useQuery } from "@apollo/client";
 import Link from "next/link";
 
 function ListMaterial() {
@@ -17,7 +17,7 @@ function ListMaterial() {
   };
 
   return (
-<main className="container mx-auto px-4 py-8 font-poppins">
+    <main className="container mx-auto px-4 py-8 font-poppins">
       <h1 className="text-3xl text-neutral-950 font-bold mb-8">
         Liste des produits
       </h1>

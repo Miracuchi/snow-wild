@@ -1,7 +1,6 @@
 import { useCart } from "@/contexts/CartContext";
 import { GET_MATERIAL_BY_ID } from "@/requetes/queries/material.queries";
 import { useLazyQuery } from "@apollo/client";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -44,16 +43,15 @@ function MaterialDetail() {
         {material?.name}
       </h1>
       <div className="bg-white flex rounded-lg shadow-lg overflow-hidden">
-        
-          <img
-            src={material?.picture}
-            alt={material?.name}
-          />
-        
+        <img src={material?.picture} alt={material?.name} />
+
         <div className="p-6">
           <p className="text-gray w-40">{material?.description}</p>
           <div className="mt-4 flex justify-end">
-            <button onClick={handleAddToCart} className="px-4 py-2 bg-neutral-950 text-white rounded hover:bg-neutral-100 hover:text-neutral-950 hover:font-bold cursor-pointer">
+            <button
+              onClick={handleAddToCart}
+              className="px-4 py-2 bg-neutral-950 text-white rounded hover:bg-neutral-100 hover:text-neutral-950 hover:font-bold cursor-pointer"
+            >
               Ajouter au panier
             </button>
           </div>
