@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useCart } from "@/contexts/CartContext";
 import Link from "next/link";
 import { useState } from "react";
@@ -35,9 +36,13 @@ const Basket: React.FC = () => {
   if (cart.length === 0) {
     return (
       <main className="container mx-auto px-4 py-8 font-poppins">
-        <h1 className="text-3xl text-neutral-950 font-bold mb-8">Votre panier est vide</h1>
+        <h1 className="text-3xl text-neutral-950 font-bold mb-8">
+          Votre panier est vide
+        </h1>
         <Link href="/">
-          <div className="text-blue-500 hover:underline">Retour à la liste des produits</div>
+          <div className="text-blue-500 hover:underline">
+            Retour à la liste des produits
+          </div>
         </Link>
       </main>
     );
