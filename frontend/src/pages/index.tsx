@@ -4,6 +4,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import ListMaterial from "@/components/ListMaterial";
+import ListCategories from "@/components/ListCategories"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,7 +18,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
+        <ListCategories/>
         <div className={styles.description}>
+          
           <ListMaterial />
         </div>
       </main>

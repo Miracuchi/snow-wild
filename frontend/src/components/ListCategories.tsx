@@ -1,26 +1,27 @@
-/*import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { LIST_CATEGORIES } from "@/requetes/queries/category.queries";
-import { Category } from "@/types/category";
+import { Category, CategoryQuery } from "@/types/category";
 
-function Categories() {
-  /**=======================
-   * *       RECUPERATION DES DONNEES
-   *========================**/
 
-  /*const { data, loading, error } = useQuery<Category>(LIST_CATEGORIES);
-   console.log(data)
+
+const Categories: React.FC = () => {
+  // Récupération des données à l'aide de useQuery
+  const { data, loading, error } = useQuery<CategoryQuery>(LIST_CATEGORIES);
+  console.log(data)
+
 
   return (
     <div>
       <h1>Liste des catégories</h1>
       <div>
-        {data?.name.map((c) => (
-          <div key={c.id}> id={c.id} name={c.name} </div>
+        {data?.categories.map((c) => (
+          <div key={c.id}>
+             {c.name}
+          </div>
         ))}
       </div>
-      
     </div>
   );
 }
 
-export default Categories;*/
+export default Categories;
