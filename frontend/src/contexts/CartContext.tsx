@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
+import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 
 interface Material {
   id: string;
@@ -34,6 +35,8 @@ export const useCart = (): CartContextType => {
 interface CartProviderProps {
   children: ReactNode;
 }
+
+const CART_STORAGE_KEY = 'cart';
 
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -86,7 +89,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 
 
   return (
-    <CartContext.Provider value={{ cart, addToCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity }}>
       {children}
     </CartContext.Provider>
   );

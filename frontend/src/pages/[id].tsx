@@ -12,6 +12,7 @@ function MaterialDetail() {
 
   const [getAd, { data, loading, error }] = useLazyQuery(GET_MATERIAL_BY_ID);
   const { addToCart } = useCart();
+  console.log("material",data)
 
   useEffect(() => {
     if (router.query.id) {
