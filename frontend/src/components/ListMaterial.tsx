@@ -38,7 +38,7 @@ function ListMaterial() {
             {item.description.length > 90 ? "..." : ""}
             <Link
               href={`/${item.id}`}
-              className="text-blue-500 hover:underline ml-2 hover:font-bold"
+              className="text-white hover:underline ml-2 hover:font-bold"
             >
               Voir détails
             </Link>
