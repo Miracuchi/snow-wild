@@ -8,9 +8,12 @@ export interface Material {
   description: string!;
   category: Category;
   price: number!;
-  
+  sizes:Size[];
 }
-
+export interface Size {
+  size: string!;
+  quantity: number!;
+}
 export interface MaterialQuery {
   listMaterials: Material[];
   findMaterialByCategories: Material[]; 
