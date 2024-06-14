@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useCart } from "@/contexts/CartContext";
 import { GET_MATERIAL_BY_ID } from "@/requetes/queries/material.queries";
 import { useLazyQuery } from "@apollo/client";
@@ -75,7 +76,7 @@ function MaterialDetail() {
             </div>
           </div>
         </div>
-       </div>
+      </div>
       <div className="mt-4">
         <Link href="/" className="hover:underline">
           Retour à la liste

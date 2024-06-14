@@ -1,11 +1,13 @@
+/* eslint-disable @next/next/no-img-element */
 import { useCart } from "@/contexts/CartContext";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
-
 const Basket: React.FC = () => {
   const { cart, removeFromCart, updateQuantity } = useCart();
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [itemToRemove, setItemToRemove] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleQuantityChange = (id: string, newQuantity: number) => {
     updateQuantity(id, newQuantity);
@@ -14,6 +16,10 @@ const Basket: React.FC = () => {
   const confirmRemoveItem = (id: string) => {
     setShowConfirmation(true);
     setItemToRemove(id);
+  };
+
+  const handleCheckout = () => {
+    router.push("/user/reservation");
   };
 
   const handleRemoveItem = () => {
@@ -28,16 +34,23 @@ const Basket: React.FC = () => {
     setItemToRemove(null);
     setShowConfirmation(false);
   };
-
+  const numberOfArticleText = "Nombre d'articles";
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
-  const totalPrice = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const totalPrice = cart.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
 
   if (cart.length === 0) {
     return (
       <main className="container mx-auto px-4 py-8 font-poppins">
-        <h1 className="text-3xl text-neutral-950 font-bold mb-8">Votre panier est vide</h1>
+        <h1 className="text-3xl text-neutral-950 font-bold mb-8">
+          Votre panier est vide
+        </h1>
         <Link href="/">
-          <div className="text-blue-500 hover:underline">Retour à la liste des produits</div>
+          <div className="text-blue-500 hover:underline">
+            Retour à la liste des produits
+          </div>
         </Link>
       </main>
     );
