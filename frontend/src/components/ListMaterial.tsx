@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useCart } from "@/contexts/CartContext";
 import { LIST_MATERIAL } from "@/requetes/queries/material.queries";
 import { MaterialQuery } from "@/types/material";
@@ -7,7 +8,7 @@ import Link from "next/link";
 function ListMaterial() {
   const { data, loading, error } = useQuery<MaterialQuery>(LIST_MATERIAL);
   const { addToCart } = useCart(); // Import du contexte du panier
-  console.log("data", data)
+  console.log("data", data);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -33,10 +34,9 @@ function ListMaterial() {
             </h2>
             <div className="relative h-48 z-10">
               <img
-              className="object-contain"
+                className="object-contain"
                 src={item.picture}
                 alt={item.name}
-                
               />
             </div>
             <div className="p-6">
