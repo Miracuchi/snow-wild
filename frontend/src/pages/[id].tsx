@@ -3,13 +3,14 @@ import { GET_MATERIAL_BY_ID } from "@/requetes/queries/material.queries";
 import { useLazyQuery } from "@apollo/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { JSXElementConstructor, Key, PromiseLikeOfReactNode, ReactElement, ReactNode, ReactPortal, useEffect } from "react";
+import {  Key, useEffect, useState } from "react";
 
 function MaterialDetail() {
   const router = useRouter();
   // const { id } = router.query;
   const [getAd, { data, loading, error }] = useLazyQuery(GET_MATERIAL_BY_ID);
   const { addToCart } = useCart();
+  const [selectedSize, setSelectedSize] = useState<string>();
   
   useEffect(() => {
     if (router.query.id) {
@@ -32,10 +33,12 @@ function MaterialDetail() {
   console.log(material);
 
   const handleAddToCart = () => {
-    if (material) {
-      addToCart(material);
+    if (material && selectedSize) {
+      const materialWithSize = { ...material, selectedSize };
+      addToCart(materialWithSize, selectedSize);
     }
   };
+
 
   return (
     <main className="container mx-auto px-4 py-8 font-poppins">
@@ -55,9 +58,9 @@ function MaterialDetail() {
           <p className="text-gray ">{material?.description}</p>
           <p className="text-gray w-40">{material?.price}€</p>
           <div className="text-gray w-40 flex ">
-            {material?.sizes?.map((sizeDetail: { size: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | null | undefined; quantity: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | null | undefined; }, index: Key | null | undefined) => (
+            {material?.sizes?.map((sizeDetail: { size: string;  quantity:  number; }, index: Key) => (
               <div key={index} className="mb-2">
-                <button className="px-4 mx-7 py-2 bg-neutral-950 text-white rounded hover:bg-neutral-100 hover:text-neutral-950 hover:font-bold cursor-pointer"> {sizeDetail.size}</button><br />
+                <button  onClick={() => setSelectedSize(sizeDetail.size)} className="px-4 mx-7 py-2 bg-neutral-950 text-white rounded hover:bg-neutral-100 hover:text-neutral-950 hover:font-bold cursor-pointer"> {sizeDetail.size}</button><br />
               </div>
             ))}
           </div>
