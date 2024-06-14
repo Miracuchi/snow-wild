@@ -58,7 +58,6 @@ function MaterialDetail() {
             alt={material?.name}
           />
         </div>
-
         <div className="p-6 flex-auto w-32">
           <h1 className="text-3xl text-neutral-950 font-bold mb-1">
           <h1 className="text-3xl text-neutral-950 font-bold mb-1">
