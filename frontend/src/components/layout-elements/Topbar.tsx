@@ -22,8 +22,8 @@ const TopBar: React.FC = () => {
             <Link href="/" className="text-black hover:text-gray-600">
               Nos avantages
             </Link>
-            <Link href="/" className="text-black hover:text-gray-600">
-              Nos stations
+            <Link href="/user/station" className="text-black hover:text-gray-600">
+              Notre station
             </Link>
             <Link href="/" className="text-black hover:text-gray-600">
               Notre materiel

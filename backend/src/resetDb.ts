@@ -49,21 +49,21 @@ async function main() {
     .insert()
     .into(Category)
     .values([
-      { name: 'snowboard' },
-      { name: 'sky' },
-      { name: 'shoe' },
-      { name: 'accessory' },
+      { name: 'Snowboard' },
+      { name: 'Ski' },
+      { name: 'Chaussures' },
+      { name: 'Accessoires' },
     ])
     .execute()
 
   const catSnowboard = await db
     .getRepository(Category)
-    .findOneBy({ name: 'snowboard' })
-  const catSky = await db.getRepository(Category).findOneBy({ name: 'sky' })
-  const catShoe = await db.getRepository(Category).findOneBy({ name: 'shoe' })
+    .findOneBy({ name: 'Snowboard' })
+  const catSky = await db.getRepository(Category).findOneBy({ name: 'Ski' })
+  const catShoe = await db.getRepository(Category).findOneBy({ name: 'Chaussures' })
   const catAccessory = await db
     .getRepository(Category)
-    .findOneBy({ name: 'accessory' })
+    .findOneBy({ name: 'Accessoires' })
 
   await db
     .createQueryBuilder()
