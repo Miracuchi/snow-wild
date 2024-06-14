@@ -1,21 +1,15 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-
-interface Material {
-  id: string;
-  name: string;
-  description: string;
-  picture: string;
-  price: number; 
-}
+import { Material } from '@/types/material';
 
 interface CartItem extends Material {
   quantity: number;
+  selectedSize: string; 
 
 }
 
 interface CartContextType {
   cart: CartItem[];
-  addToCart: (item: Material) => void;
+  addToCart: (item: Material, selectedSize:string) => void;
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
 }
@@ -50,19 +44,19 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
   }, [cart]);
 
-  const addToCart = (item: Material) => {
-    console.log("addToCard", item)
+  const addToCart = (item: Material, selectedSize:string) => {
+    
     setCart(prevCart => {
-      const existingItem = prevCart.find(cartItem => cartItem.id === item.id);
+      const existingItem = prevCart.find(cartItem => cartItem.id === item.id && cartItem.selectedSize === selectedSize);
       if (existingItem) {
         return prevCart.map(cartItem =>
           cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem
         );
       } else {
-        return [...prevCart, { ...item, quantity: 1 }];
+        return [...prevCart, { ...item, quantity: 1, selectedSize }];
       }
     });
-    console.log("cardafter", cart)
+    
   };
 
   const removeFromCart = (id: string) => {

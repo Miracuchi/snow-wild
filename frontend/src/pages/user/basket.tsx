@@ -42,8 +42,11 @@ const Basket: React.FC = () => {
       </main>
     );
   }
+  console.log(cart)
 
   return (
+
+
     <main className="container flex mx-auto px-4 py-8 font-poppins">
       <div>
         <h1 className="text-3xl text-neutral-950 font-bold mb-8">Votre panier</h1>
@@ -58,6 +61,7 @@ const Basket: React.FC = () => {
                   <h2 className="text-2xl font-bold mb-2">{item.name}</h2>
                   <p className="text-gray-700">{item.description}</p>
                   <p className="text-gray-700">{item.price}€</p>
+                   <p className="text-gray-700">Taille : {item.selectedSize}</p>
                   <div className="mt-4 flex items-center">
                     <span className="mr-2">Quantité:</span>
                     <select
@@ -72,6 +76,7 @@ const Basket: React.FC = () => {
                       ))}
                     </select>
                   </div>
+
                 </div>
                 <button
                   onClick={() => confirmRemoveItem(item.id)}
