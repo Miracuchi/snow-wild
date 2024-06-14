@@ -1,12 +1,9 @@
+import Image from "next/image";
+
 export default function Station(){
 
     return (
         <div className="bg-gray-100 text-gray-800 font-sans">
-      <header className="bg-blue-600 text-white p-4 shadow-lg">
-        <div className="container mx-auto text-center">
-          <h1 className="text-4xl font-bold">La Mongie</h1>
-        </div>
-      </header>
 
       <main className="container mx-auto py-12">
         <section className="bg-white p-8 rounded-lg shadow-lg mb-12">
@@ -15,7 +12,7 @@ export default function Station(){
             La Mongie est l'une des stations de ski les plus populaires des Pyrénées françaises. Située au pied du célèbre Col du Tourmalet, elle offre un accès direct au domaine skiable du Grand Tourmalet, le plus grand domaine skiable des Pyrénées françaises.
           </p>
           <div className="flex justify-center">
-            <img src="/test.png" alt="La Mongie" className="w-full max-w-xl h-64 object-cover rounded-lg mb-6 shadow-md" />
+            <img src="/mongie.png" alt="La Mongie" className=" h-64 object-cover rounded-lg mb-6 shadow-md" />
           </div>
           <p className="mb-4">
             La station est idéale pour les skieurs de tous niveaux, des débutants aux experts. Vous pourrez profiter de paysages magnifiques, de pistes bien entretenues et d'une ambiance conviviale. En été, La Mongie se transforme en un paradis pour les randonneurs et les amoureux de la nature.
@@ -37,13 +34,13 @@ export default function Station(){
             </ul>
           </div>
           <div className="md:w-1/2 flex justify-center">
-            <img src="/winter-activities.jpg" alt="Activités Hivernales" className="w-full max-w-md h-64 object-cover rounded-lg shadow-md" />
+            <img src="/ski.png" alt="Activités Hivernales" className="w-full max-w-md h-64 object-cover rounded-lg shadow-md" />
           </div>
         </section>
 
         <section className="bg-green-50 p-8 rounded-lg shadow-lg mb-12 flex flex-col md:flex-row items-center">
           <div className="md:w-1/2 flex justify-center order-2 md:order-1">
-            <img src="/summer-activities.jpg" alt="Activités Estivales" className="w-full max-w-md h-64 object-cover rounded-lg shadow-md" />
+            <img src="/parapente.webp" alt="Activités Estivales" className="w-full max-w-md h-64 object-cover rounded-lg shadow-md" />
           </div>
           <div className="md:w-1/2 md:pl-8 mb-6 md:mb-0 order-1 md:order-2">
             <h2 className="text-3xl font-bold mb-4 text-green-600">Activités Estivales</h2>

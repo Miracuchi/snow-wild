@@ -8,8 +8,10 @@ query ListMaterial {
     id
     description
     price
-   
-   
+    sizes {
+      size
+      quantity
+    }
   }
 }
 `;
@@ -22,7 +24,10 @@ export const GET_MATERIAL_BY_ID = gql`
     name
     id
     description
-   
+    sizes {
+      size
+      quantity
+    }
     
   }
 }
