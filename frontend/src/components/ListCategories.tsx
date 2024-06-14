@@ -26,7 +26,7 @@ console.log(materialsData)
         <button
           key={c.id}
           onClick={() => handleCategoryClick(c.id)}
-          className="px-4 py-2 bg-stone-950 text-white rounded-lg hover:bg-stone-700 transition"
+          className="px-4 py-2 w-48 border border-stone-950 text-black rounded-lg hover:bg-stone-950 hover:text-white transition"
         >
           {c.name}
         </button>

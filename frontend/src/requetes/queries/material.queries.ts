@@ -13,6 +13,10 @@ query ListMaterials {
     price
     quantity
     description
+    sizes {
+      size
+      quantity
+    }
   }
 }
 `;
@@ -29,6 +33,11 @@ query FindMaterialById($findMaterialByIdId: String!) {
     picture
     price
     quantity
+    sizes {
+      size
+      quantity
+    }
+    
   }
 }
 `;
