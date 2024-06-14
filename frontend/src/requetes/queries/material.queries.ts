@@ -12,10 +12,8 @@ export const LIST_MATERIAL= gql`
     name
     picture
     price
-    sizes {
-      quantity
-      size
-    }
+   
+   
   }
 }
 `;
@@ -28,13 +26,8 @@ query FindMaterialById($findMaterialByIdId: String!) {
       name
     }
     description
-    name
-    picture
-    price
-    sizes {
-      quantity
-      size
-    }
+   
+    
   }
 }
 `;
