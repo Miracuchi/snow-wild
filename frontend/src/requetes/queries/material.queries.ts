@@ -7,9 +7,9 @@ export const LIST_MATERIAL= gql`
         id
         name
       }
-      description
       id
       name
+      description
       picture
       price
       sizes {
