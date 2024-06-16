@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const LIST_MATERIAL= gql`
-query ListMaterials {
+  query ListMaterials {
   listMaterials {
     category {
       id
