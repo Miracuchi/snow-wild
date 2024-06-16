@@ -6,14 +6,13 @@ import {
 import MaterialService from '../services/material.service'
 import Material from './../entities/material.entity'
 import CategoryService from '../services/category.service'
-import Material, { MaterialDeleted } from './../entities/material.entity'
-import CategoryService from '../services/category.service'
 
 @Resolver()
 export default class MaterialResolver {
   @Query(() => [Material])
   async listMaterials() {
     const materials = await new MaterialService().listMaterials()
+    console.log(materials)
     console.log(materials)
     return materials
   }
@@ -40,12 +39,15 @@ export default class MaterialResolver {
     return newMaterial
   }
 
-
   @Mutation(() => Material)
   async deleteMaterial(@Arg('id') id: string) {
-    const { ...material } = await new MaterialService().deleteMaterial(id)
-    return material
+    const deletedMaterial = await new MaterialService().deleteMaterial(id);
+    console.log('deletedMaterial: ', deletedMaterial);
+    return deletedMaterial
   }
+
+  // const categoryDeleted = await new CategoryService().deleteCategory(id)
+  // return categoryDeleted
 
   // const categoryDeleted = await new CategoryService().deleteCategory(id)
   // return categoryDeleted
