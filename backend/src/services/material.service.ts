@@ -13,8 +13,8 @@ export default class MaterialService {
     this.db = datasource.getRepository(Material)
   }
 
-  async findMaterialById(id: string) {
 
+  async findMaterialById(id: string) {
     const material = await this.db.findOne({
       where: { id },
       relations: { category: true },
@@ -25,15 +25,6 @@ export default class MaterialService {
     return material
   }
 
-  async listMaterials() {
-    return this.db.find({
-      relations: { category: true }
-    })
-    return this.db.find({
-      relations: { category: true }
-    })
-  }
-
 
   async listByCategory(id: string) {
     return await this.db.find({
@@ -41,15 +32,6 @@ export default class MaterialService {
       relations: { category: true }
     });
   }
-
-
-  async listByCategory(id: string) {
-    return await this.db.find({
-      where: { category: { id } },
-      
-    });
-  }
-
 
   async createMaterial(data: CreateMaterialInput) {
     const categoryToLink = await new CategoryService().find(data?.category?.id)
