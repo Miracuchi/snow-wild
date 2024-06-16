@@ -101,7 +101,7 @@ async function checkToken(token: string | undefined, request: NextRequest) {
     response.cookies.delete("token");
     response.cookies.delete("email");
     response.cookies.delete("role");
-    response.cookies.delete("id");
+    response.cookies.delete("userId");
 
     return response;
   }

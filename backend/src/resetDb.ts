@@ -172,6 +172,7 @@ async function main() {
       },
     ])
     .execute()
+
   console.log('done !')
 
   await db.destroy()

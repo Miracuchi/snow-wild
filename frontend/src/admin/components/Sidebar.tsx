@@ -61,7 +61,7 @@ const SideBar = () => {
                   <Link
                     key={`link_${l.name}`}
                     href={l.link}
-                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${pathname === l.link ? 'bg-muted': ''}`}
+                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${pathname.startsWith(l.link) ? 'bg-muted': ''}`}
                   >
                     {l.icon}
                     {l.name}

@@ -13,7 +13,10 @@ export default class MaterialService {
     this.db = datasource.getRepository(Material)
   }
   async findMaterialById(id: string) {
-    const material = await this.db.findOneBy({ id })
+    const material = await this.db.findOne({
+      where: { id },
+      relations: { category: true },
+    })
     if (!material) {
       throw new Error("Ce matériel n'existe pas")
     }
@@ -29,7 +32,9 @@ export default class MaterialService {
   }
 
   async listMaterials() {
-    return this.db.find()
+    return this.db.find({
+      relations: { category: true }
+    })
   }
 
   async createMaterial(data: CreateMaterialInput) {
@@ -48,7 +53,8 @@ export default class MaterialService {
 
   async deleteMaterial(id: string) {
     const material = (await this.find(id)) as Material
-    await this.db.remove(material)
+    const deletedMaterial = await this.db.remove(material)
+    console.log('deletedMaterial in service: ', deletedMaterial)
     return { ...material, id }
   }
 

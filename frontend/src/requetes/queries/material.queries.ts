@@ -1,25 +1,34 @@
 import { gql } from "@apollo/client";
 
 export const LIST_MATERIAL= gql`
-query ListMaterial {
+query ListMaterials {
   listMaterials {
-    picture
-    name
     id
+    name
+    category {
+      id
+      name
+    }
+    picture
+    price
+    quantity
     description
-    
   }
 }
 `;
 
 export const GET_MATERIAL_BY_ID = gql`
-  query Query($findMaterialByIdId: String!) {
+query FindMaterialById($findMaterialByIdId: String!) {
   findMaterialById(id: $findMaterialByIdId) {
-    price
-    picture
-    name
-    id
+    category {
+      id
+      name
+    }
     description
+    name
+    picture
+    price
+    quantity
   }
 }
 `;

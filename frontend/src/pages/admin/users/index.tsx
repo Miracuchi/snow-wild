@@ -1,36 +1,11 @@
 import * as React from "react"
 import { GET_USERS } from "@/admin/requetes/queries/users.queries";
-import { useLazyQuery, useQuery } from "@apollo/client";
-import Page from "@/admin/components/Page";
+import { useQuery } from "@apollo/client";
 import Link from "next/link";
-import { PencilIcon, EyeIcon, TrashIcon } from '@heroicons/react/24/solid'
-import { useEffect } from "react";
+import { buttonVariants } from "@/components/ui/button"
 
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, Eye, MoreHorizontal, Pen, Trash } from "lucide-react"
+import { Eye, Pen, Trash } from "lucide-react"
  
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import {
   Table,
@@ -67,15 +42,15 @@ const UsersAdminPage = () => {
                   <TableHead>Last Name</TableHead>
                   <TableHead>Email</TableHead>
                   <TableHead>Role</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead className="text-right">
+                    <Link href="/admin/users/create" className={buttonVariants()}>Add</Link>
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
 
-              
               {data && data.users.map((u: User) => {
-                return <>
-                  <TableRow >
+                return <TableRow key={`user_${u.id}`}>
                     <TableCell className="flex-1">{u.id}</TableCell>
                     <TableCell>{u.firstName}</TableCell>
                     <TableCell>{u.lastName}</TableCell>
@@ -95,7 +70,6 @@ const UsersAdminPage = () => {
                       </div>
                     </TableCell>
                   </TableRow>
-                </>
               })}
               </TableBody>
           </Table>

@@ -1,37 +1,6 @@
-import Link from "next/link"
-import {
-  Bell,
-  CircleUser,
-  Home,
-  LineChart,
-  Menu,
-  Package,
-  Package2,
-  Search,
-  ShoppingCart,
-  Users,
-} from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import SideBar from "./Sidebar"
 import HeaderAdmin from "./HeaderAdmin"
+import { Toaster } from "@/components/ui/toaster"
 
 function LayoutAdmin ({ children }: { children: JSX.Element }) {
   return (
@@ -41,6 +10,7 @@ function LayoutAdmin ({ children }: { children: JSX.Element }) {
         <HeaderAdmin />
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 bg-slate-100">
           {children}
+          <Toaster />
         </main>
       </div>
     </div>
