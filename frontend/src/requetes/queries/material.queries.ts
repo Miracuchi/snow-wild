@@ -36,17 +36,16 @@ export const GET_MATERIAL_BY_ID = gql`
         quantity
         size
       }
-    }
   }
 `;
 
 export const LIST_MATERIAL_BY_CATEGORY_ID = gql`
-query FindMaterialByCategories($findMaterialByCategoriesId: String!) {
-  findMaterialByCategories(id: $findMaterialByCategoriesId) {
-    picture
-    name
-    id
-    description
+  query FindMaterialByCategories($findMaterialByCategoriesId: String!) {
+    findMaterialByCategories(id: $findMaterialByCategoriesId) {
+      picture
+      name
+      id
+      description
+    }
   }
-}
 `;

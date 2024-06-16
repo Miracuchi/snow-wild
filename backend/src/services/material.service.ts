@@ -48,7 +48,6 @@ export default class MaterialService {
     });
   }
 
-
   async createMaterial(data: CreateMaterialInput) {
     const categoryToLink = await new CategoryService().find(data?.category?.id)
     if (!categoryToLink) {
