@@ -41,14 +41,6 @@ function MaterialDetail() {
 
 
   return (
-    <main className="container mx-auto px-4 py-8 font-poppins">
-      
-      <div className="bg-white flex rounded-lg shadow-lg overflow-hidden">
-        <div className="flex-auto w-64 ">
-            <img 
-              src={material?.picture}
-              alt={material?.name}
-            />
     <main className="container mx-auto px-4 py-8 font-poppins">  
       <div className="bg-white py-5 flex rounded-lg shadow-lg overflow-hidden">
         <div className="flex-auto w-64 flex items-center justify-center">
@@ -59,8 +51,8 @@ function MaterialDetail() {
         </div>
         <div className="p-6 flex-auto w-32">
           <h1 className="text-3xl text-neutral-950 font-bold mb-8">
-        {material?.name}
-      </h1>
+            {material?.name}
+          </h1>
           <p className="text-gray ">{material?.description}</p>
           <p className="text-gray w-40">{material?.price}€</p>
           <div className="text-gray w-40 flex ">
@@ -81,7 +73,7 @@ function MaterialDetail() {
             </div>
           </div>
         </div>
-       </div>
+      </div>
       <div className="mt-4">
         <Link href="/" className="hover:underline">
           Retour à la liste
