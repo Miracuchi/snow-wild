@@ -1,7 +1,7 @@
-import { useQuery } from "@apollo/client";
+import { useCart } from "@/contexts/CartContext";
 import { LIST_MATERIAL } from "@/requetes/queries/material.queries";
 import { MaterialQuery } from "@/types/material";
-import { useCart } from "@/contexts/CartContext";
+import { useQuery } from "@apollo/client";
 import Link from "next/link";
 
 
@@ -11,8 +11,6 @@ function ListMaterial() {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
-
- 
 
   return (
     <main className="container mx-auto px-4 py-8 font-poppins">
