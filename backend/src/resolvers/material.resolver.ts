@@ -13,6 +13,7 @@ export default class MaterialResolver {
   async listMaterials() {
     const materials = await new MaterialService().listMaterials()
     console.log(materials)
+    console.log(materials)
     return materials
   }
 
@@ -38,11 +39,11 @@ export default class MaterialResolver {
     return newMaterial
   }
 
-
   @Mutation(() => Material)
   async deleteMaterial(@Arg('id') id: string) {
-    const { ...material } = await new MaterialService().deleteMaterial(id)
-    return material
+    const deletedMaterial = await new MaterialService().deleteMaterial(id);
+    console.log('deletedMaterial: ', deletedMaterial);
+    return deletedMaterial
   }
 
   // const categoryDeleted = await new CategoryService().deleteCategory(id)
