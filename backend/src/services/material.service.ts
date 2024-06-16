@@ -12,6 +12,7 @@ export default class MaterialService {
   constructor() {
     this.db = datasource.getRepository(Material)
   }
+
   async findMaterialById(id: string) {
     const material = await this.db.findOne({
       where: { id },
@@ -33,10 +34,8 @@ export default class MaterialService {
   async listByCategory(id: string) {
     return await this.db.find({
       where: { category: { id } },
-      
     });
   }
-
 
   async createMaterial(data: CreateMaterialInput) {
     const categoryToLink = await new CategoryService().find(data?.category?.id)
