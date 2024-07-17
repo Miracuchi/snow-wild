@@ -1,5 +1,10 @@
-import useLocalStorage from "@/hooks/useLocalStorage";
-import React, { ReactNode, createContext, useContext } from "react";
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 interface Material {
   id: string;
@@ -11,11 +16,12 @@ interface Material {
 
 export interface CartItem extends Material {
   quantity: number;
+  selectedSize: string;
 }
 
 interface CartContextType {
   cart: CartItem[];
-  addToCart: (item: Material) => void;
+  addToCart: (item: Material, selectedSize: string) => void;
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
 }
@@ -37,8 +43,21 @@ interface CartProviderProps {
 export const CART_STORAGE_KEY = "cart";
 
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
-  const { cart, setCart } = useLocalStorage();
+  const [cart, setCart] = useState<CartItem[]>([]);
+
+  useEffect(() => {
+    const storedCart = localStorage.getItem(CART_STORAGE_KEY);
+    if (storedCart) {
+      setCart(JSON.parse(storedCart));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+  }, [cart]);
+
   const addToCart = (item: Material) => {
+    console.log("addToCard", item);
     setCart((prevCart) => {
       const existingItem = prevCart.find((cartItem) => cartItem.id === item.id);
       if (existingItem) {
@@ -48,9 +67,10 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
             : cartItem
         );
       } else {
-        return [...prevCart, { ...item, quantity: 1 }];
+        return [...prevCart, { ...item, quantity: 1, selectedSize }];
       }
     });
+    console.log("cardafter", cart);
   };
 
   const removeFromCart = (id: string) => {
