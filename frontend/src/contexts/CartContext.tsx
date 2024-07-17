@@ -18,6 +18,7 @@ interface CartContextType {
   addToCart: (item: Material) => void;
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
+  getItemCount: () => number;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -76,8 +77,14 @@ const updateQuantity = (id: string, quantity: number) => {
     );
   };
 
+  // utilisation d'un compteur pour le panier 
+  const getItemCount = () => {
+    return cart.reduce((total, item) => total + item.quantity, 0);
+  };
+
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, getItemCount }}>
       {children}
     </CartContext.Provider>
   );
