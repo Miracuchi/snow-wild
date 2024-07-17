@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useCart } from "@/contexts/CartContext";
 import { GET_MATERIAL_BY_ID } from "@/requetes/queries/material.queries";
+import { Material } from "@/types/material";
 import { useLazyQuery } from "@apollo/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -30,12 +31,12 @@ function MaterialDetail() {
     return <div>{error.message}</div>;
   }
 
-  const material = data?.findMaterialById;
+  const material: Material = data?.findMaterialById;
   console.log(material);
 
   const handleAddToCart = () => {
-    if (material) {
-      addToCart(material);
+    if (data?.findMaterialById) {
+      addToCart(data?.findMaterialById);
     }
   };
 
@@ -43,19 +44,27 @@ function MaterialDetail() {
     <main className="container mx-auto px-4 py-8 font-poppins">
       <div className="bg-white flex rounded-lg shadow-lg overflow-hidden">
         <div className="flex-auto w-64 ">
-          <img src={material?.picture} alt={material?.name} />
+          <img
+            src={data?.findMaterialById.picture}
+            alt={data?.findMaterialById.name}
+          />
         </div>
         <div className="p-6 flex-auto w-32">
           <h1 className="text-3xl text-neutral-950 font-bold mb-8">
-            {material?.name}
+            {data?.findMaterialById.name}
           </h1>
-          <p className="text-gray ">{material?.description}</p>
-          <p className="text-gray w-40">{material?.price}€</p>
+          <p className="text-gray ">{data?.findMaterialById.description}</p>
+          <p className="text-gray w-40">{data?.findMaterialById.price}€</p>
 
-          <img src={material?.picture} alt={material?.name} />
+          <img
+            src={data?.findMaterialById.picture}
+            alt={data?.findMaterialById.name}
+          />
 
           <div className="p-6">
-            <p className="text-gray w-40">{material?.description}</p>
+            <p className="text-gray w-40">
+              {data?.findMaterialById.description}
+            </p>
 
             <div className="mt-4 flex justify-end">
               <button

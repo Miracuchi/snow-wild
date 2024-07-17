@@ -80,3 +80,15 @@ export class UpdateReservationMaterialInput {
   @Field()
   quantity?: number // Quantité de matériel réservé
 }
+
+@InputType()
+export class FindReservationMaterialsBetweenTwoDateInput {
+  @Field()
+  materialId: string
+
+  @Field()
+  from_date: Date
+
+  @Field()
+  to_date: Date
+}
