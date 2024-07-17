@@ -2,7 +2,7 @@
 import { useStepper } from "@/components/stepper";
 import { Button } from "@/components/ui/button";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { CREATE_RESERVATION } from "@/requetes/mutations/reservation.mutation";
+import { CREATE_RESERVATION } from "@/requetes/mutations/reservation.mutations";
 import { useMutation } from "@apollo/client";
 export default function MyStepperFooter() {
   const { activeStep, resetSteps, steps } = useStepper();
