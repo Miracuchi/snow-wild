@@ -9,6 +9,7 @@ import {
 } from 'typeorm'
 import Category from './category.entity'
 import { ReservationMaterial } from './reservation_material.entity'
+import { json } from 'stream/consumers'
 
 // =================================================================
 //                           OBJECT TYPE
@@ -28,8 +29,8 @@ export default class Material {
   @Column()
   picture: string
 
-  @Field()
-  @Column()
+  @Field(() => Float, { nullable: false })
+  @Column("decimal", { precision: 5, scale: 2 })
   price: number
 
   @Field()

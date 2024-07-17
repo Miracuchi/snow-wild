@@ -1,6 +1,7 @@
-import * as React from "react"
+import React, { useEffect} from "react";
 import { useRouter } from "next/router";
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery, useLazyQuery, useMutation } from "@apollo/client";
+import { LIST_CATEGORIES } from "@/requetes/queries/category.queries"
 import { LIST_MATERIAL } from "@/requetes/queries/material.queries";
 import { DELETE_MATERIAL_ADMIN } from '@/requetes/mutations/material.mutations';
 import Image from 'next/image'
@@ -9,6 +10,8 @@ import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Eye, Pen, Trash } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { Card } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 
 const ProductsAdminPage = () => {
@@ -17,6 +20,7 @@ const ProductsAdminPage = () => {
   const {data, loading, error } = useQuery(LIST_MATERIAL, {
     fetchPolicy: "no-cache"
   });
+  const [getCategories] = useLazyQuery(LIST_CATEGORIES);
   const router = useRouter();
   const handleDelete = (idProduct: string) => {
     deleteProduct({
@@ -41,10 +45,31 @@ const ProductsAdminPage = () => {
   }
 
   console.log(data)
+
+  useEffect(() => {
+    getCategories({
+      onCompleted(data) {
+        console.log('data categories: ', data)
+      },
+    });
+  }, [getCategories])
   return (
-    <div className="w-full">
-      <h1>Show Products</h1>
+    <div className="">
+      <Card>
+         <Tabs defaultValue="account" className="w-[400px]">
+          <TabsList>
+            {/* {data.categories.map((c) => {
+              <TabsTrigger value={c.name}>{c.name}</TabsTrigger>
+            }} */}
+            
+           
+          </TabsList>
+          <TabsContent value="account">Make changes to your account here.</TabsContent>
+          <TabsContent value="password">Change your password here.</TabsContent>
+        </Tabs>
+      </Card>
       <div className="flex items-cente bg-white py-4">
+     
         
         <Table>
           <TableHeader>
@@ -93,7 +118,16 @@ const ProductsAdminPage = () => {
                     </TableCell>
                     <TableCell className="flex-1">{m.id}</TableCell>
                     <TableCell>{m.name}</TableCell>
-                    <TableCell>{m.quantity}</TableCell>
+                    <TableCell className="">
+                      <div className="flex justify-center items-cebter gap-2">
+                      {m.sizes.map((s: {size: string, quantity: number}) => 
+                        <div className="flex flex-col">
+                          <div className="w-10 rounded text-center bg-black text-white">{s.size}</div>
+                          <p className="text-center">{s.quantity}</p>
+                        </div>
+                      )}
+                      </div>
+                    </TableCell>
                     <TableCell className="text-left">{m.price}</TableCell>
                     <TableCell className="text-left">{m.category.name}</TableCell>
                     <TableCell className="text-right w-[100px]">

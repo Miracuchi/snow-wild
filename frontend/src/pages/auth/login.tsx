@@ -48,6 +48,7 @@ function Login() {
               type="text"
               name="email"
               placeholder="Indiquez votre email"
+              value="admin1@admin.com"
               className="w-full px-4 py-2 border rounded-lg text-black placeholder-gray-500"
             />
           </div>
@@ -55,6 +56,7 @@ function Login() {
             <input
               type="password"
               name="password"
+              value="123456"
               placeholder="Indiquez votre mot de passe"
               className="w-full px-4 py-2 border rounded-lg text-black placeholder-gray-500"
             />

@@ -4,14 +4,18 @@ export const CREATE_MATERIAL_ADMIN = gql`
   mutation CreateMaterial($data: CreateMaterialInput!) {
     createMaterial(data: $data) {
       category {
-        id
         name
+        id
       }
       description
+      id
       name
       picture
       price
-      quantity
+      sizes {
+        quantity
+        size
+      }
     }
   }
 `;

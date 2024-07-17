@@ -19,10 +19,14 @@ type ProductType = {
   price: 49;
   quantity: number;
   id: string;
+  sizes: {
+    size: string,
+    quantity: number;
+  }
 }
 
 const ProductCard = ({ product }: {product: ProductType}) => {
-  const {name, category, description, picture, price, quantity, id} = product;
+  const {name, category, description, picture, price, quantity, id, sizes} = product;
   const [deleteMaterial, { data, loading, error }] = useMutation(DELETE_MATERIAL_ADMIN);
   const { toast } = useToast()
   const router = useRouter();
@@ -49,27 +53,40 @@ const ProductCard = ({ product }: {product: ProductType}) => {
       fetchPolicy: "no-cache",
     })
   }
-  return <Card>
-    <CardHeader>
-      <CardTitle>{name}</CardTitle>
-    </CardHeader>
+  return <Card className="py-8">
     <CardContent>
       <div className="flex gap-4">
-        <img src={picture} width="100"/>
+        <div className="flex justify-center w-1/3">
+          <img src={picture} width="100"/>
+        </div>
+        
        
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 w-2/3">
+          
+          <h1 className="text-4xl">{name}</h1>
+          <p className="text-3xl"><strong>Price: </strong>{price}</p>
           <p>{description}</p>
           <p><strong>Category: </strong>{category.name}</p>
-          <p><strong>Price: </strong>{price}</p>
-          <p><strong>Quantity: </strong>{quantity}</p>
-          <CardFooter className="flex self-end justify-end w-full p-0 gap-4">
+          
+          <div className="flex flex-col">
+            <strong>Quantity per size </strong>{quantity}
+            <div className="flex gap-4">
+            {sizes.map((s: {size: string, quantity: number}) => 
+              <div className="flex flex-col">
+                <div className="w-10 rounded text-center bg-black text-white">{s.size}</div>
+                <p className="text-center">{s.quantity}</p>
+              </div>
+            )}
+            </div>
+          </div>
+          <CardFooter className="flex w-full p-0 gap-4">
           
             <Button asChild>
-              <Link href={`/admin/products/edit/${id}`} className={buttonVariants({ variant: "outline" })}>
+              <Link href={`/admin/products/edit/${id}`} className={`buttonVariants({ variant: "outline" }) w-[150px]`}>
                   Edit
               </Link>
             </Button>
-            <Button variant="destructive" onClick={handleDelete}>Delete</Button>
+            <Button className="w-[150px]" variant="destructive" onClick={handleDelete}>Delete</Button>
           </CardFooter>
         
         </div>
