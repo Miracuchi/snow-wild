@@ -7,8 +7,8 @@ const Basket: React.FC = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [itemToRemove, setItemToRemove] = useState<string | null>(null);
 
-  const handleQuantityChange = (id: string, quantity: number) => {
-    updateQuantity(id, quantity);
+  const handleQuantityChange = (id: string, newQuantity: number) => {
+    updateQuantity(id, newQuantity);
   };
 
   const confirmRemoveItem = (id: string) => {
