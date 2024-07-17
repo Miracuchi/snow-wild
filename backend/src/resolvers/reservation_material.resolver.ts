@@ -1,6 +1,7 @@
 import { Arg, Mutation, Query, Resolver } from 'type-graphql'
 import ReservationMaterialService from '../services/reservation_material.service'
 import {
+  FindReservationMaterialsBetweenTwoDateInput,
   ReservationMaterial,
   UpdateReservationMaterialInput,
 } from './../entities/reservation_material.entity'
@@ -10,6 +11,15 @@ export default class ReservationMaterialResolver {
   @Query(() => [ReservationMaterial])
   async reservations() {
     return await new ReservationMaterialService().listReservationsMaterial()
+  }
+
+  @Query(() => [ReservationMaterial])
+  async reservationMaterialBetweenDates(
+    @Arg('data') data: FindReservationMaterialsBetweenTwoDateInput
+  ) {
+    return await new ReservationMaterialService().findAllReservationMaterialBetweenUserDate(
+      data
+    )
   }
 
   // Update reservationMaterial data : quantity or material

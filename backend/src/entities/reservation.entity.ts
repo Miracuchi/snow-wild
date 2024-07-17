@@ -4,10 +4,12 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm'
+import Material from './material.entity'
 import { ReservationMaterial } from './reservation_material.entity'
 import User from './user.entity'
 
@@ -64,6 +66,11 @@ export default class Reservation {
   @JoinColumn()
   @OneToMany(() => ReservationMaterial, (r) => r.reservation)
   reservationMaterials: ReservationMaterial[]
+
+  @Field(() => [Material])
+  @JoinColumn()
+  @ManyToMany(() => Material, (m) => m.id)
+  reservations: Material[]
 }
 
 // Quand on fait un ObjectType à supprimer, ne pas mettre d'id. Il sera supprimé, donc pas de retour.
