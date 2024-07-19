@@ -15,8 +15,8 @@ export const LIST_MATERIAL= gql`
    
    
   }
-}
-`;
+}`
+;
 
 export const GET_MATERIAL_BY_ID = gql`
 query FindMaterialById($findMaterialByIdId: String!) {

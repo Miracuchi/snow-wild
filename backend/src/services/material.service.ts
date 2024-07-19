@@ -29,6 +29,9 @@ export default class MaterialService {
     return this.db.find({
       relations: { category: true }
     })
+    return this.db.find({
+      relations: { category: true }
+    })
   }
 
 
