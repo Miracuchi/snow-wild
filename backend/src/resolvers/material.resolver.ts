@@ -20,8 +20,8 @@ export default class MaterialResolver {
     const materials = await new MaterialService().findMaterialById(id)
     return materials
   }
-  @Query(() => Material)
-  async findMaterialByCategories(@Arg('id') id: string) {
+  @Query(() => [Material])
+  async findMaterialByCategories(@Arg('id') id: string,) {
     const category = await new CategoryService().find(id)
     if (!category) {
       throw new Error("La catégorie n'existe pas");
