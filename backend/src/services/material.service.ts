@@ -41,10 +41,10 @@ export default class MaterialService {
   }
 
 
-  async listByCategory(id: string) {
+  async listByCategory(id: string, ) {
     return await this.db.find({
       where: { category: { id } },
-      
+      relations: { category: true }
     });
   }
 
