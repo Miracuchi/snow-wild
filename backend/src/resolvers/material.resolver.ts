@@ -21,8 +21,9 @@ export default class MaterialResolver {
     const materials = await new MaterialService().findMaterialById(id)
     return materials
   }
+
   @Query(() => [Material])
-  async findMaterialByCategories(@Arg('id') id: string,) {
+  async findMaterialByCategories(@Arg('id') id: string) {
     const category = await new CategoryService().find(id)
     if (!category) {
       throw new Error("La catégorie n'existe pas");
@@ -39,7 +40,6 @@ export default class MaterialResolver {
 
 
   @Mutation(() => Material)
-  @Mutation(() => Material)
   async deleteMaterial(@Arg('id') id: string) {
     const deletedMaterial = await new MaterialService().deleteMaterial(id);
     return deletedMaterial
@@ -53,6 +53,7 @@ export default class MaterialResolver {
 
   @Mutation(() => Material)
   async updateMaterial(@Arg('data') data: UpdateMaterialInput) {
+    const { id, ...otherData } = data;
     const { id, ...otherData } = data;
     const materialToUpdate = await new MaterialService().updateMaterial(
       id,
