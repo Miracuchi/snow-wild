@@ -94,6 +94,9 @@ class SizeQuantity {
 export class PartialCategoryInput {
   @Field(() => ID)
   id: string
+
+  @Field()
+  name?: string
 }
 
 @InputType()
@@ -146,6 +149,9 @@ export class UpdateMaterialInput {
   @Field({ nullable: true })
   picture?: string
 
-  @Field({ nullable: true })
+  @Field()
   category?: PartialCategoryInput
+
+  @Field(() => [SizeInput], { nullable: false })
+  sizes: { size: string; quantity: number }[]
 }

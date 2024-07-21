@@ -21,9 +21,29 @@ export const CREATE_MATERIAL_ADMIN = gql`
 `;
 
 export const DELETE_MATERIAL_ADMIN = gql`
-mutation DeleteMaterial($deleteMaterialId: String!) {
-  deleteMaterial(id: $deleteMaterialId) {
-    id
+  mutation DeleteMaterial($deleteMaterialId: String!) {
+    deleteMaterial(id: $deleteMaterialId) {
+      id
+    }
   }
-}
+`;
+
+export const UPDATE_MATERIAL_ADMIN = gql`
+  mutation UpdateMaterial($data: UpdateMaterialInput!) {
+    updateMaterial(data: $data) {
+      category {
+        name
+        id
+      }
+      description
+      id
+      name
+      picture
+      price
+      sizes {
+        size
+        quantity
+      }
+    }
+  }
 `;

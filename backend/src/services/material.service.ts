@@ -14,6 +14,7 @@ export default class MaterialService {
   }
 
   async findMaterialById(id: string) {
+
     const material = await this.db.findOne({
       where: { id },
       relations: { category: true },
@@ -34,6 +35,7 @@ export default class MaterialService {
   async listByCategory(id: string) {
     return await this.db.find({
       where: { category: { id } },
+      relations: { category: true }
     });
   }
 

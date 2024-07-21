@@ -15,30 +15,32 @@ import { Label } from "@/components/ui/label";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { Card, CardHeader, CardFooter, CardContent } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
-import { CategoryType, SizeType } from '@/types';
-import { SkiSizes, SnowboardSizes, BootsSizes, ClothSizes } from '@/pages/admin/constantes';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { CategoryType } from '@/types';
+import { SkiSizes, SnowboardSizes, BootsSizes, ClothSizes, StickSizes } from '@/pages/admin/constantes';
 import axios from 'axios';
-
-// const sizeSchema = z.object({
-//   label: z.string(),
-//   quantity: z.number(),
-// });
+import { CircleX } from 'lucide-react';
+import SizeLabel from '@/admin/components/SizeLabel';
 
 const formSchema = z.object({
-  category: z.object({ name: z.string(), id: z.string()}),
-  sizes: z.string().array(),
+  category: z.object({ 
+    name: z.string(), 
+    id: z.string()
+  }, {message: "A category need to be choose"}),
+  sizes: z.array(z.object({ size: z.string(), quantity: z.number()})),
   name: z.string().min(2, { message: "Name should be more than 2 carac"}),
-  avaibleSizes: z.array(z.object({ size: z.string(), quantity: z.number()})),
+  // avaibleSizes: z.array(z.object({ size: z.string(), quantity: z.number()})),
   description: z.string().min(1, { message: "Product should have a description" }),
-  picture: z.instanceof(File),
+  picture: z
+  .custom<File>((v) => v instanceof File, {
+    message: 'Image is required',
+  }),
   price: z.string().transform((v) => Number(v)||0)
 })
 
@@ -48,57 +50,42 @@ type FormSchema = z.infer<typeof formSchema>;
 
 const FormHook = () => {
   const router = useRouter();
-  const { data, loading, error} = useQuery(LIST_CATEGORIES);
-  const [createMaterial] = useMutation(CREATE_MATERIAL_ADMIN);
+  const { data, loading, error} = useQuery(LIST_CATEGORIES, {
+    fetchPolicy: "no-cache"
+  });
+  const [createMaterial] = useMutation(CREATE_MATERIAL_ADMIN, {
+    fetchPolicy: "no-cache"
+  });
   const inputFileRef = useRef<{fileBits: BlobPart[], fileName: string, options?: FilePropertyBag | undefined}>(null);
 
   const form = useForm<FormSchema>({ 
     resolver: zodResolver(formSchema),
     defaultValues: {
-      category: {name: '', id: ''},
+      category: undefined,
       sizes: [],
       name: '',
-      avaibleSizes: [],
       description: '',
-      picture: new File([], ''),
+      picture: undefined,
       price: 0,
     }       ,
     mode: 'onChange',
   });
 
   const { watch } = form;
-  const { fields } = useFieldArray({ name: "avaibleSizes", control: form.control });
+  const watchCategory = watch('category');
+  const watchSizes = watch('sizes');
 
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
     const formData = new FormData();
-
     formData.append("file", inputFileRef?.current?.files[0], inputFileRef?.current?.files[0]?.name);
-    console.log('formData: ', formData)
-    
     axios.post(`${process.env.NEXT_PUBLIC_IMAGE_URL}/upload`, formData)
     .then((result) => {
-      console.log('result', result)
-
-      
       if (result?.data?.status == "success") {
-        let testData = {
-          ...data,
-          category: { 
-            id: data.category.id,
-          },
-          picture: result.data.filename,
-          sizes: data.avaibleSizes,
-        }
-        delete testData['avaibleSizes'];
-        console.log('testData: ', testData)
-        
-        console.log('data: ', data);
-        delete data['avaibleSizes'];
-        // console.log(testData)
         createMaterial({
           variables: {
             data: {
-              ...testData,
+              ...data,
+              picture: result.data.filename,
             },
           },
         }).then((res) => {
@@ -109,26 +96,19 @@ const FormHook = () => {
         }).catch((err) => {
           console.log('err ===>', err)
         }) 
-        
       }
     });
   };
 
-  const watchCategory = watch('category');
-  const watchSizes = watch('sizes');
-  const watchAvaibleSizes = watch('avaibleSizes');
-
   const handleClickSize = (field:ControllerRenderProps<FieldValues, "sizes">, size: string) => {
-    if( !watchSizes.includes(size) ) {
-      form.setValue('sizes', [...watchSizes, size]);
-      form.setValue('avaibleSizes', [...watchAvaibleSizes, {size: size, quantity: 0}])
+    if( !watchSizes?.some(e => e.size === size) ) {
+      let copyArr = [...watchSizes, {size, quantity:0}];
+      form.setValue('sizes', copyArr);
+
     } else {
-      let filtredSizes = watchSizes.filter((s) =>  s !== size)
-      let filtredAvaibleSizes = watchAvaibleSizes.filter((s) =>  s.size !== size)
+      let filtredSizes = watchSizes.filter((s) =>  s.size !== size)
       form.setValue('sizes', filtredSizes);
-      form.setValue('avaibleSizes', filtredAvaibleSizes);
     }
-    console.log('in form ======>', form.getValues('sizes'))
   }
 
   const findNameOfCategorie = (id:string) => {
@@ -143,435 +123,307 @@ const FormHook = () => {
     } 
   }
 
+  const renderSizesByCategory = (field) => {
+    console.log('renderSizesByCategory :', watchCategory.name)
+    switch(watchCategory.name) {
+      case "ski":
+        return (
+          SkiSizes?.map((s: string, index: number) => {
+            return (
+              <SizeLabel
+                key={`size_label_${s}`}
+                label={s}
+                field={field}
+                isActive={watchSizes?.some(e => e.size === s)}
+                onHandleClickSize={handleClickSize}
+              />
+            )
+          
+        }))
+        // break;
+        case "accessory":
+          return (
+            ClothSizes?.map((s: string, index: number) => {
+              return (
+                <SizeLabel
+                  key={`size_label_${s}`}
+                  label={s}
+                  field={field}
+                  isActive={watchSizes?.some(e => e.size === s)}
+                  onHandleClickSize={handleClickSize}
+                />
+              )
+            
+          }))
+        break;
+        case "snowboard":
+          return (
+            SnowboardSizes?.map((s: string, index: number) => {
+              return (
+                <SizeLabel
+                  key={`size_label_${s}`}
+                  label={s}
+                  field={field}
+                  isActive={watchSizes?.some(e => e.size === s)}
+                  onHandleClickSize={handleClickSize}
+                />
+              )       
+            })
+          )
+        break;
+        case "boots":
+          return (
+            BootsSizes?.map((s: string, index: number) => {
+              return (
+                <SizeLabel
+                  key={`size_label_${s}`}
+                  label={s}
+                  field={field}
+                  isActive={watchSizes?.some(e => e.size === s)}
+                  onHandleClickSize={handleClickSize}
+                />
+              )       
+            })
+          )
+        case "stick":
+          return (
+            StickSizes?.map((s: string, index: number) => {
+              return (
+                <SizeLabel
+                  key={`size_label_${s}`}
+                  label={s}
+                  field={field}
+                  isActive={watchSizes?.some(e => e.size === s)}
+                  onHandleClickSize={handleClickSize}
+                />
+              )
+            })
+          )
+    }
+  }
+
+  const renderBlocSizes = () => {
+    return (
+      <div className="mb-3">
+        <Label>Select sizes</Label>
+        <FormField
+          control={form.control}
+          name="sizes"
+          render={({ field }) => (
+            <FormItem 
+              className="mb-3"
+              {...field}
+            >
+              <FormControl>
+                <div className="flex flex-row justify-start flex-wrap gap-1">
+                  {renderSizesByCategory(field)}
+                </div>
+              </FormControl>
+              
+            </FormItem>
+          )}
+        />
+      </div>
+    )
+  };
+
+  const renderBlocSizePerQuantity = () => {
+    return (
+      watchSizes.map((s: {size: string, quantity: number}, index: number) => {
+        return (
+          <FormField
+            control={form.control}
+            key={`field.${index}`}
+            name={`sizes`}
+            render={({ field }) => {
+              return (
+                <>
+                  <FormItem>
+                    <FormLabel>Quantity per size(s)</FormLabel>
+                    <FormControl>
+                      <div className="flex items-center justify-strat gap-2">
+                        <div className='flex items-center justify-center text-white text-sm bg-gray-950 rounded-md h-9 px-3 w-14'>{field.value[index]?.size}</div>
+                        <ControlledInput 
+                          initialValue={field.value[index]?.quantity || 0}
+                          
+                          index={index}
+                          form={form}
+                        />
+                        <CircleX 
+                          className="hover:text-red-400 hover:cursor-pointer"
+                          onClick={() => {
+                            let arrCopy = form.getValues('sizes').filter((s) => s.size !== field.value[index].size);
+                            form.setValue('sizes', arrCopy)
+                          }}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                </>
+              )
+            }}
+          />
+        )
+      })
+    )
+  }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="form">
-      <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem 
-              className="mb-3"
-              onChange={(e) => { field.onChange(e.target?.value)}}>
-              <FormLabel>Product&apos;s name</FormLabel>
-              <FormControl>
-                <Input 
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-            
-          )}
-        />
+        <Card 
+          className="mx-auto p-4 md:w-[400px]"
+        >
+          <CardHeader>
+            <h1>Create a new product</h1>
+          </CardHeader>
 
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem 
-              className="mb-3"
-              onChange={(e) => { field.onChange(e.target?.value)}}>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-            
-          )}
-        />
+          <CardContent>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem 
+                  className="mb-3"
+                  onChange={(e) => { field.onChange(e.target?.value)}}>
+                  <FormLabel>Product&apos;s name</FormLabel>
+                  <FormControl>
+                    <Input 
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <FormField 
-          control={form.control}
-          name="price"
-          render={({ field }) => (
-            <FormItem
-              className="mb-3"
-            >
-              <FormLabel>Price</FormLabel>
-              <FormControl>
-                <div className="flex items-center mb-3">
-                  <Input
-                    {...field}
-                    type="number"
-                    placeholder="100" 
-                    className="w-full"
-                  />
-                  <span
-                    className="ml-4"
-                  > €</span>
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem 
+                  className="mb-3"
+                  onChange={(e) => { field.onChange(e.target?.value)}}>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+                
+              )}
+            />
 
-        <FormField 
-          control={form.control}
-          name="picture"
-          render={({ field }) => (
-            <FormItem
-              className="mb-3"
-            >
-              <FormLabel>Picture</FormLabel>
-              <FormControl>
-                <Input 
-                  type="file"
-                  placeholder="image.jpeg" 
-                  className="w-full"
-                  ref={inputFileRef}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+            <FormField 
+              control={form.control}
+              name="price"
+              render={({ field }) => (
+                <FormItem
+                  className="mb-3"
+                >
+                  <FormLabel>Price</FormLabel>
+                  <FormControl>
+                    <div className="flex items-center mb-3">
+                      <Input
+                        {...field}
+                        type="number"
+                        placeholder="100" 
+                        className="w-full"
+                      />
+                      <span
+                        className="ml-4"
+                      > €</span>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <FormField
-          control={form.control}
-          name="category"
-          render={({ field }) => (
-            <FormItem
-              className="mb-3"
-             
-            >
-              <FormLabel>Category</FormLabel>
-              <Select 
-                onValueChange={(value) => { 
-                  handleChangeCategory(value, field) 
-                }}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a category" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectGroup>
-                    {!loading && data?.categories.map((c: CategoryType, index) => {
-                      return (
-                        <SelectItem 
-                          key={`category_${c.id}_${index}`}
-                          value={c.id}
-                        >
-                          {c.name}
-                        </SelectItem>
-                      )
-                    })}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              {<p className="text-red-500">{form.getFieldState('category').error?.message}</p>}
+            <FormField 
+              control={form.control}
+              name="picture"
+              render={({ field: { value, onChange, ...fieldProps } }) => (
+                <FormItem
+                  className="mb-3"
+                >
+                  <FormLabel>Picture</FormLabel>
+                  <FormControl>
+                    <Input 
+                      {...fieldProps}
+                      type="file"
+                      placeholder="image.jpeg"
+                      ref={inputFileRef}
+                      onChange={(event) =>
+                        onChange(event.target.files && event.target.files[0])
+                      }
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {watchCategory && watchCategory.name === 'ski' && (
-          <>
-            <div className="mb-3">
-              <Label>Select sizes</Label>
-              <FormField
-                control={form.control}
-                name="sizes"
-                render={({ field }) => (
-                  <FormItem 
-                    className="mb-3"
-                    {...field}
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem
+                  className="mb-3"
+                
+                >
+                  <FormLabel>Category</FormLabel>
+                  <Select 
+                    onValueChange={(value) => { 
+                      handleChangeCategory(value, field) 
+                    }}
                   >
                     <FormControl>
-                      <ToggleGroup type="multiple" variant="outline" className="justify-start flex-wrap">
-                        {SkiSizes?.map((s: string, index: number) => {
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectGroup>
+                        {!loading && data?.categories.map((c: CategoryType, index) => {
                           return (
-                            <ToggleGroupItem 
-                              key={`toggle_${s + index}`} 
-                              value={s} 
-                              aria-label="Toggle bold"
-                              className={'hover:border-gray-950 selected: bg-gray-950 selected: text-white'}
-                              onClick={() => handleClickSize(field, s)}
+                            <SelectItem 
+                              key={`category_${c.id}_${index}`}
+                              value={c.id}
                             >
-                              {s}
-                            </ToggleGroupItem>
+                              {c.name}
+                            </SelectItem>
                           )
                         })}
-                      </ToggleGroup>
-                    </FormControl>
-                    
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {watchSizes.length > 0 && (
-              <>
-                <div>
-                  {fields.map((field, index) => (
-                    <FormField
-                      control={form.control}
-                      key={field.id}
-                      name={`avaibleSizes.${index}`}
-                      render={({ field }) => {
-                        return (
-                          <>
-                            <FormItem>
-                              <FormLabel>Quantity per size(s)</FormLabel>
-                              <FormDescription />
-                              <FormControl>
-                                <div className="flex items-center justify-strat">
-                                  <div className='flex items-center justify-center text-white text-sm bg-gray-950 rounded-md h-9 px-3 w-14 mr-4'>{field.value.size}</div>
-                                  <ControlledInput 
-                                    initialValue={field.value.quantity}
-                                    field={field}
-                                  />
-                                  {/* <Input
-                                    onChange={(e) => field.onChange({label: field.value.label, quantity:Number(e.target.value)})}
-                                  /> */}
-                                </div>
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          </>
-                        )}}
-                      
-                    />
-                  ))}
-                </div>
-              </>
-            )}
-          </>
-        )}
-
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div>
+              {watchCategory && watchCategory?.name.length > 0 &&
+                <>
+                  {renderBlocSizes()}
+                  {watchSizes.length > 0 && (
+                    <>
+                      {renderBlocSizePerQuantity()}
+                    </>
+                  )}
+                </>
+              }
+            </div>       
+          </CardContent>
+          <CardFooter>
+            <Button type="submit">Add</Button>
+          </CardFooter>
         
-       
-        {watchCategory && watchCategory.name === 'snowboard' && (
-          <>
-            <div className="mb-3">
-              <Label>Select sizes</Label>
-              <FormField
-                control={form.control}
-                name="sizes"
-                render={({ field }) => (
-                  <FormItem 
-                    className="mb-3"
-                    {...field}
-                  >
-                    <FormControl>
-                      <ToggleGroup type="multiple" variant="outline" className="justify-start flex-wrap">
-                        {SnowboardSizes?.map((s: string, index: number) => {
-                          return (
-                            <ToggleGroupItem 
-                              key={`toggle_${s + index}`} 
-                              value={s} 
-                              aria-label="Toggle bold"
-                              className={'hover:border-gray-950 selected: bg-gray-950 selected: text-white'}
-                              onClick={() => handleClickSize(field, s)}
-                            >
-                              {s}
-                            </ToggleGroupItem>
-                          )
-                        })}
-                      </ToggleGroup>
-                    </FormControl>
-                    
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {watchSizes.length > 0 && (
-              <>
-                <div>
-                  {fields.map((field, index) => (
-                    <FormField
-                      control={form.control}
-                      key={field.id}
-                      name={`avaibleSizes.${index}`}
-                      render={({ field }) => {
-                        return (
-                          <>
-                            <FormItem>
-                              <FormLabel>Quantity per size(s)</FormLabel>
-                              <FormDescription />
-                              <FormControl>
-                                <div className="flex items-center justify-strat">
-                                  <div className='flex items-center justify-center text-white text-sm bg-gray-950 rounded-md h-9 px-3 w-14 mr-4'>{field.value.size}</div>
-                                  <ControlledInput 
-                                    initialValue={field.value.quantity}
-                                    field={field}
-                                  />
-                                  {/* <Input
-                                    onChange={(e) => field.onChange({label: field.value.label, quantity:Number(e.target.value)})}
-                                  /> */}
-                                </div>
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          </>
-                        )}}
-                      
-                    />
-                  ))}
-                </div>
-              </>
-            )}
-          </>
-        )}
-
-
-        {watchCategory && watchCategory.name === 'boots' && (
-          <>
-          <div className="mb-3">
-            <Label>Select sizes</Label>
-            <FormField
-              control={form.control}
-              name="sizes"
-              render={({ field }) => (
-                <FormItem 
-                  className="mb-3"
-                  {...field}
-                >
-                  <FormControl>
-                    <ToggleGroup type="multiple" variant="outline" className="justify-start flex-wrap">
-                      {BootsSizes?.map((s: string, index: number) => {
-                        return (
-                          <ToggleGroupItem 
-                            key={`toggle_${s + index}`} 
-                            value={s} 
-                            aria-label="Toggle bold"
-                            className={'hover:border-gray-950 selected: bg-gray-950 selected: text-white'}
-                            onClick={() => handleClickSize(field, s)}
-                          >
-                            {s}
-                          </ToggleGroupItem>
-                        )
-                      })}
-                    </ToggleGroup>
-                  </FormControl>
-                  
-                </FormItem>
-              )}
-            />
-          </div>
-
-          {watchSizes.length > 0 && (
-            <>
-              <div>
-                {fields.map((field, index) => (
-                  <FormField
-                    control={form.control}
-                    key={field.id}
-                    name={`avaibleSizes.${index}`}
-                    render={({ field }) => {
-                      return (
-                        <>
-                          <FormItem>
-                            <FormLabel>Quantity per size(s)</FormLabel>
-                            <FormDescription />
-                            <FormControl>
-                              <div className="flex items-center justify-strat">
-                                <div className='flex items-center justify-center text-white text-sm bg-gray-950 rounded-md h-9 px-3 w-14 mr-4'>{field.value.size}</div>
-                                <ControlledInput 
-                                  initialValue={field.value.quantity}
-                                  field={field}
-                                />
-                                {/* <Input
-                                  onChange={(e) => field.onChange({label: field.value.label, quantity:Number(e.target.value)})}
-                                /> */}
-                              </div>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        </>
-                      )}}
-                    
-                  />
-                ))}
-              </div>
-            </>
-          )}
-        </>
-        )}
-
-        {watchCategory && watchCategory.name === 'accessory' && (
-          <>
-          <div className="mb-3">
-            <Label>Select sizes</Label>
-            <FormField
-              control={form.control}
-              name="sizes"
-              render={({ field }) => (
-                <FormItem 
-                  className="mb-3"
-                  {...field}
-                >
-                  <FormControl>
-                    <ToggleGroup type="multiple" variant="outline" className="justify-start flex-wrap">
-                      {ClothSizes?.map((s: string, index: number) => {
-                        return (
-                          <ToggleGroupItem 
-                            key={`toggle_${s + index}`} 
-                            value={s} 
-                            aria-label="Toggle bold"
-                            className={'hover:border-gray-950 selected: bg-gray-950 selected: text-white'}
-                            onClick={() => handleClickSize(field, s)}
-                          >
-                            {s}
-                          </ToggleGroupItem>
-                        )
-                      })}
-                    </ToggleGroup>
-                  </FormControl>
-                  
-                </FormItem>
-              )}
-            />
-          </div>
-
-          {watchSizes.length > 0 && (
-            <>
-              <div>
-                {fields.map((field, index) => (
-                  <FormField
-                    control={form.control}
-                    key={field.id}
-                    name={`avaibleSizes.${index}`}
-                    render={({ field }) => {
-                      return (
-                        <>
-                          <FormItem>
-                            <FormLabel>Quantity per size(s)</FormLabel>
-                            <FormDescription />
-                            <FormControl>
-                              <div className="flex items-center justify-strat">
-                                <div className='flex items-center justify-center text-white text-sm bg-gray-950 rounded-md h-9 px-3 w-14 mr-4'>{field.value.size}</div>
-                                <ControlledInput 
-                                  initialValue={field.value.quantity}
-                                  field={field}
-                                />
-                                {/* <Input
-                                  onChange={(e) => field.onChange({label: field.value.label, quantity:Number(e.target.value)})}
-                                /> */}
-                              </div>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        </>
-                      )}}
-                    
-                  />
-                ))}
-              </div>
-            </>
-          )}
-        </>
-        )}
-
-        <Button type="submit">Add</Button>
+        </Card>
       </form>
     </Form>
   );

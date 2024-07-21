@@ -7,7 +7,9 @@ import { GET_MATERIAL_BY_ID } from "@/requetes/queries/material.queries";
 import ProductCard from "@/admin/components/ProductCard";
 const DetailProductAdmin = () => {
   const router = useRouter();
-  const [getMaterial, {data, loading, error}] = useLazyQuery(GET_MATERIAL_BY_ID);
+  const [getMaterial, {data, loading, error}] = useLazyQuery(GET_MATERIAL_BY_ID, {
+    fetchPolicy: "no-cache"
+  });
 
   useEffect(() => {
     

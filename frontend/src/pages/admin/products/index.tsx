@@ -1,4 +1,4 @@
-import React, { useEffect} from "react";
+import React, { useEffect, useState} from "react";
 import { useRouter } from "next/router";
 import { useQuery, useLazyQuery, useMutation } from "@apollo/client";
 import { LIST_CATEGORIES } from "@/requetes/queries/category.queries"
@@ -12,6 +12,7 @@ import { Eye, Pen, Trash } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CategoryType } from "@/types";
 
 
 const ProductsAdminPage = () => {
@@ -22,6 +23,7 @@ const ProductsAdminPage = () => {
   });
   const [getCategories] = useLazyQuery(LIST_CATEGORIES);
   const router = useRouter();
+  const [categories, setCategories] = useState<CategoryType[]>([])
   const handleDelete = (idProduct: string) => {
     deleteProduct({
       variables: {
@@ -40,30 +42,34 @@ const ProductsAdminPage = () => {
         console.log(error)
       }),
       fetchPolicy: "no-cache"
-      
     })
   }
-
-  console.log(data)
 
   useEffect(() => {
     getCategories({
       onCompleted(data) {
         console.log('data categories: ', data)
+        setCategories(data.categories)
       },
     });
   }, [getCategories])
   return (
     <div className="">
       <Card>
-         <Tabs defaultValue="account" className="w-[400px]">
-          <TabsList>
-            {/* {data.categories.map((c) => {
-              <TabsTrigger value={c.name}>{c.name}</TabsTrigger>
-            }} */}
+         <Tabs defaultValue="all" className="">
+          <TabsList
+            className="flex justify-between"
+          >
+            <TabsTrigger value="all">All</TabsTrigger>
+            {categories?.map((c) => {
+              return (
+                <TabsTrigger key={c.id} value={c.name}>{c.name}</TabsTrigger>
+              )
+            })}
             
            
           </TabsList>
+          <TabsContent value="all">Make changes to your account here.</TabsContent>
           <TabsContent value="account">Make changes to your account here.</TabsContent>
           <TabsContent value="password">Change your password here.</TabsContent>
         </Tabs>
@@ -121,7 +127,10 @@ const ProductsAdminPage = () => {
                     <TableCell className="">
                       <div className="flex justify-center items-cebter gap-2">
                       {m.sizes.map((s: {size: string, quantity: number}) => 
-                        <div className="flex flex-col">
+                        <div 
+                          className="flex flex-col"
+                          key={`sizes_size.${s.size}`}
+                        >
                           <div className="w-10 rounded text-center bg-black text-white">{s.size}</div>
                           <p className="text-center">{s.quantity}</p>
                         </div>
@@ -136,7 +145,7 @@ const ProductsAdminPage = () => {
                           className={`${buttonVariants({ variant: "outline" })}`}>
                           <Eye />
                         </Link>
-                        <Link href={`/admin/products/${m.id}`} className={buttonVariants({ variant: "outline" })}>
+                        <Link href={`/admin/products/edit/${m.id}`} className={buttonVariants({ variant: "outline" })}>
                           <Pen />
                         </Link>
                         <Button onClick={() => handleDelete(m.id)} variant="outline" className="">

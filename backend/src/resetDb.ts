@@ -52,19 +52,17 @@ async function main() {
       { name: 'snowboard' },
       { name: 'ski' },
       { name: 'boots' },
+      { name: 'stick' },
       { name: 'accessory' },
     ])
     .execute()
 
-  const catSnowboard = await db
-    .getRepository(Category)
-    .findOneBy({ name: 'snowboard' })
+  const catSnowboard = await db .getRepository(Category).findOneBy({ name: 'snowboard' })
   const catSky = await db.getRepository(Category).findOneBy({ name: 'ski' })
   const catShoe = await db.getRepository(Category).findOneBy({ name: 'boots' })
-  const catAccessory = await db
-    .getRepository(Category)
-    .findOneBy({ name: 'accessory' })
-
+  const catAccessory = await db.getRepository(Category).findOneBy({ name: 'accessory' })
+  const catStick = await db.getRepository(Category).findOneBy({ name: 'stick' })
+  
   await db
     .createQueryBuilder()
     .insert()
@@ -76,9 +74,9 @@ async function main() {
           'https://static.netski.com/media-resize/eyJhdXRvV2VicCI6dHJ1ZSwiYnVja2V0Ijoic2tpc2V0LW1lZGlhcyIsImtleSI6Im1lZGlhLW1hdGVyaWFsXC9zZWFzb25fMjRcL3Nub3dib2FyZFwvYmlnLXZcL3Nub3dib2FyZF8yODIucG5nIn0=',
         price: 49,
         sizes: [
-          { size: 'S', quantity: 20 },
-          { size: 'M', quantity: 20 },
-          { size: 'L', quantity: 50 },
+          { size: '110', quantity: 20 },
+          { size: '115', quantity: 20 },
+          { size: '120', quantity: 50 },
         ],
         description:
           'La Liberty, avec son flex confortable et son profil Flat Out Rocker est idéale pour les sorties tout-terrain : tolérante et sans accrochage, son comportement est prévisible.',
@@ -142,9 +140,9 @@ async function main() {
           'https://static.netski.com/media-resize/eyJhdXRvV2VicCI6dHJ1ZSwiYnVja2V0Ijoic2tpc2V0LW1lZGlhcyIsImtleSI6Im1lZGlhLW1hdGVyaWFsXC9zZWFzb25fMjRcL3Nob2VzXC9iaWdcL3Nob2VzXzYyNi5wbmcifQ==',
         price: 20,
         sizes: [
-          { size: '150', quantity: 20 },
-          { size: '160', quantity: 20 },
-          { size: '200', quantity: 50 },
+          { size: '36', quantity: 20 },
+          { size: '37', quantity: 20 },
+          { size: '38', quantity: 50 },
         ],
         description:
           "Ski de piste polyvalent et performant quelles que soient les conditions d'enneigement.",
