@@ -39,7 +39,7 @@ export default class MaterialResolver {
     return newMaterial
   }
 
-  @Mutation(() => Material)
+
   @Mutation(() => Material)
   async deleteMaterial(@Arg('id') id: string) {
     const deletedMaterial = await new MaterialService().deleteMaterial(id);
