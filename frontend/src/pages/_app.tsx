@@ -16,7 +16,9 @@ const client = new ApolloClient({
   // },
 });
 
-export default function App({ Component, pageProps, router }: AppProps) {
+export default function App(
+  { Component, pageProps, router }: AppProps
+) {
   if (router.pathname.startsWith("/admin")) {
     return (
       <ApolloProvider client={client}>
@@ -40,4 +42,4 @@ export default function App({ Component, pageProps, router }: AppProps) {
       </AuthProvider>
     </ApolloProvider>
   )
-});
+};
