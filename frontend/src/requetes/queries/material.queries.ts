@@ -2,41 +2,42 @@ import { gql } from "@apollo/client";
 
 export const LIST_MATERIAL= gql`
   query ListMaterials {
-  listMaterials {
-    category {
+    listMaterials {
+      category {
+        id
+        name
+      }
+      description
       id
       name
+      picture
+      price
+      sizes {
+        quantity
+        size
+      }
     }
-    description
-    id
-    name
-    picture
-    price
-    sizes {
-      quantity
-      size
-    }
-  }
-}`
+  }`
 ;
 
 export const GET_MATERIAL_BY_ID = gql`
-query FindMaterialById($findMaterialByIdId: String!) {
-  findMaterialById(id: $findMaterialByIdId) {
-    category {
+  query FindMaterialById($findMaterialByIdId: String!) {
+    findMaterialById(id: $findMaterialByIdId) {
+      category {
+        id
+        name
+      }
       id
+      description
       name
-    }
-    description
-    name
-    picture
-    price
-    sizes {
-      quantity
-      size
+      picture
+      price
+      sizes {
+        quantity
+        size
+      }
     }
   }
-}
 `;
 
 export const LIST_MATERIAL_BY_CATEGORY_ID = gql`

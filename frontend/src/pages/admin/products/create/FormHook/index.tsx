@@ -35,16 +35,13 @@ const formSchema = z.object({
   }, {message: "A category need to be choose"}),
   sizes: z.array(z.object({ size: z.string(), quantity: z.number()})),
   name: z.string().min(2, { message: "Name should be more than 2 carac"}),
-  // avaibleSizes: z.array(z.object({ size: z.string(), quantity: z.number()})),
   description: z.string().min(1, { message: "Product should have a description" }),
   picture: z
   .custom<File>((v) => v instanceof File, {
     message: 'Image is required',
   }),
-  price: z.string().transform((v) => Number(v)||0)
+  price: z.number().min(1, {message: "A price is required"}),
 })
-
-
 
 type FormSchema = z.infer<typeof formSchema>;
 
@@ -56,7 +53,7 @@ const FormHook = () => {
   const [createMaterial] = useMutation(CREATE_MATERIAL_ADMIN, {
     fetchPolicy: "no-cache"
   });
-  const inputFileRef = useRef<{fileBits: BlobPart[], fileName: string, options?: FilePropertyBag | undefined}>(null);
+  const inputFileRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<FormSchema>({ 
     resolver: zodResolver(formSchema),
@@ -77,6 +74,7 @@ const FormHook = () => {
 
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
     const formData = new FormData();
+    if (!inputFileRef.current?.files) return;
     formData.append("file", inputFileRef?.current?.files[0], inputFileRef?.current?.files[0]?.name);
     axios.post(`${process.env.NEXT_PUBLIC_IMAGE_URL}/upload`, formData)
     .then((result) => {
@@ -286,7 +284,7 @@ const FormHook = () => {
               render={({ field }) => (
                 <FormItem 
                   className="mb-3"
-                  onChange={(e) => { field.onChange(e.target?.value)}}>
+                  onChange={(e: any) => { field.onChange(e?.target?.value)}}>
                   <FormLabel>Product&apos;s name</FormLabel>
                   <FormControl>
                     <Input 
@@ -304,7 +302,7 @@ const FormHook = () => {
               render={({ field }) => (
                 <FormItem 
                   className="mb-3"
-                  onChange={(e) => { field.onChange(e.target?.value)}}>
+                  onChange={(e: any) => { field.onChange(e.target?.value)}}>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
                     <Textarea
@@ -332,6 +330,7 @@ const FormHook = () => {
                         type="number"
                         placeholder="100" 
                         className="w-full"
+                        onChange={(e) => field.onChange(Number(e.target.value))}
                       />
                       <span
                         className="ml-4"
@@ -370,7 +369,7 @@ const FormHook = () => {
             <FormField
               control={form.control}
               name="category"
-              render={({ field }) => (
+              render={({ field }: {field: any}) => (
                 <FormItem
                   className="mb-3"
                 
@@ -378,7 +377,7 @@ const FormHook = () => {
                   <FormLabel>Category</FormLabel>
                   <Select 
                     onValueChange={(value) => { 
-                      handleChangeCategory(value, field) 
+                      handleChangeCategory(value, field)
                     }}
                   >
                     <FormControl>
@@ -388,7 +387,7 @@ const FormHook = () => {
                     </FormControl>
                     <SelectContent>
                       <SelectGroup>
-                        {!loading && data?.categories.map((c: CategoryType, index) => {
+                        {!loading && data?.categories.map((c: CategoryType, index: number) => {
                           return (
                             <SelectItem 
                               key={`category_${c.id}_${index}`}

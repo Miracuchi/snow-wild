@@ -31,14 +31,18 @@ import { CircleX } from "lucide-react";
 
 const formSchema = z.object({
   category: z.object({ name: z.string(), id: z.string()}),
-  sizes: z.array(z.object({ size: z.string(), quantity: z.number()})),
+  sizes: z.array(
+    z.object({ 
+      size: z.string(), 
+      quantity: z.number().min(1, {message: "Quantity should be more than 0"}).positive({message: "Quantity should be more than 0"})
+    })).min(1, { message: "At minimum a size is required" }).nonempty({message: "Some size should be selected"}).min(1, {message: "Some size should be selected"}),
   name: z.string().min(2, { message: "Name should be more than 2 carac"}),
   description: z.string().min(1, { message: "Product should have a description" }),
   picture: z
   .custom<File>((v) => v instanceof File, {
     message: 'Image is required',
   }),
-  price: z.string().transform((v) => Number(v)||0)
+  price: z.number().min(1, {message: "A price is required"}),
 })
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -72,7 +76,7 @@ const EditProductAdmin = () => {
 
   console.log('watchSizes: ', watchSizes);
 
-  const inputFileRef = useRef(null);
+  const inputFileRef = useRef<any>(null);
   const [updateMaterial] = useMutation(UPDATE_MATERIAL_ADMIN);
   useEffect(() => {
     if(router.query.id) {
@@ -86,11 +90,10 @@ const EditProductAdmin = () => {
           form.setValue('name', data.findMaterialById.name);
           form.setValue('description', data.findMaterialById.description);
           form.setValue('price', Number(data?.findMaterialById?.price));
-          form.setValue('category', data.findMaterialById.category);
-          console.log(data.findMaterialById.sizes)
-          form.setValue('sizes', data.findMaterialById.sizes)
-          console.log('form afet set sizes: ', form.getValues('sizes'))
-          
+          form.setValue('category', data.findMaterialById?.category);
+          form.setValue('sizes', data.findMaterialById?.sizes)
+
+          console.log(form.getValues('category'))
           setLoadedData(data);
           
         },
@@ -117,8 +120,8 @@ const EditProductAdmin = () => {
   const handleClickSize = (field:ControllerRenderProps<FieldValues, "sizes">, size: string) => {
     if( !watchSizes?.some(e => e.size === size) ) {
       console.log(watchSizes);
-      // let copyArr = [...watchSizes, {size, quantity:0}];
-      // form.setValue('sizes', copyArr);
+      let copyArr = [...watchSizes, {size, quantity:0}];
+      form.setValue('sizes', copyArr);
 
     } else {
       let filtredSizes = watchSizes.filter((s) =>  s.size !== size)
@@ -156,7 +159,7 @@ const EditProductAdmin = () => {
     })
   }
 
-  const renderSizesByCategory = (field) => {
+  const renderSizesByCategory = (field: any) => {
     console.log('renderSizesByCategory :', watchCategory.name)
     switch(watchCategory.name) {
       case "ski":
@@ -252,7 +255,7 @@ const EditProductAdmin = () => {
                   {renderSizesByCategory(field)}
                 </div>
               </FormControl>
-              
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -285,7 +288,8 @@ const EditProductAdmin = () => {
                         <CircleX 
                           className="hover:text-red-400 hover:cursor-pointer"
                           onClick={() => {
-                            let arrCopy = form.getValues('sizes').filter((s) => s.size !== field.value[index].size);
+                            let arrCopy = watchSizes.filter((s) => s.size !== field.value[index].size);
+                            
                             form.setValue('sizes', arrCopy)
                           }}
                         />
@@ -365,6 +369,7 @@ const EditProductAdmin = () => {
                         type="number"
                         placeholder="100" 
                         className="w-full"
+                        onChange={(e) => field.onChange(Number(e.target.value))}
                       />
                       <span
                         className="ml-4"
@@ -399,51 +404,56 @@ const EditProductAdmin = () => {
                 </FormItem>
               )}
             />
-      
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <FormItem
-                  className="mb-3"
-                >
-                  <FormLabel>Category</FormLabel>
-                  <Select
-                    defaultValue={watchCategory?.name}
-                    onValueChange={(value) => { 
-                      handleChangeCategory(value, field) 
-                    }}
+
+            {watchCategory !== undefined && watchCategory.name.length > 0 && (
+              <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem
+                    className="mb-3"
                   >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue 
-                          placeholder={watchCategory?.name} 
-                          defaultValue={watchCategory?.name} 
-                        />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent
+                    <FormLabel>Category</FormLabel>
                     
+                    <Select
+                
+                      
+                      onValueChange={(value) => { 
+                        handleChangeCategory(value, field) 
+                      }}
                     >
-                      <SelectGroup>
-                        {!loading && data?.categories.map((c: CategoryType, index) => {
-                          return (
-                            <SelectItem 
-                              key={`category_${c.id}_${index}`}
-                              value={c.id}
-                            >
-                              {c.name}
-                            </SelectItem>
-                          )
-                        })}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                  {<p className="text-red-500">{form.getFieldState('category').error?.message}</p>}
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue 
+                            defaultValue={watchCategory?.name} 
+                            placeholder={watchCategory?.name} 
+                            //defaultValue={watchCategory?.name} 
+                          />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent
+                      
+                      >
+                        <SelectGroup>
+                          {!loading && data?.categories.map((c: CategoryType, index) => {
+                            return (
+                              <SelectItem 
+                                key={`category_${c.id}_${index}`}
+                                value={c.id.toString()}
+                              >
+                                {c.name}
+                              </SelectItem>
+                            )
+                          })}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    {<p className="text-red-500">{form.getFieldState('category').error?.message}</p>}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
 
           <div>
             {watchCategory &&

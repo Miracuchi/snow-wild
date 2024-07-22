@@ -30,11 +30,11 @@ function MaterialDetail() {
   }
 
   const material = data?.findMaterialById;
-  console.log(material);
+  console.log('material: ', material);
 
   const handleAddToCart = () => {
     if (material && selectedSize) {
-      const materialWithSize = { ...material, selectedSize };
+      const materialWithSize = { ...material, selectedSize, id: router.query.id};
       addToCart(materialWithSize, selectedSize);
     }
   };
