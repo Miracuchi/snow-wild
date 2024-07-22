@@ -9,8 +9,8 @@ const Basket: React.FC = () => {
   const [itemToRemove, setItemToRemove] = useState<string | null>(null);
   const router = useRouter();
 
-  const handleQuantityChange = (id: string, quantity: number) => {
-    updateQuantity(id, quantity);
+  const handleQuantityChange = (id: string, newQuantity: number) => {
+    updateQuantity(id, newQuantity);
   };
 
   const confirmRemoveItem = (id: string) => {
@@ -58,12 +58,12 @@ const Basket: React.FC = () => {
   console.log(cart);
 
   return (
-    <main className="container flex mx-auto px-4 py-8 font-poppins">
-      <div>
+    <main className="container mx-auto px-4 py-8 font-poppins grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="col-span-2">
         <h1 className="text-3xl text-neutral-950 font-bold mb-8">
           Votre panier
         </h1>
-        <div className="bg-dark flex rounded-lg shadow-lg overflow-hidden grid grid-cols-1 gap-4 ">
+        <div className="space-y-4">
           {cart.map((item) => (
             <div
               key={item.id}
@@ -110,25 +110,26 @@ const Basket: React.FC = () => {
           ))}
         </div>
       </div>
-      <div>
-        <h2 className="text-2xl font-bold mb-2">Récapitulatif</h2>
-        <p className="text-gray-700">
-          {numberOfArticleText}: {totalItems}
-        </p>
-        <p className="text-gray-700">Total : {totalPrice}€</p>
-        <button
-          onClick={handleCheckout}
-          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700 mt-4"
-        >
-          Finaliser la commande
-        </button>
-      </div>
-      <div className="mt-4">
-        <Link href="/">
-          <div className="text-blue-500 hover:underline">
-            Continuer vos achats
+      <div className="col-span-1">
+        <div className="bg-white p-5 rounded-lg shadow-lg">
+          <h2 className="text-2xl font-bold mb-4">Récapitulatif</h2>
+          <div className="flex justify-between items-center border-b-2 pb-2">
+            <p className="text-gray-700">Nombre d'articles :</p>
+            <p className="text-gray-700">{totalItems}</p>
           </div>
-        </Link>
+          <div className="flex justify-between items-center pt-2">
+            <p className="text-gray-700">Total :</p>
+            <p className="text-gray-700">{totalPrice}€</p>
+          </div>
+          <button className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700 mt-4 w-full">
+            Finaliser la commande
+          </button>
+          <Link href="/">
+            <div className="mt-4 text-center text-blue-500 hover:underline">
+              Continuer vos achats
+            </div>
+          </Link>
+        </div>
       </div>
       {showConfirmation && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -139,7 +140,7 @@ const Basket: React.FC = () => {
             <div className="mt-4 flex justify-end">
               <button
                 onClick={handleCancelRemove}
-                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 mr-2"
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 mr-2"
               >
                 Annuler
               </button>

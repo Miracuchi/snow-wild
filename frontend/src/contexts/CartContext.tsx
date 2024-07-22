@@ -30,6 +30,7 @@ interface CartContextType {
   addToCart: (item: Material, selectedSize: string) => void;
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
+  getItemCount: () => number;
   setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
 }
 
@@ -85,6 +86,11 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     setCart((prevCart) =>
       prevCart.map((item) => (item.id === id ? { ...item, quantity } : item))
     );
+  };
+
+  // utilisation d'un compteur pour le panier
+  const getItemCount = () => {
+    return cart.reduce((total, item) => total + item.quantity, 0);
   };
 
   return (

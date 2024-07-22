@@ -1,16 +1,20 @@
 import { gql } from "@apollo/client";
 
 export const LIST_MATERIAL = gql`
-  query ListMaterial {
+  query ListMaterials {
     listMaterials {
-      picture
-      name
-      id
+      category {
+        id
+        name
+      }
       description
+      id
+      name
+      picture
       price
       sizes {
-        size
         quantity
+        size
       }
     }
   }
