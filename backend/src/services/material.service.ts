@@ -13,6 +13,12 @@ export default class MaterialService {
     this.db = datasource.getRepository(Material)
   }
 
+  async listMaterials() {
+    return this.db.find({
+      relations: { category: true }
+    })
+  }
+
 
   async findMaterialById(id: string) {
 

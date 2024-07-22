@@ -68,8 +68,6 @@ export class CreateReservationMaterialInput {
   @Field()
   size: string // Taille de matériel réservé
 
-  @Field()
-  size: string // Taille de matériel réservé
 }
 
 @InputType()

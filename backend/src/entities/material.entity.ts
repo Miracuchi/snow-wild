@@ -9,7 +9,6 @@ import {
 } from 'typeorm'
 import Category from './category.entity'
 import { ReservationMaterial } from './reservation_material.entity'
-import { json } from 'stream/consumers'
 
 // =================================================================
 //                           OBJECT TYPE
@@ -48,7 +47,6 @@ export default class Material {
   @Field(() => Category)
   @ManyToOne(() => Category, (c) => c.material, {
     cascade: true,
-    nullable: false,
     nullable: false,
   })
   category: Category

@@ -116,14 +116,14 @@ const FormHook = () => {
     return cat.name;
   }
 
-  const handleChangeCategory = (value, field:ControllerRenderProps<FieldValues, "category">) => {
+  const handleChangeCategory = (value: string, field:ControllerRenderProps<FieldValues, "category">) => {
     let name = findNameOfCategorie(value)
     if(name) {
       field.onChange({ name: name, id: value })
     } 
   }
 
-  const renderSizesByCategory = (field) => {
+  const renderSizesByCategory = (field: any) => {
     console.log('renderSizesByCategory :', watchCategory.name)
     switch(watchCategory.name) {
       case "ski":

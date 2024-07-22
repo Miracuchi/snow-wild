@@ -55,4 +55,3 @@ console.log(materialsData)
 };
 
 export default Categories;
-export default Categories;

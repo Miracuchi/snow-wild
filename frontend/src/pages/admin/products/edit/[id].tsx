@@ -38,7 +38,7 @@ const formSchema = z.object({
   .custom<File>((v) => v instanceof File, {
     message: 'Image is required',
   }),
-  price: z.number()
+  price: z.string().transform((v) => Number(v)||0)
 })
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -69,6 +69,9 @@ const EditProductAdmin = () => {
   const { watch } = form;
   const watchCategory = watch('category');
   const watchSizes = watch('sizes');
+
+  console.log('watchSizes: ', watchSizes);
+
   const inputFileRef = useRef(null);
   const [updateMaterial] = useMutation(UPDATE_MATERIAL_ADMIN);
   useEffect(() => {
@@ -79,12 +82,17 @@ const EditProductAdmin = () => {
           findMaterialByIdId: router.query.id
         },
         onCompleted: data => {
+          console.log('data: ', data)
           form.setValue('name', data.findMaterialById.name);
           form.setValue('description', data.findMaterialById.description);
           form.setValue('price', Number(data?.findMaterialById?.price));
           form.setValue('category', data.findMaterialById.category);
+          console.log(data.findMaterialById.sizes)
           form.setValue('sizes', data.findMaterialById.sizes)
+          console.log('form afet set sizes: ', form.getValues('sizes'))
+          
           setLoadedData(data);
+          
         },
         onError: (error) => {
           console.log("error")
@@ -108,8 +116,9 @@ const EditProductAdmin = () => {
 
   const handleClickSize = (field:ControllerRenderProps<FieldValues, "sizes">, size: string) => {
     if( !watchSizes?.some(e => e.size === size) ) {
-      let copyArr = [...watchSizes, {size, quantity:0}];
-      form.setValue('sizes', copyArr);
+      console.log(watchSizes);
+      // let copyArr = [...watchSizes, {size, quantity:0}];
+      // form.setValue('sizes', copyArr);
 
     } else {
       let filtredSizes = watchSizes.filter((s) =>  s.size !== size)
@@ -297,7 +306,7 @@ const EditProductAdmin = () => {
     <Form {...form} >
       <form onSubmit={form.handleSubmit(onSubmit)} className="form">
         <Card
-          className="md:w-[400px]"
+          className="mx-auto md:w-[400px]"
         >
           <CardHeader>
             <h1>Edit Product</h1>
@@ -440,7 +449,7 @@ const EditProductAdmin = () => {
             {watchCategory &&
               <>
                 {renderBlocSizes()}
-                {watchSizes.length > 0 && (
+                {watchSizes?.length > 0 && (
                   <>
                     {renderBlocSizePerQuantity()}
                   </>

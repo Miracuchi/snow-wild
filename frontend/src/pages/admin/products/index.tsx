@@ -126,7 +126,7 @@ const ProductsAdminPage = () => {
                     <TableCell>{m.name}</TableCell>
                     <TableCell className="">
                       <div className="flex justify-center items-cebter gap-2">
-                      {m.sizes.map((s: {size: string, quantity: number}) => 
+                      {m.sizes?.map((s: {size: string, quantity: number}) => 
                         <div 
                           className="flex flex-col"
                           key={`sizes_size.${s.size}`}

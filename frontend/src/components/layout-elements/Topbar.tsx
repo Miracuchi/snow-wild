@@ -1,9 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-/* eslint-disable @next/next/no-img-element */
 import { useCart } from "@/contexts/CartContext";
 import Link from "next/link";
 
 const TopBar: React.FC = () => {
+  const { getItemCount } = useCart();
+  const itemCount = getItemCount();
   return (
     <div>
       <nav className="bg-white p-4 px-20 flex items-center justify-between font-poppins">
@@ -50,7 +51,8 @@ const TopBar: React.FC = () => {
               />
             </svg>
           </Link>
-          <Link href="/user/basket" className="text-black">
+          <Link href="/user/basket" className="text-black relative"> 
+          
             <svg
               className="h-8 w-8"
               fill="none"
@@ -65,10 +67,15 @@ const TopBar: React.FC = () => {
                 d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 7M7 13L6 18h12m-4 4a2 2 0 100-4 2 2 0 000 4zm-8 0a2 2 0 100-4 2 2 0 000 4z"
               />
             </svg>
+            {itemCount > 0 && (
+              <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full transform translate-x-1/2 -translate-y-1/2">
+                {itemCount}
+              </span>
+            )}
           </Link>
         </div>
       </nav>
-      <div className="bg-black p-5 px-20 flex items-center justify-between font-poppins"></div>
+      <div className=" bg-black p-5 px-20 flex items-center justify-between font-poppins"></div>
     </div>
   );
 };
