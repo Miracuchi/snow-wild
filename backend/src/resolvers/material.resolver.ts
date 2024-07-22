@@ -13,7 +13,6 @@ export default class MaterialResolver {
   async listMaterials() {
     const materials = await new MaterialService().listMaterials()
     console.log(materials)
-    console.log(materials)
     return materials
   }
 
