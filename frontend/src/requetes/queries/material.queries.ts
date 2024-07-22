@@ -36,6 +36,7 @@ export const GET_MATERIAL_BY_ID = gql`
         quantity
         size
       }
+    }
   }
 `;
 

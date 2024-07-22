@@ -38,10 +38,6 @@ export default class Material {
   @Column()
   description: string
 
-  // @Field()
-  // @Column()
-  // disponibility: boolean;
-
   @Field(() => [SizeQuantity])
   @Column('json')
   sizes: { size: string; quantity: number }[]

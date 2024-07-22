@@ -19,7 +19,6 @@ export default class MaterialService {
     })
   }
 
-
   async findMaterialById(id: string) {
     const material = await this.db.findOne({
       where: { id },
@@ -31,16 +30,7 @@ export default class MaterialService {
     return material
   }
 
-
   async listByCategory(id: string) {
-    return await this.db.find({
-      where: { category: { id } },
-      relations: { category: true }
-    });
-  }
-
-
-  async listByCategory(id: string, ) {
     return await this.db.find({
       where: { category: { id } },
       relations: { category: true }
@@ -72,11 +62,9 @@ export default class MaterialService {
   async updateMaterial(id: string, data: Omit<UpdateMaterialInput, 'id'>) {
     if (!data.category) return null
     const categoryToLink = await new CategoryService().find(data?.category.id)
-
-    const materialToUpdate = await this.findMaterialById(id)
     const materialToUpdate = await this.findMaterialById(id)
     if (!materialToUpdate) {
-      throw new Error("L'annonce n'existe pas!")
+      throw new Error("Error, material id not found!")
     }
 
     const materialToSave = this.db.merge(materialToUpdate, {

@@ -1,5 +1,15 @@
-import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
+import { CART_STORAGE_KEY } from "@/constants";
+import {
+  GetFromLocalStorage,
+  SetToLocalStorage,
+} from "@/hooks/useLocalStorage";
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 interface Material {
   id: string;
@@ -11,15 +21,16 @@ interface Material {
 
 export interface CartItem extends Material {
   quantity: number;
+  selectedSize: string;
 }
 
 interface CartContextType {
   cart: CartItem[];
-  addToCart: (item: Material, selectedSize:string) => void;
+  addToCart: (item: Material, selectedSize: string) => void;
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
-  setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
   getItemCount: () => number;
+  setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -27,7 +38,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const useCart = (): CartContextType => {
   const context = useContext(CartContext);
   if (!context) {
-    throw new Error('useCart must be used within a CartProvider');
+    throw new Error("useCart must be used within a CartProvider");
   }
   return context;
 };
@@ -36,20 +47,15 @@ interface CartProviderProps {
   children: ReactNode;
 }
 
-const CART_STORAGE_KEY = 'cart';
-
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
 
   useEffect(() => {
-    const storedCart = localStorage.getItem(CART_STORAGE_KEY);
-    if (storedCart) {
-      setCart(JSON.parse(storedCart));
-    }
+    GetFromLocalStorage(CART_STORAGE_KEY);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+    SetToLocalStorage(CART_STORAGE_KEY, cart);
   }, [cart]);
 
   const addToCart = (item: Material, selectedSize: string) => {
@@ -82,14 +88,22 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     );
   };
 
-  // utilisation d'un compteur pour le panier 
+  // utilisation d'un compteur pour le panier
   const getItemCount = () => {
     return cart.reduce((total, item) => total + item.quantity, 0);
   };
 
-
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, getItemCount }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        setCart,
+        addToCart,
+        getItemCount,
+        removeFromCart,
+        updateQuantity,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );
