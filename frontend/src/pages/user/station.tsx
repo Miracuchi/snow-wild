@@ -9,13 +9,13 @@ export default function Station(){
         <section className="bg-white p-8 rounded-lg shadow-lg mb-12">
           <h2 className="text-3xl font-bold mb-6 text-center">Bienvenue à La Mongie</h2>
           <p className="mb-6 text-center">
-            La Mongie est l'une des stations de ski les plus populaires des Pyrénées françaises. Située au pied du célèbre Col du Tourmalet, elle offre un accès direct au domaine skiable du Grand Tourmalet, le plus grand domaine skiable des Pyrénées françaises.
+            La Mongie est l&apos;une des stations de ski les plus populaires des Pyrénées françaises. Située au pied du célèbre Col du Tourmalet, elle offre un accès direct au domaine skiable du Grand Tourmalet, le plus grand domaine skiable des Pyrénées françaises.
           </p>
           <div className="flex justify-center">
             <img src="/mongie.png" alt="La Mongie" className=" h-64 object-cover rounded-lg mb-6 shadow-md" />
           </div>
           <p className="mb-4">
-            La station est idéale pour les skieurs de tous niveaux, des débutants aux experts. Vous pourrez profiter de paysages magnifiques, de pistes bien entretenues et d'une ambiance conviviale. En été, La Mongie se transforme en un paradis pour les randonneurs et les amoureux de la nature.
+            La station est idéale pour les skieurs de tous niveaux, des débutants aux experts. Vous pourrez profiter de paysages magnifiques, de pistes bien entretenues et d&apos;une ambiance conviviale. En été, La Mongie se transforme en un paradis pour les randonneurs et les amoureux de la nature.
           </p>
           <p className="text-center font-semibold text-lg">
             Que vous soyez en quête de sensations fortes ou de détente, La Mongie a quelque chose à offrir à chacun. Venez découvrir nos installations modernes, nos restaurants chaleureux et notre accueil chaleureux. Nous vous attendons avec impatience !
@@ -64,7 +64,7 @@ export default function Station(){
             </div>
             <div>
               <p className="mb-2"><strong>Site Web :</strong> <a href="https://www.example.com" className="text-blue-600 hover:underline">www.example.com</a></p>
-              <p className="mb-2"><strong>Heures d'ouverture :</strong></p>
+              <p className="mb-2"><strong>Heures d&apos;ouverture :</strong></p>
               <ul className="list-disc pl-6">
                 <li>Lundi - Vendredi : 9h00 - 17h00</li>
                 <li>Samedi : 10h00 - 16h00</li>
