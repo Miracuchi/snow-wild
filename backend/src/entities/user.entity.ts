@@ -11,8 +11,8 @@ import {
 } from 'typeorm'
 
 import { IsEmail, Max, Min } from 'class-validator'
-import Reservation from './reservation.entity'
 import { UserRoleEnum } from '../types'
+import Reservation from './reservation.entity'
 
 // =================================================================
 //                           OBJECT TYPE
@@ -34,7 +34,7 @@ export default class User {
 
   @Field(() => [Reservation])
   @JoinColumn()
-  @OneToMany(() => Reservation, (reservation) => reservation.user)
+  @OneToMany(() => Reservation, (r) => r.user)
   reservations: Reservation[]
 
   @Field()

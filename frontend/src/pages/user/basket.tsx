@@ -112,9 +112,14 @@ const Basket: React.FC = () => {
       </div>
       <div>
         <h2 className="text-2xl font-bold mb-2">Récapitulatif</h2>
-        <p className="text-gray-700">Nombre d'articles : {totalItems}</p>
+        <p className="text-gray-700">
+          {numberOfArticleText}: {totalItems}
+        </p>
         <p className="text-gray-700">Total : {totalPrice}€</p>
-        <button className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700 mt-4">
+        <button
+          onClick={handleCheckout}
+          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700 mt-4"
+        >
           Finaliser la commande
         </button>
       </div>
