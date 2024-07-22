@@ -30,12 +30,14 @@ export async function verify(token: string): Promise<Payload> {
 
 async function checkToken(token: string | undefined, request: NextRequest) {
   const currentRoute = findRouteByPathname(request.nextUrl.pathname);
+
   console.log("current ROUTE VAUT: ", currentRoute);
   let response = NextResponse.next();
 
   if(!token) {
     // console.log('currentRoute: ', currentRoute)
     // console.log('currentRoute.protected: ', currentRoute?.protected)
+
     if (currentRoute && currentRoute.protected !== "PUBLIC") {
       response = NextResponse.redirect(new URL("/auth/login", request.url));
     }
@@ -61,7 +63,6 @@ async function checkToken(token: string | undefined, request: NextRequest) {
       if (currentRoute?.protected === "ADMIN" && role !== "ADMIN") {
         response = NextResponse.redirect(new URL("/errors", request.url)); // Créer une page "Access denied"
       } 
-
 
       //On ajoute des cookie avec les infos du user
       response.cookies.set("email", email);

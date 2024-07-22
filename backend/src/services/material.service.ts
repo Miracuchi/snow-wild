@@ -13,6 +13,7 @@ export default class MaterialService {
     this.db = datasource.getRepository(Material)
   }
 
+
   async listMaterials() {
     return this.db.find({
       relations: { category: true }
@@ -37,6 +38,7 @@ export default class MaterialService {
     });
   }
 
+
   async createMaterial(data: CreateMaterialInput) {
     const categoryToLink = await new CategoryService().find(data?.category?.id)
     if (!categoryToLink) {
@@ -55,6 +57,7 @@ export default class MaterialService {
 
   async deleteMaterial(id: string) {
     const material = (await this.findMaterialById(id)) as Material
+
     const deletedMaterial = await this.db.remove(material)
     return { ...deletedMaterial, id }
   }

@@ -40,6 +40,22 @@ export const GET_MATERIAL_BY_ID = gql`
   }
 `;
 
+export const GET_MATERIAL_BY_ID = gql`
+  query Query($findMaterialByIdId: String!) {
+    findMaterialById(id: $findMaterialByIdId) {
+      price
+      picture
+      name
+      id
+      description
+      sizes {
+        size
+        quantity
+      }
+    }
+  }
+`;
+
 export const LIST_MATERIAL_BY_CATEGORY_ID = gql`
   query FindMaterialByCategories($findMaterialByCategoriesId: String!) {
     findMaterialByCategories(id: $findMaterialByCategoriesId) {

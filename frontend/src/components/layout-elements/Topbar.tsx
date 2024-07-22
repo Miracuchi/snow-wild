@@ -55,7 +55,6 @@ const TopBar: React.FC = () => {
             </svg>
           </Link>
           <Link href="/user/basket" className="text-black relative"> 
-          
             <svg
               className="h-8 w-8"
               fill="none"

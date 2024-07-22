@@ -49,6 +49,7 @@ async function main() {
     .insert()
     .into(Category)
     .values([
+
       { name: 'snowboard' },
       { name: 'ski' },
       { name: 'boots' },

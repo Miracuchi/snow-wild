@@ -40,5 +40,4 @@ export default function App({ Component, pageProps, router }: AppProps) {
       </AuthProvider>
     </ApolloProvider>
   )
-
-}
+});

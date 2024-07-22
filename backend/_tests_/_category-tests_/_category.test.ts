@@ -45,8 +45,9 @@ beforeAll(async () => {
   })
 })
 
-describe("Test sur les categories", () => {
-  it("mon premier test", async () => {
+
+describe('Test sur les livres', () => {
+  it('mon premier test', async () => {
     const response = await server.executeOperation<ResponseData>({
       query: LIST_CATEGORY,
     })
@@ -54,6 +55,7 @@ describe("Test sur les categories", () => {
     assert(response.body.kind === 'single')
     expect(response.body.singleResult.data?.categories).toHaveLength(2)
   })
+
 
   it("récupération des categories uniquement avec leurs nom", async () => {
     const response = await server.executeOperation<ResponseData>({
@@ -65,6 +67,7 @@ describe("Test sur les categories", () => {
       categories: [{ name: 'Categorie 1' }, { name: 'Catégorie 2' }],
     })
   })
+
 
   it("récupération d'une catégorie avec son nom", async () => {
     const response = await server.executeOperation<CategoryNameResponseData>({

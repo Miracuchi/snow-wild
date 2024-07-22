@@ -68,30 +68,7 @@ class SizeQuantity {
   @Field()
   quantity: number
 }
-// Quand on fait un ObjectType à supprimer, ne pas mettre d'id. Il sera supprimé, donc pas de retour.
-// @ObjectType()
-// export class MaterialDeleted {
 
-
-//   @Field({ nullable: true })
-//   name: string
-
-//   @Field({ nullable: true })
-//   description: string
-
-//   @Field(() => Float, { nullable: true })
-//   price: number
-
-//   @Field({ nullable: true })
-//   picture: string
-
-//   @Field(() => Category)
-//   category: Category
-// }
-
-// =================================================================
-//                           INPUT TYPE
-// =================================================================
 @InputType()
 export class PartialCategoryInput {
   @Field(() => ID)
