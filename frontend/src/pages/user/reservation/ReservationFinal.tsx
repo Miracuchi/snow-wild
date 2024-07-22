@@ -1,54 +1,149 @@
-"use client";
-import { useStepper } from "@/components/stepper";
-import { Button } from "@/components/ui/button";
-import useLocalStorage from "@/hooks/useLocalStorage";
-import { CREATE_RESERVATION } from "@/requetes/mutations/reservation.mutations";
-import { useMutation } from "@apollo/client";
-export default function MyStepperFooter() {
-  const { activeStep, resetSteps, steps } = useStepper();
+// "use client";
+// import { useStepper } from "@/components/stepper";
+// import DatePicker from "react-datepicker";
 
-  const { cart, formInfos } = useLocalStorage();
+// import {
+//   FormControl,
+//   FormField,
+//   FormItem,
+//   FormLabel,
+//   FormMessage,
+// } from "@/components/ui/form";
+// import { Input } from "@/components/ui/input";
+// import { BANK_STORAGE_KEY } from "@/constants";
+// import { SetToLocalStorage } from "@/hooks/useLocalStorage";
+// import { zodResolver } from "@hookform/resolvers/zod";
+// import { useEffect, useState } from "react";
+// import { Form, useForm } from "react-hook-form";
+// import { toast } from "sonner";
+// import { z } from "zod";
+// import StepperFormActions from "./ReservationActions";
 
-  const [createReservation, { data, loading, error }] =
-    useMutation(CREATE_RESERVATION);
+// const SecondFormSchema = z.object({
+//   card: z.string().min(8, {
+//     message: "Le numéro de carte doit comporter au moins 8 caractères.",
+//   }),
+//   expirationDate: z.date({
+//     message: "La date de validité n'est pas valide.",
+//   }),
+//   securityCode: z.string().min(3, {
+//     message: "Le code de sécurité doit comporter au moins 3 caractères.",
+//   }),
+// });
+// export interface FormDataCard {
+//   card: string;
+//   expirationDate: Date;
+//   securityCode: string;
+// }
+// export default function MyStepperFooter() {
+//   const { nextStep } = useStepper();
+//   const [formData, setFormData] = useState<FormDataCard>({
+//     card: "",
+//     expirationDate: new Date(),
+//     securityCode: "",
+//   });
+//   const { activeStep, resetSteps, steps } = useStepper();
+//   const methods = useForm<z.infer<typeof SecondFormSchema>>({
+//     resolver: zodResolver(SecondFormSchema),
+//     values: { ...formData },
+//   });
 
-  console.log("DATA RES FINAL", data);
+//   useEffect(() => {
+//     if (formData) SetToLocalStorage(BANK_STORAGE_KEY, formData);
+//   });
 
-  console.log("CART FINAL", cart);
+//   function onSubmit(_data: z.infer<typeof SecondFormSchema>) {
+//     nextStep();
+//     toast({
+//       title: "Second step submitted!",
+//     });
+//   }
+//   const handleSecurityCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     const { value } = e.target;
+//     setFormData({
+//       ...formData,
+//       securityCode: value,
+//     });
+//   };
 
-  const cartInfo = cart.map((c) => ({
-    name: c.name,
-    description: c.description,
-    price: c.price,
-    quantity: c.quantity,
-  }));
+//   const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     const { value } = e.target;
+//     setFormData({
+//       ...formData,
+//       card: value,
+//     });
+//   };
+//   if (activeStep !== steps.length) {
+//     return null;
+//   }
+//   return (
+//     <Form {...methods}>
+//       <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-6">
+//         <FormField
+//           control={methods.control}
+//           name="card"
+//           render={() => (
+//             <FormItem>
+//               <FormLabel>N° de carte</FormLabel>
+//               <FormControl>
+//                 <Input
+//                   name={"card"}
+//                   placeholder="123456789"
+//                   type="text"
+//                   onInput={handleCardNumberChange}
+//                   value={formData?.card}
+//                 />
+//               </FormControl>
+//               <FormMessage />
+//             </FormItem>
+//           )}
+//         />
 
-  const handleSubmit = async () => {
-    const response = await createReservation({
-      variables: {
-        info: {
-          start_date: formInfos.start_date,
-          end_date: formInfos.end_date,
-        },
-      },
-    });
-  };
-
-  if (activeStep !== steps.length) {
-    return null;
-  }
-
-  console.log(" IN FINAL", cart, formInfos);
-  const name = cart.map((c) => c.description);
-
-  return (
-    <>
-      <div>{name}</div>
-      <div>{formInfos.start_date.toDateString()}</div>
-      <div className="flex items-center justify-end gap-2">
-        <Button onClick={resetSteps}>Finaliser la réservation</Button>
-        <Button onClick={resetSteps}>Abandonner</Button>
-      </div>
-    </>
-  );
-}
+//         <FormField
+//           control={methods.control}
+//           name="expirationDate"
+//           render={() => (
+//             <FormItem>
+//               <FormLabel>Date de validité</FormLabel>
+//               <FormControl>
+//                 <DatePicker
+//                   selected={formData?.expirationDate}
+//                   dateFormat="yyyy-MM-dd"
+//                   showYearDropdown
+//                   scrollableYearDropdown
+//                   onChange={(date) => {
+//                     console.log("expiraton date selected", date);
+//                     if (date) {
+//                       setFormData({ ...formData, expirationDate: date });
+//                     }
+//                   }}
+//                 />
+//               </FormControl>
+//               <FormMessage />
+//             </FormItem>
+//           )}
+//         />
+//         <FormField
+//           control={methods.control}
+//           name="securityCode"
+//           render={() => (
+//             <FormItem>
+//               <FormLabel>Code de sécurité</FormLabel>
+//               <FormControl>
+//                 <Input
+//                   name={"securityCode"}
+//                   placeholder="123"
+//                   type="text"
+//                   value={formData?.securityCode}
+//                   onInput={handleSecurityCodeChange}
+//                 />
+//               </FormControl>
+//               <FormMessage />
+//             </FormItem>
+//           )}
+//         />
+//         <StepperFormActions />
+//       </form>
+//     </Form>
+//   );
+// }

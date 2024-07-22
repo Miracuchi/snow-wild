@@ -34,7 +34,7 @@ export default class Reservation {
 
   @Field(() => User)
   @JoinColumn()
-  @ManyToOne(() => User, (user) => user.id, {
+  @ManyToOne(() => User, (u) => u.reservations, {
     cascade: true,
     onDelete: 'CASCADE',
   })

@@ -1,5 +1,16 @@
-import useLocalStorage from "@/hooks/useLocalStorage";
-import React, { ReactNode, createContext, useContext } from "react";
+import { CART_STORAGE_KEY } from "@/constants";
+import {
+  EmptyLocalStorage,
+  GetFromLocalStorage,
+  SetToLocalStorage,
+} from "@/hooks/useLocalStorage";
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 interface Material {
   id: string;
@@ -18,7 +29,7 @@ interface CartContextType {
   addToCart: (item: Material, selectedSize:string) => void;
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
-  getItemCount: () => number;
+  setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -35,11 +46,22 @@ interface CartProviderProps {
   children: ReactNode;
 }
 
-export const CART_STORAGE_KEY = "cart";
-
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
-  const { cart, setCart } = useLocalStorage();
-  const addToCart = (item: Material) => {
+  const [cart, setCart] = useState<CartItem[]>([]);
+
+  useEffect(() => {
+    GetFromLocalStorage(CART_STORAGE_KEY);
+  }, []);
+
+  useEffect(() => {
+    if (cart.length > 0) {
+      SetToLocalStorage(CART_STORAGE_KEY, cart);
+    } else {
+      EmptyLocalStorage(CART_STORAGE_KEY);
+    }
+  }, [cart]);
+
+  const addToCart = (item: Material, selectedSize: string) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((cartItem) => cartItem.id === item.id);
       if (existingItem) {
@@ -57,6 +79,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const removeFromCart = (id: string) => {
     setCart((prevCart) => prevCart.filter((item) => item.id !== id));
   };
+
   const updateQuantity = (id: string, quantity: number) => {
     setCart((prevCart) =>
       prevCart.map((item) => (item.id === id ? { ...item, quantity } : item))
@@ -71,7 +94,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, updateQuantity }}
+      value={{ cart, setCart, addToCart, removeFromCart, updateQuantity }}
     >
       {children}
     </CartContext.Provider>

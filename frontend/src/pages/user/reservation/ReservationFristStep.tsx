@@ -8,9 +8,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
-import useLocalStorage from "@/hooks/useLocalStorage";
+import { DATES_STORAGE_KEY } from "@/constants";
+import { SetToLocalStorage } from "@/hooks/useLocalStorage";
 import StepperFormActions from "@/pages/user/reservation/ReservationActions";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -25,9 +27,26 @@ const FirstFormSchema = z.object({
       message: "La date doit être valide.",
     }),
 });
-
+export interface FormInfos {
+  start_date: Date;
+  end_date: Date;
+}
 function ReservationFirstStep() {
   const { nextStep } = useStepper();
+  const actualDate = new Date(Date.now());
+  const [formInfos, setFormInfos] = useState<FormInfos>({
+    start_date: actualDate,
+    end_date: new Date(
+      actualDate.getFullYear(),
+      actualDate.getMonth(),
+      actualDate.getDate() + 1
+    ),
+  });
+  useEffect(() => {
+    if (formInfos) {
+      SetToLocalStorage(DATES_STORAGE_KEY, formInfos);
+    }
+  }, [formInfos]);
 
   const form = useForm<z.infer<typeof FirstFormSchema>>({
     resolver: zodResolver(FirstFormSchema),
@@ -42,8 +61,6 @@ function ReservationFirstStep() {
       title: "First step submitted!",
     });
   }
-
-  const { formInfos, setFormInfos } = useLocalStorage();
 
   return (
     <Form {...form}>
