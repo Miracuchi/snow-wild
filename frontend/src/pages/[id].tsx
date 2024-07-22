@@ -10,7 +10,7 @@ import { Key, useEffect, useState } from "react";
 
 function MaterialDetail() {
   const router = useRouter();
-  // const { id } = router.query;
+
   const [getAd, { data, loading, error }] = useLazyQuery(GET_MATERIAL_BY_ID);
   const { addToCart } = useCart();
   
@@ -88,10 +88,13 @@ function MaterialDetail() {
               (sizeDetail: { size: string; quantity: number }, index: Key) => (
                 <div key={index} className="mb-2">
                   <button
-                    className="button"
+                    className={`button px-4 py-2 rounded border ${
+                      selectedSize === sizeDetail.size
+                        ? "bg-blue-500 text-white border-blue-500"
+                        : "bg-black text-white "
+                    }`}
                     onClick={() => setSelectedSize(sizeDetail.size)}
                   >
-                    {" "}
                     {sizeDetail.size}
                   </button>
                   <br />
@@ -104,8 +107,8 @@ function MaterialDetail() {
             <div className="mt-4 flex justify-end">
               <button
                 onClick={handleAddToCart}
-                className="button">
-              <button onClick={handleAddToCart} className="button">
+                className="button bg-black text-white"
+              >
                 Ajouter au panier
               </button>
             </div>

@@ -1,8 +1,7 @@
 "use client";
 import { CartItem } from "@/contexts/CartContext";
-import { FormInfos } from "@/pages/user/reservation/ReservationFristStep";
-import { FormDataCard } from "@/pages/user/reservation/ReservationSecondStep";
-
+import { DateFormInfos } from "@/pages/user/reservation/DatePickerComponent";
+// FormDataCard : FOR LATER MAYBE
 export const EmptyLocalStorage = (...storageKeys: string[]) => {
   storageKeys.forEach((key: string) => {
     localStorage.removeItem(key);
@@ -11,7 +10,7 @@ export const EmptyLocalStorage = (...storageKeys: string[]) => {
 
 export const SetToLocalStorage = (
   storageKey: string,
-  itemToStore: CartItem[] | FormDataCard | FormInfos
+  itemToStore: CartItem[] | DateFormInfos
 ) => {
   if (itemToStore)
     localStorage.setItem(storageKey, JSON.stringify(itemToStore));

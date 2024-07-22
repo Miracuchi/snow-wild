@@ -10,7 +10,6 @@ import {
 import { toast } from "@/components/ui/use-toast";
 import { DATES_STORAGE_KEY } from "@/constants";
 import { SetToLocalStorage } from "@/hooks/useLocalStorage";
-import StepperFormActions from "@/pages/user/reservation/ReservationActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
@@ -27,19 +26,19 @@ const FirstFormSchema = z.object({
       message: "La date doit être valide.",
     }),
 });
-export interface FormInfos {
+export interface DateFormInfos {
   start_date: Date;
   end_date: Date;
 }
-function ReservationFirstStep() {
+function DatePickerComponent() {
   const { nextStep } = useStepper();
   const actualDate = new Date(Date.now());
-  const [formInfos, setFormInfos] = useState<FormInfos>({
+  const [formInfos, setFormInfos] = useState<DateFormInfos>({
     start_date: actualDate,
     end_date: new Date(
       actualDate.getFullYear(),
       actualDate.getMonth(),
-      actualDate.getDate() + 1
+      actualDate.getDate() + 7
     ),
   });
   useEffect(() => {
@@ -70,11 +69,14 @@ function ReservationFirstStep() {
           name="date"
           render={() => (
             <FormItem>
-              <FormLabel>Dates</FormLabel>
+              <FormLabel className="text-3xl text-neutral-950 font-bold mb-8">
+                Renseigner mes dates de location
+              </FormLabel>
               <FormControl>
-                <div className="flex mx-10 justify-center h-20">
-                  <div className="datePickerContainer h-20 flex-row">
+                <div className="flex justify-center h-20">
+                  <div className="datePickerContainer  h-20 flex items-center justify-evenly w-full max-w-4xl">
                     <>
+                      <span>Du</span>
                       <DatePicker
                         selected={formInfos.start_date}
                         onChange={(date) => {
@@ -85,7 +87,10 @@ function ReservationFirstStep() {
                         selectsStart
                         startDate={formInfos.start_date}
                         endDate={formInfos.end_date}
+                        placeholderText="Date de début"
+                        className="  rounded-lg border-2  border-black py-2 text-center mx-2"
                       />
+                      <span>au</span>
                       <DatePicker
                         selected={formInfos.end_date}
                         onChange={(date) => {
@@ -98,6 +103,8 @@ function ReservationFirstStep() {
                         startDate={formInfos.start_date}
                         endDate={formInfos.end_date}
                         minDate={formInfos.start_date}
+                        placeholderText="Date de fin"
+                        className="  rounded-lg border-2 border-black py-2 text-center mx-2"
                       />
                     </>
                   </div>
@@ -109,10 +116,9 @@ function ReservationFirstStep() {
             </FormItem>
           )}
         />
-        <StepperFormActions />
       </form>
     </Form>
   );
 }
 
-export default ReservationFirstStep;
+export default DatePickerComponent;

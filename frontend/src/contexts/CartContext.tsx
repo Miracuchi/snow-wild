@@ -1,6 +1,5 @@
 import { CART_STORAGE_KEY } from "@/constants";
 import {
-  EmptyLocalStorage,
   GetFromLocalStorage,
   SetToLocalStorage,
 } from "@/hooks/useLocalStorage";
@@ -54,23 +53,24 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (cart.length > 0) {
-      SetToLocalStorage(CART_STORAGE_KEY, cart);
-    } else {
-      EmptyLocalStorage(CART_STORAGE_KEY);
-    }
+    SetToLocalStorage(CART_STORAGE_KEY, cart);
   }, [cart]);
 
   const addToCart = (item: Material, selectedSize: string) => {
     setCart((prevCart) => {
-      const existingItem = prevCart.find((cartItem) => cartItem.id === item.id);
+      const existingItem = prevCart.find(
+        (cartItem) =>
+          cartItem.id === item.id && cartItem.selectedSize === selectedSize
+      );
       if (existingItem) {
+        // Si l'article existe avec la même taille, mettre à jour la quantité
         return prevCart.map((cartItem) =>
-          cartItem.id === item.id
+          cartItem.id === item.id && cartItem.selectedSize === selectedSize
             ? { ...cartItem, quantity: cartItem.quantity + 1 }
             : cartItem
         );
       } else {
+        // Ajouter un nouvel article avec la taille sélectionnée
         return [...prevCart, { ...item, quantity: 1, selectedSize }];
       }
     });
@@ -94,7 +94,14 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 
   return (
     <CartContext.Provider
-      value={{ cart, setCart, addToCart, removeFromCart, updateQuantity }}
+      value={{
+        cart,
+        setCart,
+        addToCart,
+        getItemCount,
+        removeFromCart,
+        updateQuantity,
+      }}
     >
       {children}
     </CartContext.Provider>
