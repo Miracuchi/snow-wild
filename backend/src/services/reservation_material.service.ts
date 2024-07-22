@@ -69,7 +69,6 @@ export default class ReservationMaterialService {
     quantity: number
     material: { id: string }
     size: string // Ajoutez le champ size
-    size: string // Ajoutez le champ size
   }) {
     const { material, quantity, size } = data
     const materialData: Material | null =

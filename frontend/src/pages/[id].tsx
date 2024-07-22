@@ -12,6 +12,7 @@ function MaterialDetail() {
 
   const [getAd, { data, loading, error }] = useLazyQuery(GET_MATERIAL_BY_ID);
   const { addToCart } = useCart();
+  const [selectedSize, setSelectedSize] = useState<string>();
   
   useEffect(() => {
     if (router.query.id) {
@@ -117,7 +118,7 @@ function MaterialDetail() {
           </div>
         </div>
         </div>
-      </div>
+       </div>
       <div className="mt-4">
         <Link href="/" className="hover:underline">
           Retour à la liste

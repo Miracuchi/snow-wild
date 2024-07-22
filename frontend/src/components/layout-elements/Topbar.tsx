@@ -1,11 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
-/* eslint-disable @next/next/no-img-element */
 import { useCart } from "@/contexts/CartContext";
 import Link from "next/link";
 
 const TopBar: React.FC = () => {
-  const { getItemCount } = useCart();
-  const itemCount = getItemCount();
   const { getItemCount } = useCart();
   const itemCount = getItemCount();
   return (
