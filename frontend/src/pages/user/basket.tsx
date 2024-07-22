@@ -1,14 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
+import { AuthContext } from "@/contexts/authContext";
 import { useCart } from "@/contexts/CartContext";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useContext, useState } from "react";
+
 const Basket: React.FC = () => {
   const { cart, removeFromCart, updateQuantity } = useCart();
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [itemToRemove, setItemToRemove] = useState<string | null>(null);
   const router = useRouter();
-
+  const { user } = useContext(AuthContext);
   const handleQuantityChange = (id: string, newQuantity: number) => {
     updateQuantity(id, newQuantity);
   };
@@ -19,7 +21,11 @@ const Basket: React.FC = () => {
   };
 
   const handleCheckout = () => {
-    router.push("/user/reservation");
+    if (user?.userId) {
+      router.push("/user/reservation");
+    } else {
+      router.push("/auth/login?redirect=/user/reservation");
+    }
   };
 
   const handleRemoveItem = () => {
@@ -55,7 +61,6 @@ const Basket: React.FC = () => {
       </main>
     );
   }
-  console.log(cart);
 
   return (
     <main className="container mx-auto px-4 py-8 font-poppins grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -114,14 +119,17 @@ const Basket: React.FC = () => {
         <div className="bg-white p-5 rounded-lg shadow-lg">
           <h2 className="text-2xl font-bold mb-4">Récapitulatif</h2>
           <div className="flex justify-between items-center border-b-2 pb-2">
-            <p className="text-gray-700">Nombre d'articles :</p>
+            <p className="text-gray-700">{numberOfArticleText}</p>
             <p className="text-gray-700">{totalItems}</p>
           </div>
           <div className="flex justify-between items-center pt-2">
             <p className="text-gray-700">Total :</p>
             <p className="text-gray-700">{totalPrice}€</p>
           </div>
-          <button className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700 mt-4 w-full">
+          <button
+            onClick={handleCheckout}
+            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700 mt-4 w-full"
+          >
             Finaliser la commande
           </button>
           <Link href="/">

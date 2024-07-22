@@ -25,7 +25,10 @@ const TopBar: React.FC = () => {
             <Link href="/" className="text-black hover:text-gray-600">
               Nos avantages
             </Link>
-            <Link href="/user/station" className="text-black hover:text-gray-600">
+            <Link
+              href="/user/station"
+              className="text-black hover:text-gray-600"
+            >
               Notre station
             </Link>
             <Link href="/" className="text-black hover:text-gray-600">
@@ -51,8 +54,7 @@ const TopBar: React.FC = () => {
               />
             </svg>
           </Link>
-          <Link href="/user/basket" className="text-black relative"> 
-          
+          <Link href="/user/basket" className="text-black relative">
             <svg
               className="h-8 w-8"
               fill="none"

@@ -1,4 +1,5 @@
-import { Button } from "@/components/ui/button";
+/* eslint-disable @next/next/no-img-element */
+import { useStepper } from "@/components/stepper";
 import {
   BANK_STORAGE_KEY,
   CART_STORAGE_KEY,
@@ -14,8 +15,10 @@ import { CREATE_RESERVATION } from "@/requetes/mutations/reservation.mutations";
 import { useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import { useContext } from "react";
+import DatePickerComponent from "./DatePickerComponent";
+import StepperFormActions from "./ReservationActions";
 
-function ReservationSecondStep() {
+function ReservationDateStep() {
   const router = useRouter();
 
   const { user } = useContext(AuthContext);
@@ -28,7 +31,8 @@ function ReservationSecondStep() {
     quantity: item.quantity,
     size: item.selectedSize,
   }));
-
+  const { nextStep } = useStepper();
+  const hasItemInBasket = reservationMaterials.length < 0;
   const handleSubmit = async () => {
     if (reservationMaterials.length === 0) {
       console.error("Error: No materials to reserve.");
@@ -52,6 +56,7 @@ function ReservationSecondStep() {
       console.log("Reservation created successfully:", response.data);
       EmptyLocalStorage(CART_STORAGE_KEY, BANK_STORAGE_KEY, DATES_STORAGE_KEY);
       setCart([]);
+      nextStep();
     } catch (error) {
       console.error("Error creating reservation:", error);
     }
@@ -68,17 +73,18 @@ function ReservationSecondStep() {
   );
   return (
     <>
-      {/* <div>{name}</div> */}
-      {/* <div>{dateInfos.start_date.toDateString()}</div> */}
-      <main className="container flex justify-evenly mx-auto px-4 py-8 font-poppins">
-        <div>
-          <h1 className="text-3xl text-neutral-950 font-bold mb-8">
+      <main className="container mx-auto px-4 py-8 font-poppins grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="col-span-2 ">
+          <DatePickerComponent />
+          <h1 className="text-3xl text-neutral-950 font-bold mb-8 mt-8">
             Votre panier
           </h1>
-          <div className="bg-dark rounded-lg shadow-lg overflow-hidden grid grid-cols-1 gap-4 ">
-            {cart.map((item) => (
-              <div key={item.id} className="bg-white flex  overflow-hidden">
-                caca
+          <div className="space-y-4 max-h-96 overflow-y-auto">
+            {cart.map((item, index) => (
+              <div
+                key={item.id}
+                className="bg-white flex overflow-hidden relative"
+              >
                 <div className="relative h-48">
                   <img
                     className="m-5 max-w-28 object-contain"
@@ -86,39 +92,42 @@ function ReservationSecondStep() {
                     alt={item.name}
                   />
                 </div>
-                <div className="p-6 flex justify-between items-start">
+                <div className="p-6 flex justify-between items-start w-full">
                   <div>
-                    <p className="text-2xl font-bold mb-2">{item.name}</p>
-                    <p className="text-gray-700">{item.price}€</p>
+                    <h2 className="text-2xl font-bold mb-2">{item.name}</h2>
                     <p className="text-gray-700">
                       Taille : {item.selectedSize}
                     </p>
                     <div className="mt-4 flex items-center">
                       <span className="mr-2">Quantité : {item.quantity}</span>
-                    </div>{" "}
-                  </div>{" "}
-                  <div className="h-2 bg-black"></div>
+                    </div>
+                  </div>
                 </div>
+                {index < cart.length - 1 && (
+                  <div className="absolute bottom-0 left-6 right-6 border-t-2 border-black"></div>
+                )}
               </div>
             ))}
           </div>
         </div>
-        <div>
-          <div className="bg-white  rounded-lg shadow-lg pb-10 px-4">
-            <h2 className="text-2xl font-bold mb-2">Récapitulatif</h2>
-            <p className="text-gray-700 mt-7">
-              {numberOfArticleText}: {totalItems}
-            </p>
-            <p className="text-gray-700 mb-20">Total : {totalPrice}€</p>
+        <div className="col-span-1">
+          <div className="bg-white p-5 rounded-lg shadow-lg">
+            <h2 className="text-2xl font-bold mb-4">Récapitulatif</h2>
+            <div className="flex justify-between items-center border-b-2 pb-2">
+              <p className="text-gray-700">{numberOfArticleText}</p>
+              <p className="text-gray-700">{totalItems}</p>
+            </div>
+            <div className="flex justify-between items-center pt-2">
+              <p className="text-gray-700">Total :</p>
+              <p className="text-gray-700">{totalPrice}€</p>
+            </div>
+
+            <StepperFormActions handleSubmit={handleSubmit} />
           </div>
         </div>
       </main>
-      <div className="flex items-center justify-end gap-2">
-        <Button onClick={handleSubmit}>Finaliser la réservation</Button>
-        <Button>Abandonner</Button>
-      </div>
     </>
   );
 }
 
-export default ReservationSecondStep;
+export default ReservationDateStep;
