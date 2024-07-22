@@ -1,8 +1,9 @@
-import { Repository } from 'typeorm'
+import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm'
 import datasource from '../db'
 import Material from '../entities/material.entity'
 import Reservation from '../entities/reservation.entity'
 import {
+  FindReservationMaterialsBetweenTwoDateInput,
   ReservationMaterial,
   UpdateReservationMaterialInput,
 } from './../entities/reservation_material.entity'
@@ -26,6 +27,29 @@ export default class ReservationMaterialService {
     })
 
     return reservationMaterial
+  }
+
+  async findAllReservationMaterialBetweenUserDate(
+    data: FindReservationMaterialsBetweenTwoDateInput
+  ) {
+    const { materialId, from_date, to_date } = data
+    const materialData: Material = await new MaterialService().findMaterialById(
+      materialId
+    )
+    if (!materialData) {
+      throw new Error('Materiel inconnu')
+    }
+    const reservationMaterials = await this.db.find({
+      where: {
+        material: { id: materialId },
+        reservation: {
+          start_date: LessThanOrEqual(to_date),
+          end_date: MoreThanOrEqual(from_date),
+        },
+      },
+      relations: ['reservation'],
+    })
+    return reservationMaterials
   }
 
   async findReservationMaterial(id: string) {
