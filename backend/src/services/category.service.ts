@@ -8,7 +8,10 @@ export default class CategoryService {
     this.db = datasource.getRepository(Category)
   }
   async findCategory(id: string) {
-    const category = await this.db.findOneBy({ id })
+    const category = await this.db.findOne({ 
+      where: { id },
+      relations: {material: true}
+    })
     if (!category) {
       throw new Error("Cette catégorie n'existe pas")
     }

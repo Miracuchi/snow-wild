@@ -12,6 +12,14 @@ export default class MaterialService {
   constructor() {
     this.db = datasource.getRepository(Material)
   }
+
+
+  async listMaterials() {
+    return this.db.find({
+      relations: { category: true }
+    })
+  }
+
   async findMaterialById(id: string) {
     const material = await this.db.findOne({
       where: { id },
@@ -23,14 +31,7 @@ export default class MaterialService {
     return material
   }
 
-  async listMaterials() {
-    return this.db.find({
-      relations: { category: true }
-    })
-  }
-
-
-  async listByCategory(id: string, ) {
+  async listByCategory(id: string) {
     return await this.db.find({
       where: { category: { id } },
       relations: { category: true }
@@ -56,17 +57,17 @@ export default class MaterialService {
 
   async deleteMaterial(id: string) {
     const material = (await this.findMaterialById(id)) as Material
-    await this.db.remove(material)
-    return { ...material, id }
+
+    const deletedMaterial = await this.db.remove(material)
+    return { ...deletedMaterial, id }
   }
 
   async updateMaterial(id: string, data: Omit<UpdateMaterialInput, 'id'>) {
     if (!data.category) return null
     const categoryToLink = await new CategoryService().find(data?.category.id)
-
     const materialToUpdate = await this.findMaterialById(id)
     if (!materialToUpdate) {
-      throw new Error("L'annonce n'existe pas!")
+      throw new Error("Error, material id not found!")
     }
 
     const materialToSave = this.db.merge(materialToUpdate, {

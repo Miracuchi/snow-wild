@@ -32,6 +32,21 @@ export const routes: { [key: string]: Route } = {
     title: "Gestion des utilisateurs",
     protected: "ADMIN",
   },
+  adminCreateProducts: {
+    pathname: "/admin/products/create",
+    title: "Créer un produit",
+    protected: "ADMIN",
+  },
+  adminOneProducts: {
+    pathname: "/admin/products/:id",
+    title: "Gestion un materiel",
+    protected: "ADMIN",
+  },
+  adminProducts: {
+    pathname: "/admin/products",
+    title: "Gestion des materiels",
+    protected: "ADMIN",
+  },
   adminMaterials: {
     pathname: "/admin/materials",
     title: "Gestion des materiels",

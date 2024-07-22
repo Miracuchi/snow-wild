@@ -2,9 +2,10 @@ import LayoutAdmin from "@/admin/components/LayoutAdmin";
 import LayoutClient from "@/components/layout-elements/LayoutClient";
 import { AuthProvider } from "@/contexts/authContext";
 import { CartProvider } from "@/contexts/CartContext";
-import "@/styles/globals.css";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import type { AppProps } from "next/app";
+
+import "@/styles/globals.css";
 
 const client = new ApolloClient({
   uri: "http://localhost:4000",
@@ -38,5 +39,5 @@ export default function App({ Component, pageProps, router }: AppProps) {
         </CartProvider>
       </AuthProvider>
     </ApolloProvider>
-  );
-}
+  )
+});

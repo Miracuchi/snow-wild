@@ -8,7 +8,7 @@ export default class Category {
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string
-
+  
   @Field()
   @Column({ unique: true })
   name: string

@@ -2,7 +2,6 @@ import { ApolloServer } from '@apollo/server'
 import { expressMiddleware } from '@apollo/server/express4'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
 import datasource from './db'
-import BookResolver from './resolvers/book.resolver'
 import MaterialResolver from './resolvers/material.resolver'
 import ReservationResolver from './resolvers/reservation.resolver'
 import UserResolver from './resolvers/user.resolver'
@@ -40,7 +39,6 @@ const httpServer = http.createServer(app)
 async function main() {
   const schema = await buildSchema({
     resolvers: [
-      BookResolver,
       CategoryResolver,
       MaterialResolver,
       UserResolver,

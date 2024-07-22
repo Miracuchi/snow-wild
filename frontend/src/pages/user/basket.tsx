@@ -1,3 +1,4 @@
+
 /* eslint-disable @next/next/no-img-element */
 import { AuthContext } from "@/contexts/authContext";
 import { useCart } from "@/contexts/CartContext";
