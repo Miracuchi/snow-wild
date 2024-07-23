@@ -19,10 +19,10 @@ type ProductType = {
   price: 49;
   quantity: number;
   id: string;
-  sizes: {
+  sizes: [{
     size: string,
     quantity: number;
-  }
+  }]
 }
 
 const ProductCard = ({ product }: {product: ProductType}) => {
@@ -72,7 +72,10 @@ const ProductCard = ({ product }: {product: ProductType}) => {
             <strong>Quantity per size </strong>{quantity}
             <div className="flex gap-4">
             {sizes.map((s: {size: string, quantity: number}) => 
-              <div className="flex flex-col">
+              <div
+                key={`size_${s.size}`}
+                className="flex flex-col"
+              >
                 <div className="w-10 rounded text-center bg-black text-white">{s.size}</div>
                 <p className="text-center">{s.quantity}</p>
               </div>
