@@ -31,9 +31,8 @@ function ListMaterial() {
                   <h2 className=" uppercase text-xl text-neutral-950 font-bold ">
                     {item.name}
                   </h2>
-                  <p className=" text-neutral-950 text-sm ">
-                    {item.description.slice(0, 80)}
-                    {item.description.length > 80 ? "..." : ""}
+                  <p className=" text-neutral-950 text-sm line-clamp-2">
+                    {item.description}
                   </p>
                 </div>
               </div>
