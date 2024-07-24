@@ -39,6 +39,7 @@ function MaterialDetail() {
       const materialWithSize = { ...material, selectedSize };
       addToCart(materialWithSize, selectedSize);
     }
+    
   };
 
   return (
