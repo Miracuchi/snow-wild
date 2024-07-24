@@ -10,7 +10,7 @@ const steps = [
 
 export default function StepperForm() {
   return (
-    <div className="flex w-full flex-col gap-4">
+    <div className="flex w-full flex-col gap-4 mt-8">
       <Stepper variant="circle-alt" initialStep={0} steps={steps}>
         {steps.map((stepProps, index) => {
           if (index === 0) {

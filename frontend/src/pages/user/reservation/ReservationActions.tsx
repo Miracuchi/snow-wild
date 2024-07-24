@@ -17,13 +17,13 @@ function StepperFormActions({
         <Button
           type="submit"
           onClick={handleSubmit}
-          className="my-2 mx-2  bg-green-500 text-white rounded hover:bg-green-700"
+          className="my-2 mx-2 w-full bg-green-500 text-white rounded hover:bg-green-700"
         >
-          Créer la réservation et payer
+          Réserver et payer
         </Button>
         <Button
           onClick={backToHomePage}
-          className=" bg-red-500 text-white rounded hover:bg-red-700"
+          className=" bg-red-500 text-white rounded  w-full hover:bg-red-700"
         >
           Abandonner
         </Button>
