@@ -1,4 +1,4 @@
-import ListCategories from "@/components/ListCategories";
+
 import ListMaterial from "@/components/ListMaterial";
 import { AuthContext } from "@/contexts/authContext";
 import styles from "@/styles/Home.module.css";
@@ -21,7 +21,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
-        <ListCategories />
+        
         <div className={styles.description}>
           <ListMaterial />
         </div>
