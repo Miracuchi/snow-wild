@@ -52,8 +52,7 @@ function BasketComponent({ dateFormInfo }: { dateFormInfo: DateFormInfos }) {
         },
       });
       console.log("Reservation created successfully:", response.data);
-      EmptyLocalStorage(CART_STORAGE_KEY, BANK_STORAGE_KEY, DATES_STORAGE_KEY);
-      setCart([]);
+      
       nextStep();
     } catch (error) {
       console.error("Error creating reservation:", error);

@@ -7,6 +7,7 @@ import ReservationResolver from './resolvers/reservation.resolver'
 import UserResolver from './resolvers/user.resolver'
 import Cookies from 'cookies'
 import UserService from './services/user.service'
+import PaymentResolver from "./resolvers/payment.resolver";
 
 import cors from 'cors'
 import express from 'express'
@@ -44,6 +45,7 @@ async function main() {
       UserResolver,
       ReservationResolver,
       ReservationMaterialResolver,
+      PaymentResolver
     ],
     validate: false,
     authChecker: customAuthChecker,
