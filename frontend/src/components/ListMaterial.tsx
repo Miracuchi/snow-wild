@@ -39,8 +39,11 @@ const ListMaterial: React.FC = () => {
             onClick={() => handleCategoryClick(c.id)}
             className="px-4 py-2 w-48 border uppercase border-stone-950 text-black rounded-lg hover:bg-stone-950 hover:text-white transition"
           >
+
             {c.name}
           </button>
+
+
         ))}
       </div>
 

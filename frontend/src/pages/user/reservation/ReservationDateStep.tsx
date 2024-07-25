@@ -1,131 +1,127 @@
-/* eslint-disable @next/next/no-img-element */
 import { useStepper } from "@/components/stepper";
 import {
-  BANK_STORAGE_KEY,
-  CART_STORAGE_KEY,
-  DATES_STORAGE_KEY,
-} from "@/constants";
-import { AuthContext } from "@/contexts/authContext";
-import { useCart } from "@/contexts/CartContext";
-import {
-  EmptyLocalStorage,
-  GetFromLocalStorage,
-} from "@/hooks/useLocalStorage";
-import { CREATE_RESERVATION } from "@/requetes/mutations/reservation.mutations";
-import { useMutation } from "@apollo/client";
-import { useRouter } from "next/router";
-import { useContext } from "react";
-import DatePickerComponent from "./DatePickerComponent";
-import StepperFormActions from "./ReservationActions";
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { toast } from "@/components/ui/use-toast";
+import { DATES_STORAGE_KEY } from "@/constants";
+import { SetToLocalStorage } from "@/hooks/useLocalStorage";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import BasketComponent from "./BasketComponent";
+
+const FirstFormSchema = z.object({
+  date: z
+    .date({
+      required_error: "La date est requise.",
+      invalid_type_error: "Ce champ doit être une date.",
+    })
+    .refine((val) => val instanceof Date && !isNaN(val.getTime()), {
+      message: "La date doit être valide.",
+    }),
+});
+export interface DateFormInfos {
+  start_date: Date;
+  end_date: Date;
+}
 function ReservationDateStep() {
-  const router = useRouter();
-
-  const { user } = useContext(AuthContext);
-  const { cart, setCart } = useCart();
-  const [createReservation] = useMutation(CREATE_RESERVATION);
-  const dateInfos = GetFromLocalStorage(DATES_STORAGE_KEY);
-  console.log("DATEINFOS", dateInfos);
-  const reservationMaterials = cart.map((item) => ({
-    materialId: item.id,
-    quantity: item.quantity,
-    size: item.selectedSize,
-  }));
   const { nextStep } = useStepper();
-  const hasItemInBasket = reservationMaterials.length < 0;
-  const handleSubmit = async () => {
-    if (reservationMaterials.length === 0) {
-      console.error("Error: No materials to reserve.");
-      router.push("/");
-      return;
+  const actualDate = new Date(Date.now());
+  const [formInfos, setFormInfos] = useState<DateFormInfos>({
+    start_date: actualDate,
+    end_date: new Date(
+      actualDate.getFullYear(),
+      actualDate.getMonth(),
+      actualDate.getDate() + 7
+    ),
+  });
+  useEffect(() => {
+    if (formInfos) {
+      SetToLocalStorage(DATES_STORAGE_KEY, formInfos);
     }
+  }, [formInfos]);
 
-    try {
-      const response = await createReservation({
-        variables: {
-          data: {
-            start_date: dateInfos.start_date,
-            end_date: dateInfos.end_date,
-            materials: reservationMaterials,
-            user: {
-              id: user?.userId,
-            },
-          },
-        },
-      });
-      console.log("Reservation created successfully:", response.data);
-      EmptyLocalStorage(CART_STORAGE_KEY, BANK_STORAGE_KEY, DATES_STORAGE_KEY);
-      setCart([]);
-      nextStep();
-    } catch (error) {
-      console.error("Error creating reservation:", error);
-    }
-  };
+  const form = useForm<z.infer<typeof FirstFormSchema>>({
+    resolver: zodResolver(FirstFormSchema),
+    defaultValues: {
+      date: new Date(),
+    },
+  });
 
-  // if (activeStep !== steps.length) {
-  //   return null;
-  // }
-  const numberOfArticleText = "Nombre d'articles";
-  const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
-  const totalPrice = cart.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
+  function onSubmit(_data: z.infer<typeof FirstFormSchema>) {
+    nextStep();
+    toast({
+      title: "First step submitted!",
+    });
+  }
+
   return (
     <>
-      <main className="container mx-auto px-4 py-8 font-poppins grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="col-span-2 ">
-          <DatePickerComponent />
-          <h1 className="text-3xl text-neutral-950 font-bold mb-8 mt-8">
-            Votre panier
-          </h1>
-          <div className="space-y-4 max-h-96 overflow-y-auto">
-            {cart.map((item, index) => (
-              <div
-                key={item.id}
-                className="bg-white flex overflow-hidden relative"
-              >
-                <div className="relative h-48">
-                  <img
-                    className="m-5 max-w-28 object-contain"
-                    src={item.picture}
-                    alt={item.name}
-                  />
-                </div>
-                <div className="p-6 flex justify-between items-start w-full">
-                  <div>
-                    <h2 className="text-2xl font-bold mb-2">{item.name}</h2>
-                    <p className="text-gray-700">
-                      Taille : {item.selectedSize}
-                    </p>
-                    <div className="mt-4 flex items-center">
-                      <span className="mr-2">Quantité : {item.quantity}</span>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <FormField
+            control={form.control}
+            name="date"
+            render={() => (
+              <FormItem>
+                <FormLabel className="text-3xl text-neutral-950 font-bold ml-3 mb-8">
+                  Mes dates de location
+                </FormLabel>
+                <FormControl>
+                  <div className="flex justify-center h-20">
+                    <div className="datePickerContainer  h-20 flex items-center justify-evenly w-full max-w-4xl">
+                      <>
+                        <span>Du</span>
+                        <DatePicker
+                          selected={formInfos.start_date}
+                          onChange={(date) => {
+                            if (date) {
+                              setFormInfos({ ...formInfos, start_date: date });
+                            }
+                          }}
+                          selectsStart
+                          startDate={formInfos.start_date}
+                          endDate={formInfos.end_date}
+                          placeholderText="Date de début"
+                          className="  rounded-lg border-2  border-black py-2 text-center mx-2"
+                        />
+                        <span>au</span>
+                        <DatePicker
+                          selected={formInfos.end_date}
+                          onChange={(date) => {
+                            console.log("date selected:", date);
+                            if (date) {
+                              setFormInfos({ ...formInfos, end_date: date });
+                            }
+                          }}
+                          selectsEnd
+                          startDate={formInfos.start_date}
+                          endDate={formInfos.end_date}
+                          minDate={formInfos.start_date}
+                          placeholderText="Date de fin"
+                          className="  rounded-lg border-2 border-black py-2 text-center mx-2"
+                        />
+                      </>
                     </div>
+                    <span id="divider" />
                   </div>
-                </div>
-                {index < cart.length - 1 && (
-                  <div className="absolute bottom-0 left-6 right-6 border-t-2 border-black"></div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="col-span-1">
-          <div className="bg-white p-5 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold mb-4">Récapitulatif</h2>
-            <div className="flex justify-between items-center border-b-2 pb-2">
-              <p className="text-gray-700">{numberOfArticleText}</p>
-              <p className="text-gray-700">{totalItems}</p>
-            </div>
-            <div className="flex justify-between items-center pt-2">
-              <p className="text-gray-700">Total :</p>
-              <p className="text-gray-700">{totalPrice}€</p>
-            </div>
+                </FormControl>
 
-            <StepperFormActions handleSubmit={handleSubmit} />
-          </div>
-        </div>
-      </main>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </form>
+      </Form>
+      <BasketComponent dateFormInfo={formInfos} />
     </>
   );
 }

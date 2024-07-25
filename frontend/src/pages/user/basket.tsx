@@ -1,4 +1,3 @@
-
 /* eslint-disable @next/next/no-img-element */
 import { AuthContext } from "@/contexts/authContext";
 import { useCart } from "@/contexts/CartContext";
@@ -9,16 +8,16 @@ import { useContext, useState } from "react";
 const Basket: React.FC = () => {
   const { cart, removeFromCart, updateQuantity } = useCart();
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [itemToRemove, setItemToRemove] = useState<string | null>(null);
+  const [itemIdToRemove, setItemIdToRemove] = useState<string | null>(null);
+  const [itemSizeToRemove, setItemSizeToRemove] = useState<string | null>(null);
+
   const router = useRouter();
   const { user } = useContext(AuthContext);
-  const handleQuantityChange = (id: string, newQuantity: number) => {
-    updateQuantity(id, newQuantity);
-  };
 
-  const confirmRemoveItem = (id: string) => {
+  const confirmRemoveItem = (id: string, selectedSize: string) => {
     setShowConfirmation(true);
-    setItemToRemove(id);
+    setItemIdToRemove(id);
+    setItemSizeToRemove(selectedSize);
   };
 
   const handleCheckout = () => {
@@ -30,15 +29,16 @@ const Basket: React.FC = () => {
   };
 
   const handleRemoveItem = () => {
-    if (itemToRemove) {
-      removeFromCart(itemToRemove);
-      setItemToRemove(null);
+    if (itemIdToRemove && itemSizeToRemove) {
+      removeFromCart(itemIdToRemove, itemSizeToRemove);
+      setItemIdToRemove(null);
+      setItemSizeToRemove(null);
       setShowConfirmation(false);
     }
   };
 
   const handleCancelRemove = () => {
-    setItemToRemove(null);
+    setItemIdToRemove(null);
     setShowConfirmation(false);
   };
   const numberOfArticleText = "Nombre d'articles";
@@ -72,7 +72,7 @@ const Basket: React.FC = () => {
         <div className="space-y-4">
           {cart.map((item) => (
             <div
-              key={item.id}
+              key={`${item.id}-${item.selectedSize}`}
               className="bg-white flex rounded-lg shadow-lg overflow-hidden"
             >
               <div className="relative h-48">
@@ -93,7 +93,11 @@ const Basket: React.FC = () => {
                     <select
                       value={item.quantity}
                       onChange={(e) =>
-                        handleQuantityChange(item.id, parseInt(e.target.value))
+                        updateQuantity(
+                          item.id,
+                          item.selectedSize,
+                          parseInt(e.target.value)
+                        )
                       }
                       className="px-2 py-1 border rounded"
                     >
@@ -106,7 +110,7 @@ const Basket: React.FC = () => {
                   </div>
                 </div>
                 <button
-                  onClick={() => confirmRemoveItem(item.id)}
+                  onClick={() => confirmRemoveItem(item.id, item.selectedSize)}
                   className="ml-4 text-red-500 hover:text-red-700"
                 >
                   &#x2715;
