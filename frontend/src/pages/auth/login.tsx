@@ -30,6 +30,7 @@ function Login() {
               userId: data.login.id,
               email: data.login.email,
               role: data.login.role,
+              
             });
             const redirectTo = router.query.redirect || "/";
             if (data?.login?.role === "ADMIN") {
@@ -43,23 +44,7 @@ function Login() {
     }
   };
 
-  if (user) {
-    return (
-      <main className="flex min-h-3/4 m-8 flex-col items-center justify-center p-8 font-poppins">
-        <h1 className="font-bold text-center text-2xl mb-10 text-black">
-          Bonjour, {user.email}!
-        </h1>
-        <a> Mes réservation </a>
-        <button
-          onClick={handleLogout}
-          className="w-1/2 bg-black text-white py-2 rounded-lg hover:bg-neutral-100 hover:text-neutral-950 hover:font-bold cursor-pointer"
-          style={{ display: "block", margin: "0 auto" }}
-        >
-          Déconnexion
-        </button>
-      </main>
-    );
-  }
+  
 
   return (
     <main className="flex min-h-3/4 m-8 flex-col items-center justify-center p-8 font-poppins">
@@ -105,7 +90,7 @@ function Login() {
             href="/auth/reset"
             className="text-black hover:text-gray-600 block"
           >
-            Mot de passe oublié?
+            Mot de passe oublié? 
           </Link>
           <Link
             href="/auth/register"
