@@ -73,7 +73,7 @@ const Basket: React.FC = () => {
           {cart.map((item) => (
             <div
               key={`${item.id}-${item.selectedSize}`}
-              className="bg-white flex rounded-lg shadow-lg overflow-hidden"
+              className="bg-white flex rounded-lg  overflow-hidden"
             >
               <div className="relative h-48">
                 <img
@@ -82,13 +82,15 @@ const Basket: React.FC = () => {
                   alt={item.name}
                 />
               </div>
-              <div className="p-6 flex justify-between items-start">
+              <div className="p-6 flex justify-between items-center">
+               
                 <div>
                   <h2 className="text-2xl font-bold mb-2">{item.name}</h2>
-                  <p className="text-gray-700">{item.description}</p>
-                  <p className="text-gray-700">{item.price}€</p>
-                  <p className="text-gray-700">Taille : {item.selectedSize}</p>
-                  <div className="mt-4 flex items-center">
+                  <p className="text-gray-700 w-9/12">{item.description}</p>
+                  
+                  <div className=" flex mt-5 items-center gap-6 ">
+                  <p className="text-gray-700">Taille : <span className="underline">{item.selectedSize}</span></p>
+                  <div className="flex items-center">
                     <span className="mr-2">Quantité:</span>
                     <select
                       value={item.quantity}
@@ -107,22 +109,26 @@ const Basket: React.FC = () => {
                         </option>
                       ))}
                     </select>
-                  </div>
-                </div>
-                <button
+                   
+                  </div> 
+                  <button
                   onClick={() => confirmRemoveItem(item.id, item.selectedSize)}
                   className="ml-4 text-red-500 hover:text-red-700"
                 >
-                  &#x2715;
+                  supprimer 
                 </button>
+                  </div>
+                </div> 
+                <p className="text-gray-700 text-xl font-bold">{item.price}€</p>
+                
               </div>
             </div>
           ))}
         </div>
       </div>
       <div className="col-span-1">
-        <div className="bg-white p-5 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold mb-4">Récapitulatif</h2>
+        <div className="bg-white p-5 rounded-lg ">
+          <h2 className="text-2xl font-bold mb-6">Récapitulatif</h2>
           <div className="flex justify-between items-center border-b-2 pb-2">
             <p className="text-gray-700">{numberOfArticleText}</p>
             <p className="text-gray-700">{totalItems}</p>
@@ -133,12 +139,12 @@ const Basket: React.FC = () => {
           </div>
           <button
             onClick={handleCheckout}
-            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700 mt-4 w-full"
+            className="p-4 bg-neutral-900 w-full text-white rounded-full hover:bg-neutral-700 mt-6 "
           >
             Finaliser la commande
           </button>
           <Link href="/">
-            <div className="mt-4 text-center text-blue-500 hover:underline">
+            <div className="mt-4 text-center text-neutral-900 hover:underline">
               Continuer vos achats
             </div>
           </Link>

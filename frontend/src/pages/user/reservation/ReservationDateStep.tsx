@@ -66,7 +66,7 @@ function ReservationDateStep() {
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-6">
           <FormField
             control={form.control}
             name="date"
@@ -79,7 +79,7 @@ function ReservationDateStep() {
                   <div className="flex justify-center h-20">
                     <div className="datePickerContainer  h-20 flex items-center justify-evenly w-full max-w-4xl">
                       <>
-                        <span>Du</span>
+                        <span >Du</span>
                         <DatePicker
                           selected={formInfos.start_date}
                           onChange={(date) => {

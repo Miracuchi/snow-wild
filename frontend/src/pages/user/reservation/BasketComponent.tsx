@@ -75,7 +75,7 @@ function BasketComponent({ dateFormInfo }: { dateFormInfo: DateFormInfos }) {
           <h1 className="text-3xl text-neutral-950 font-bold mb-8 mt-8">
             Votre panier
           </h1>
-          <div className="space-y-4 rounded-lg shadow-lg max-h-96 overflow-y-auto ">
+          <div className="space-y-4 rounded-lg  max-h-96 overflow-y-auto ">
             {cart.map((item, index) => (
               <div
                 key={`${item.id}-${item.selectedSize}`}
@@ -88,13 +88,14 @@ function BasketComponent({ dateFormInfo }: { dateFormInfo: DateFormInfos }) {
                     alt={item.name}
                   />
                 </div>
-                <div className="p-6 flex justify-between items-start w-full">
-                  <div>
+                <div className="p-6 flex flex-col w-full">
+                  
                     <h2 className="text-2xl font-bold mb-2">{item.name}</h2>
+                    <div className=" flex mt-2 items-center gap-6 ">
                     <p className="text-gray-700">
-                      Taille : {item.selectedSize}
+                      Taille : <span className="underline">{item.selectedSize}</span>
                     </p>
-                    <div className="mt-4 flex items-center">
+                    <div className="flex items-center">
                       <span className="mr-2">Quantité : {item.quantity}</span>
                     </div>
                   </div>
@@ -112,9 +113,9 @@ function BasketComponent({ dateFormInfo }: { dateFormInfo: DateFormInfos }) {
           </div>
         </div>
         <div className="col-span-1">
-          <div className="bg-white p-5 rounded-lg shadow-lg">
+          <div className="bg-white p-5 rounded-lg ">
             <h2 className="text-2xl font-bold mb-4">Récapitulatif</h2>
-            <div className="flex justify-between items-center border-b-2 pb-2">
+            <div className="flex justify-between mt-6 items-center border-b-2 pb-2">
               <p className="text-gray-700">{numberOfArticleText}</p>
               <p className="text-gray-700">{totalItems}</p>
             </div>

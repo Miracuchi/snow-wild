@@ -11,6 +11,7 @@ function MaterialDetail() {
   const router = useRouter();
 
   const [getAd, { data, loading, error }] = useLazyQuery(GET_MATERIAL_BY_ID);
+  console.log(data)
   const { addToCart } = useCart();
   const [selectedSize, setSelectedSize] = useState<string>();
 
@@ -68,7 +69,7 @@ function MaterialDetail() {
                   <button
                     className={`button px-4 py-2 rounded border ${
                       selectedSize === sizeDetail.size
-                        ? "bg-blue-500 text-white border-blue-500"
+                        ? "bg-white-500 text-neutral border-blue-500"
                         : "bg-black text-white "
                     }`}
                     onClick={() => setSelectedSize(sizeDetail.size)}
