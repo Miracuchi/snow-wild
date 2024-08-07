@@ -27,7 +27,7 @@ export default class ReservationService {
   async findReservationsByUserId(id: string) {
     const reservationByUserId = await this.db.find({
       where: { user: { id } },
-      relations: { user: true },
+      relations:['user', 'reservationMaterials', 'reservationMaterials.material'],
     })
 
     return reservationByUserId

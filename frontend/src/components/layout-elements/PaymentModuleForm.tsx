@@ -8,6 +8,7 @@ import {
   function PaymentModuleForm() {
     const stripe = useStripe();
     const elements = useElements();
+    
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
   
@@ -21,7 +22,7 @@ import {
           return_url: `${process.env.NEXT_PUBLIC_FRONT_URL}/payment/success`,
         },
       });
-   
+     
       if (result.error) {
         console.log(result.error.message);
       }

@@ -23,7 +23,7 @@ export default function StepperForm() {
           }
           return (
             <Step key={stepProps.label} {...stepProps}>
-              Paiement{
+             {
                <ReservationPaiementStep /> }
             </Step>
           );
