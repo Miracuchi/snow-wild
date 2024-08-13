@@ -3,13 +3,11 @@ import {
   Column,
   Entity,
   JoinColumn,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm'
 import Category from './category.entity'
-import Reservation from './reservation.entity'
 import { ReservationMaterial } from './reservation_material.entity'
 
 // =================================================================
@@ -31,7 +29,7 @@ export default class Material {
   picture: string
 
   @Field(() => Float, { nullable: false })
-  @Column("decimal", { precision: 5, scale: 2 })
+  @Column('decimal', { precision: 5, scale: 2 })
   price: number
 
   @Field()
@@ -53,11 +51,6 @@ export default class Material {
   @JoinColumn()
   @OneToMany(() => ReservationMaterial, (r) => r.material)
   reservationMaterials: ReservationMaterial[]
-
-  @Field(() => [Reservation])
-  @JoinColumn()
-  @ManyToMany(() => Reservation, (r) => r.id)
-  reservations: Reservation[]
 }
 
 @ObjectType()
