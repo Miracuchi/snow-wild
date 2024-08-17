@@ -1,4 +1,5 @@
 import { SkiSizes, SnowboardSizes, BootsSizes, ClothSizes, StickSizes } from "@/pages/admin/constantes";
+import { ReservationMaterialInput } from "./reservation";
 
 export type CategoryType = {
   id: string;
@@ -12,10 +13,25 @@ enum MaterialSizes {
   SnowboardSizes,
 }
 
+export enum UserRoleEnum {
+  admin = 'ADMIN',
+  user = 'USER',
+}
+
 export enum MaterialCategories {
   SKI = "ski",
   SNOWBOARD = "sknowboard",
   BOOTS = "boots",
   STICK = "stick",
   ACCESSORY = "accessory",
+}
+
+export type UserType = {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: UserRoleEnum;
+  phone?: string; 
+  reservations?: ReservationMaterialInput[]
 }
