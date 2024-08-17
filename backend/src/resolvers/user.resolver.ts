@@ -30,8 +30,6 @@ export default class UserResolver {
     }
 
     const isPasswordValid = await argon2.verify(user.password, infos.password);
-
-    // const m = new Message();
     if (isPasswordValid) {
       console.log("JWT_SECRET_KEY", process.env.JWT_SECRET_KEY);
       const token = await new SignJWT({ 
@@ -45,15 +43,11 @@ export default class UserResolver {
       })
       .setExpirationTime("2h")
       .sign(new TextEncoder().encode(`${ process.env.JWT_SECRET_KEY}`));
-
-      const cookies = new Cookies(ctx.req, ctx.res);
-    
+      const cookies = new Cookies(ctx.req, ctx.res);    
       cookies.set("token", token, { httpOnly: true });
-      
 
     } else {
       throw Error("Vérifiez vos informations");
-      
     }
 
     return user;
