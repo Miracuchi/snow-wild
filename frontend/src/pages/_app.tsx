@@ -11,9 +11,6 @@ const client = new ApolloClient({
   uri: "http://localhost:4000",
   cache: new InMemoryCache({ addTypename: false }),
   credentials: "include",
-  // defaultOptions: {
-  // watchQuery: { fetchPolicy: "no-cache", nextFetchPolicy: "no-cache" },
-  // },
 });
 
 export default function App(
