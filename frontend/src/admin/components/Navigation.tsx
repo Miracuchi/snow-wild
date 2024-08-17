@@ -24,8 +24,8 @@ const links = [
     icon: <Package className="h-4 w-4"/>
   },
   {
-    name: 'Orders',
-    link: '/admin/orders',
+    name: 'Reservations',
+    link: '/admin/reservations',
     icon: <ShoppingCart className="h-4 w-4"/>
   }
 ]
