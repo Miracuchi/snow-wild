@@ -67,7 +67,7 @@ export function DataTable<TData, TValue>({
       </div>
       <div className="rounded-md sm:border">
         <Table
-          className="w-full overflow-x-auto"
+          className="relative w-full overflow-x-auto"
         >
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -119,7 +119,7 @@ export function DataTable<TData, TValue>({
           <Paginator
             currentPage={table.getState().pagination.pageIndex + 1}
             totalPages={table.getPageCount()}
-            onPageChange={(pageNumber) => table.setPageIndex(pageNumber - 1)}
+            onPageChange={(pageNumber: number) => table.setPageIndex(pageNumber - 1)}
             showPreviousNext
           />
         </div>

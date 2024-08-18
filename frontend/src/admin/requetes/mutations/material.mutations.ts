@@ -20,7 +20,7 @@ export const CREATE_MATERIAL_ADMIN = gql`
   }
 `;
 
-export const DELETE_MATERIAL_ADMIN = gql`
+export const DELETE_MATERIAL_BY_ADMIN = gql`
   mutation DeleteMaterial($deleteMaterialId: String!) {
     deleteMaterial(id: $deleteMaterialId) {
       id

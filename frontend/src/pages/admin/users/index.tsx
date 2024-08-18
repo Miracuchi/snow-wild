@@ -7,7 +7,7 @@ import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button"
 import { ColumnDef } from "@tanstack/react-table"
 import { useMutation } from "@apollo/client"
-import { DELETE_USER_BY_ADMIN } from "@/admin/requetes/mutations/users.mutation"; 
+import { DELETE_USER_BY_ADMIN } from '@/admin/requetes/mutations/user.mutations'; 
 import { useRouter } from "next/router";
 import {
   CaretSortIcon,
@@ -72,7 +72,6 @@ const UsersAdminPage = () => {
     role: string
   }
   
-   
   const columns: ColumnDef<User>[] = [
     {
       accessorKey: "firstName",
@@ -130,6 +129,25 @@ const UsersAdminPage = () => {
         )
       },
       cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>
+    },
+    {
+      accessorKey: "role",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => {
+                console.log(column.getIsSorted() === "desc")
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            }
+          >
+            Role
+            <CaretSortIcon className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
+      cell: ({ row }) => <div className="lowercase">{row.getValue("role")}</div>
     },
     {
       header: "Action",
