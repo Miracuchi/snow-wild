@@ -56,15 +56,18 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="w-full sm:p-4">
-      <h2 className="p-4">{title ? title : 'All links'}</h2>
-      <div>
-        <Link 
-          className={buttonVariants({ variant: "outline" })}
-          href={'/admin/users/create'}
-        >
-          Add
-        </Link>
+      <div className="flex justify-between w-full items-center">
+        <h2 className="p-4">{title ? title : 'All links'}</h2>
+        <div>
+          <Link 
+            className={buttonVariants({ variant: "outline" })}
+            href={'/admin/users/create'}
+          >
+            Add
+          </Link>
+        </div>
       </div>
+      
       <div className="rounded-md sm:border">
         <Table
           className="relative w-full overflow-x-auto"

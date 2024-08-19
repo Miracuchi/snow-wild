@@ -163,75 +163,56 @@ const ProductsAdminPage = () => {
           <div className="flex lowercase gap-2">
   
            <Link
-              className={buttonVariants({ variant: 'default'})}
               href={`/admin/users/${row.original.id}`}
             >
-              show
+               <div className='
+                flex rounded-full bg-gray-200 shadow-sm p-2
+                hover:bg-black hover:text-white transition-all'
+              >
+                <Eye />
+              </div>
             </Link>
   
             <Link
-              className={buttonVariants({ variant: 'default'})}
+  
               href={`/admin/users/edit/${row.original.id}`}
             >
-              Edit
+               <div className='
+                flex rounded-full bg-gray-200 shadow-sm p-2
+                hover:bg-black hover:text-white transition-all'
+              >
+                <Pen />
+              </div>
             </Link>
   
-            <Button
+            <div 
               onClick={() => {
                 handleDeleteProduct(row.original.id)
               }}
             >
-              Delete
-            </Button>
-            {/* <Link href={`/admin/users/${row.original.id}`}>show</Link>
-            <Link href={`/admin/users/edit/${row.original.id}`}>Edit</Link> */}
-  
+              <div
+                className='
+                flex rounded-full bg-gray-200 shadow-sm p-2
+                hover:bg-black hover:text-white transition-all'
+              >
+                <Trash />
+              </div>
+            </div>
+
           </div>
         )
       }
     }
   ];
 
-
-  // <div className="flex flex-end items-center gap-2">
-  //   <Link href={`/admin/products/${m.id}`} 
-  //     className={`${buttonVariants({ variant: "outline" })}`}>
-  //     <Eye />
-  //   </Link>
-  //   <Link href={`/admin/products/edit/${m.id}`} className={buttonVariants({ variant: "outline" })}>
-  //     <Pen />
-  //   </Link>
-  //   <Button onClick={() => handleDeleteProduct(m.id)} variant="outline" className="">
-  //     <Trash />
-  //   </Button>
-  // </div>
   return (
     <div className="">
-      {/* <Card>
-         <Tabs defaultValue="all" className="">
-          <TabsList
-            className="flex justify-between"
-          >
-            <TabsTrigger value="all">All</TabsTrigger>
-            {categories?.map((c) => {
-              return (
-                <TabsTrigger key={c.id} value={c.name}>{c.name}</TabsTrigger>
-              )
-            })}
-            
-           
-          </TabsList>
-          <TabsContent value="all">Make changes to your account here.</TabsContent>
-          <TabsContent value="account">Make changes to your account here.</TabsContent>
-          <TabsContent value="password">Change your password here.</TabsContent>
-        </Tabs> 
-      </Card>
-      */}
       <div className="flex items-cente bg-white py-4">
         {data && (
           <DataTable 
             columns={columns} 
             data={data.listMaterials}
+            title="List of Products"
           />
         )}       
       </div>

@@ -1,4 +1,4 @@
-import User, { InputRegister } from '../entities/user.entity'
+import User, { InputAdminUpdateUser, InputRegister } from '../entities/user.entity'
 import { Repository } from 'typeorm'
 import datasource from '../db'
 
@@ -23,6 +23,15 @@ export default class UserService {
     return await this.db.findOneBy({ email })
   }
 
+  async findUserById(id: string) {
+    return await this.db.findOne({
+      where: { id },
+      relations: {
+        reservations: true
+      }
+    })
+  }
+
   async createUser({
     email,
     password,
@@ -44,5 +53,15 @@ export default class UserService {
     const user = (await this.findUser(id)) as User
     await this.db.remove(user)
     return { ...user, id }
+  }
+
+  async updateUser(infos: InputAdminUpdateUser, id:string) {
+    const userToUpdate = (await this.findUser(id)) as User
+    const userToSave = this.db.merge(userToUpdate, {
+      ...infos
+    })
+      
+    
+    return await this.db.save(userToSave)
   }
 }

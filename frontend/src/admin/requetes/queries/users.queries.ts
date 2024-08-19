@@ -11,3 +11,23 @@ export const GET_USERS = gql`
     }
   }
 `;
+
+export const GET_USER_BY_ID = gql`
+  query GetUserById($getUserByIdId: String!) {
+  getUserById(id: $getUserByIdId) {
+    id
+    firstName
+    email
+    lastName
+    phone
+    role
+    reservations {
+      id
+      start_date
+      status
+      end_date
+      createdAt
+    }
+  }
+}
+`;

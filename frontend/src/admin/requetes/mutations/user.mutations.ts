@@ -26,3 +26,15 @@ export const DELETE_USER_BY_ADMIN = gql`
     }
   }
 `;
+export const UPDATE_USER_BY_ADMIN = gql`
+  mutation UpdateUser($updateUserId: String!, $infos: InputAdminUpdateUser!) {
+    updateUser(id: $updateUserId, infos: $infos) {
+      role
+      phone
+      lastName
+      id
+      firstName
+      email
+    }
+  }
+`;

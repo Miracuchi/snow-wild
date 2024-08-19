@@ -1,68 +1,66 @@
-"use client"
- 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { useMutation } from "@apollo/client"
-import { CREATE_USERS_BY_ADMIN } from "@/admin/requetes/mutations/user.mutations";
-import { z } from "zod"
-import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
-import { UserRoleEnum } from '@/types';
-import { Button } from "@/components/ui/button"
-import { toast } from "@/components/ui/use-toast";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {
-  Form,
-  FormControl,
-  FormDescription,
+import { useRouter } from "next/router";
+import { useLazyQuery, useQuery, useMutation } from "@apollo/client";
+import { useEffect, useState, useRef } from "react";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, SubmitHandler, ControllerRenderProps, FieldValues } from "react-hook-form";
+import { 
+  Form, 
+  FormControl, 
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-// import { PhoneInputShadcnUiPhoneInput } from "@/components/phone-input";
-import { isValidPhoneNumber } from "react-phone-number-input";
+  FormMessage
+} from '@/components/ui/form';
+import { Label } from "@/components/ui/label";
+import { Input } from '@/components/ui/input';
+import { SkiSizes, SnowboardSizes, BootsSizes, ClothSizes, StickSizes } from '@/pages/admin/constantes';
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CategoryType, UserRoleEnum } from "@/types";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import ControlledInput from "@/admin/components/ControlledInput";
+import { useToast } from "@/components/ui/use-toast";
+import SizeLabel from "@/admin/components/SizeLabel";
+import axios from "axios";
+import { CircleX } from "lucide-react";
+import { GET_USER_BY_ID } from "@/admin/requetes/queries/users.queries";
+import { UPDATE_USER_BY_ADMIN } from "@/admin/requetes/mutations/user.mutations";
 import { PhoneInput } from "@/components/ui/phone-input";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from "@/components/ui/command";
-import { CalendarIcon, RocketIcon } from "lucide-react";
-import { FaceIcon, PersonIcon, EnvelopeClosedIcon, GearIcon } from "@radix-ui/react-icons";
-import { useRouter } from "next/router";
+
+
 const phoneValidation = new RegExp(/(?:([+]\d{1,4})[-.\s]?)?(?:[(](\d{1,3})[)][-.\s]?)?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,9})/g);
-// console.log(phoneValidation.test('+330612345678'))
-// Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character
-const passwordValidation = new RegExp(
-  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
-);
 
-const formSchema = z.object({
-  firstName: z.string().min(2, {
-    message: "First name must be at least 2 characters.",
-  }),
-  lastName: z.string().min(2, {
-    message: "Last name must be at least 2 characters.",
-  }),
-  email: z.string().email({message: "Email is not valid"}),
-  role: z.string().min(1, {
-    message: "A role must be selected."
-  }),
-  password: z
-    .string()
-    .min(1, { message: 'Must have at least 1 character' }),
-    // .regex(passwordValidation, {
-    //   message: 'Your password is not valid',
-    // }),
-  phone: z
-  .string().min(1, {message: "Phone number can't be empty"})
-  .regex(phoneValidation, {message: 'Your phone number is invalid'})
-  // .or(z.literal("")),
-})
-
-export function FormHook() {
+const EditUserAdmin = () => {
   const router = useRouter();
-  const [createUser, {data, loading, error}] = useMutation(CREATE_USERS_BY_ADMIN, {
+  const { toast } = useToast()
+  const [updateUser] = useMutation(UPDATE_USER_BY_ADMIN, {
     fetchPolicy: "no-cache"
   })
-    // 1. Define your form.
+  const formSchema = z.object({
+    firstName: z.string().min(2, {
+      message: "First name must be at least 2 characters.",
+    }),
+    lastName: z.string().min(2, {
+      message: "Last name must be at least 2 characters.",
+    }),
+    email: z.string().email({message: "Email is not valid"}),
+    role: z.string().min(1, {
+      message: "A role must be selected."
+    }),
+    password: z
+      .string()
+      .min(1, { message: 'Must have at least 1 character' }),
+      // .regex(passwordValidation, {
+      //   message: 'Your password is not valid',
+      // }),
+    phone: z
+    .string().min(1, {message: "Phone number can't be empty"})
+    .regex(phoneValidation, {message: 'Your phone number is invalid'})
+    // .or(z.literal("")),
+  })
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -73,24 +71,48 @@ export function FormHook() {
       password: "",
     },
   })
+
+  const [getUser] = useLazyQuery(GET_USER_BY_ID);
+
+  useEffect(() => {
+    if(router.query.id && form) {
+      getUser({
+        variables: {
+          getUserByIdId: router.query.id
+        },
+        onCompleted: (data) => {
+          console.log("Success loaded user")
+          console.log(data.getUserById)
+          form.setValue("firstName", data?.getUserById.firstName);
+          form.setValue("lastName", data.getUserById.lastName);
+          form.setValue("email", data.getUserById.email)
+          form.setValue("role", data?.getUserById?.role);
+          form.setValue("phone", data.getUserById.phone)
+          
+        },
+        onError: (error) => {
+          console.log("error: ", error)
+        }
+      })
+    }
+  },[router.query.id, getUser, form])
   
-  // 2. Define a submit handler.
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
-    
-
-    createUser({
+    updateUser({
       variables: {
         infos: {
           ...values
-        }
+        },
+        updateUserId: router.query.id
       },
       onCompleted:(data) => {
         console.log("succes")
         console.log(data)
         toast({
           title: "Success",
-          description: "You successfully registred a new user",
+          description: "Successfully updated user",
         })
         router.push("/admin/users");
       },
@@ -104,11 +126,12 @@ export function FormHook() {
       }
     })
   }
+
   return (
     <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <Card className="md:w-[500px] md:mx-auto">
-            <CardHeader>Create a neuw user</CardHeader>
+            <CardHeader>Edit user</CardHeader>
             <CardContent>
               <FormField
                 control={form.control}
@@ -205,15 +228,17 @@ export function FormHook() {
                   className="mb-3"
                 >
                   <FormLabel>Role</FormLabel>
+                 
                   <Select 
                     onValueChange={(value) => { 
                       field.onChange(value)
                     }}
                   >
-                    <FormControl>
+                    <FormControl> 
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a role" />
+                        <SelectValue placeholder={form.getValues("role")} />
                       </SelectTrigger>
+                     
                     </FormControl>
                     <SelectContent>
                       <SelectGroup>
@@ -282,3 +307,5 @@ export function FormHook() {
     </Form>
   )
 }
+
+export default EditUserAdmin;

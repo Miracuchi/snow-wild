@@ -158,26 +158,41 @@ const UsersAdminPage = () => {
           <div className="flex lowercase gap-2">
   
            <Link
-              className={buttonVariants({ variant: 'default'})}
               href={`/admin/users/${row.original.id}`}
             >
-              show
+               <div className='
+                flex rounded-full bg-gray-200 shadow-sm p-2
+                hover:bg-black hover:text-white transition-all'
+              >
+                <Eye />
+              </div>
+               
             </Link>
   
             <Link
-              className={buttonVariants({ variant: 'default'})}
+              className='rounded-full'
               href={`/admin/users/edit/${row.original.id}`}
             >
-              Edit
+              <div className='
+                flex rounded-full bg-gray-200 shadow-sm p-2
+                hover:bg-black hover:text-white transition-all'
+              >
+                <Pen/>
+              </div>
             </Link>
   
-            <Button
+            <div
               onClick={() => {
                 handleDeleteUser(row.original.id)
               }}
-            >
-              Delete
-            </Button>
+            >             
+              <div className='
+                flex rounded-full bg-gray-200 shadow-sm p-2
+                hover:bg-black hover:text-white transition-all'
+              >
+                <Trash />
+              </div>
+            </div>
             {/* <Link href={`/admin/users/${row.original.id}`}>show</Link>
             <Link href={`/admin/users/edit/${row.original.id}`}>Edit</Link> */}
   
