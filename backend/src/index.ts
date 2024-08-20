@@ -67,15 +67,11 @@ async function main() {
       credentials: true,
     }),
     express.json(),
-    // expressMiddleware accepts the same arguments:
-    // an Apollo Server instance and optional configuration options
     expressMiddleware(server, {
       context: async ({ req, res }) => {
         let user: User | null = null
         const cookies = new Cookies(req, res)
         const token = cookies.get('token')
-        // console.log("play in expressMiddleware:")
-        // console.log("token in expressMiddleware", token)
         if (token) {
           try {
             const verify = await jwtVerify<Payload>(

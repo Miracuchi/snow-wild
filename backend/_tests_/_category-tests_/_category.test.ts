@@ -1,6 +1,7 @@
 import { ApolloServer } from '@apollo/server'
 import { buildSchemaSync } from 'type-graphql'
 import CategoryResolver from '../../src/resolvers/category.resolver'
+import { uuid } from 'uuidv4'
 
 import { addMocksToSchema } from '@graphql-tools/mock'
 import assert from 'assert'
@@ -14,9 +15,11 @@ import {
 
 import type { CategoryNameResponseData, ResponseData } from '../type_tests'
 
+const id1 = uuid();
+const id2 = uuid();
 const categoryData: Category[] = [
-  { id: '1', name: 'Categorie 1', material: [] },
-  { id: '2', name: 'Catégorie 2', material: [] },
+  { id: id1, name: 'Categorie 1', material: [] },
+  { id: id2, name: 'Catégorie 2', material: [] },
 ]
 
 let server: ApolloServer
@@ -45,8 +48,7 @@ beforeAll(async () => {
   })
 })
 
-
-describe('Test sur les livres', () => {
+describe('Test sur les categories', () => {
   it('mon premier test', async () => {
     const response = await server.executeOperation<ResponseData>({
       query: LIST_CATEGORY,
@@ -73,7 +75,7 @@ describe('Test sur les livres', () => {
     const response = await server.executeOperation<CategoryNameResponseData>({
       query: FIND_CATEGORY_BY_ID,
       variables: {
-        findCategoryId: '1',
+        findCategoryId: id1,
       },
     })
     assert(response.body.kind === 'single')

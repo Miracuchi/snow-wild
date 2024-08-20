@@ -4,9 +4,11 @@ import { SignJWT } from "jose";
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { MyContext } from "../";
 import User, {
+  InputAdminUpdateUser,
   InputLogin,
   InputRegister,
   Message,
+  UpdateUserWithoutPassword,
   UserWithoutPassword,
 } from "../entities/user.entity";
 import UserService from "../services/user.service";
@@ -30,8 +32,6 @@ export default class UserResolver {
     }
 
     const isPasswordValid = await argon2.verify(user.password, infos.password);
-
-    // const m = new Message();
     if (isPasswordValid) {
       console.log("JWT_SECRET_KEY", process.env.JWT_SECRET_KEY);
       const token = await new SignJWT({ 
@@ -45,15 +45,11 @@ export default class UserResolver {
       })
       .setExpirationTime("2h")
       .sign(new TextEncoder().encode(`${ process.env.JWT_SECRET_KEY}`));
-
-      const cookies = new Cookies(ctx.req, ctx.res);
-    
+      const cookies = new Cookies(ctx.req, ctx.res);    
       cookies.set("token", token, { httpOnly: true });
-      
 
     } else {
       throw Error("Vérifiez vos informations");
-      
     }
 
     return user;
@@ -72,6 +68,16 @@ export default class UserResolver {
     return m;
   }
 
+  @Query(() => User)
+  async getUserById(@Arg('id') id: string) {
+    const user = await new UserService().findUserById(id);
+    if(!user) {
+      throw new Error('Pas de user avec cet Id');
+    }
+    return user;
+  }
+
+
   @Mutation(() => UserWithoutPassword)
   async register(@Arg("infos") infos: InputRegister) {
     const user = await new UserService().findUserByEmail(infos.email);
@@ -84,6 +90,21 @@ export default class UserResolver {
     }
     
     const newUser = await new UserService().createUser(infos);
+    return newUser;
+  }
+
+  @Mutation(() => UpdateUserWithoutPassword)
+  async updateUser(@Arg("infos") infos: InputAdminUpdateUser, @Arg('id') id: string) {
+    const user = await new UserService().findUserByEmail(infos.email);
+    if (user) {
+      throw new Error("Cet email est déjà pris!");
+    }
+    const hashPassword = await argon2.hash(infos.password);
+    if(hashPassword) {
+      infos.password = hashPassword;
+    }
+    
+    const newUser = await new UserService().updateUser(infos, id);
     return newUser;
   }
 }

@@ -46,7 +46,6 @@ jobs:
         run: echo "This job's status is ${{ job.status }}."
 
   test-back:
-    needs: run-linters
     runs-on: ubuntu-latest
     services:
       # Label used to access the service container
@@ -68,7 +67,7 @@ jobs:
           - 5432:5432
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Goto back and run tests
         run: cd backend && npm i && npm run testCI
   docker:

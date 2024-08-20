@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Command, CommandGroup, CommandItem, CommandList, CommandSeparator } from "@/components/ui/command";
 import { Bell, Home, LineChart, Package, Package2, ShoppingCart, Users } from "lucide-react"
@@ -8,7 +7,6 @@ import { useQuery, useLazyQuery, useMutation } from "@apollo/client";
 import { LIST_CATEGORIES } from "@/requetes/queries/category.queries"
 
 import { useRouter } from "next/router";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import Navigation from "./Navigation";
 type LinkType = {
   name: string,
@@ -33,8 +31,8 @@ const links = [
     icon: <Package className="h-4 w-4"/>
   },
   {
-    name: 'Orders',
-    link: '/admin/orders',
+    name: 'Reservations',
+    link: '/admin/reservations',
     icon: <ShoppingCart className="h-4 w-4"/>
   }
 ]

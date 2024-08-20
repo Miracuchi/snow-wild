@@ -35,8 +35,8 @@ const links = [
     icon: <Package className="h-4 w-4"/>
   },
   {
-    name: 'Orders',
-    link: '/admin/orders',
+    name: 'Reservations',
+    link: '/admin/reservations',
     icon: <ShoppingCart className="h-4 w-4"/>
   }
 ]
@@ -86,6 +86,7 @@ const HeaderAdmin = () => {
           </div>
         </form>
       </div>
+      
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="secondary" size="icon" className="rounded-full">
@@ -94,14 +95,17 @@ const HeaderAdmin = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Settings</DropdownMenuItem>
-          <DropdownMenuItem>Support</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Logout</DropdownMenuItem>
+          <Card className="px-3 py-2">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Settings</DropdownMenuItem>
+            <DropdownMenuItem>Support</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Logout</DropdownMenuItem>
+          </Card>
         </DropdownMenuContent>
       </DropdownMenu>
+      
     </header>
   )
 }

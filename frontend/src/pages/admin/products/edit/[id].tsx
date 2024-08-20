@@ -121,11 +121,11 @@ const EditProductAdmin = () => {
     if( !watchSizes?.some(e => e.size === size) ) {
       console.log(watchSizes);
       let copyArr = [...watchSizes, {size, quantity:0}];
-      form.setValue('sizes', copyArr);
+      form.setValue('sizes', copyArr as any);
 
     } else {
       let filtredSizes = watchSizes.filter((s) =>  s.size !== size)
-      form.setValue('sizes', filtredSizes);
+      form.setValue('sizes', filtredSizes as any);
     }
   }
 
@@ -341,7 +341,7 @@ const EditProductAdmin = () => {
               render={({ field }) => (
                 <FormItem 
                   className="mb-3"
-                  onChange={(e) => { field.onChange(e.target?.value)}}>
+                  onChange={(e: Event) => { field.onChange(e.target?.value)}}>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
                     <Textarea

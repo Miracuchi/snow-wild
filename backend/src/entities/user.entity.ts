@@ -154,3 +154,54 @@ export class InputChangePassword {
   @Field({ nullable: false })
   password: string
 }
+
+@InputType()
+export class InputAdminUpdateUser extends User {
+  @Field({ nullable: false })
+  firstName: string
+
+  @Field({ nullable: false })
+  lastName: string
+
+  @Field({ nullable: false })
+  email: string
+
+  @Field({ nullable: false })
+  password: string
+  
+  @Field({ nullable: false })
+  phone: string
+
+  @Field({ nullable: false })
+  role: UserRoleEnum
+
+}
+
+@ObjectType()
+export class UpdateUserWithoutPassword
+  implements
+    Omit<
+      User,
+      'password' | 'reservations'
+    >
+{
+  @Field()
+  id: string
+
+  @Field()
+  firstName: string
+
+  @Field()
+  lastName: string
+
+  @Field()
+  email: string
+
+
+  @Field()
+  phone: string
+
+  @Field(() => String)
+  role: UserRoleEnum
+}
+
