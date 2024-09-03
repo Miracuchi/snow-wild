@@ -1,5 +1,4 @@
-import { SkiSizes, SnowboardSizes, BootsSizes, ClothSizes, StickSizes } from "@/pages/admin/constantes";
-import { ReservationMaterialInput } from "./reservation";
+import { ReservationMaterial, ReservationMaterialInput, StatutReservation } from "./reservation";
 
 export type CategoryType = {
   id: string;
@@ -34,4 +33,14 @@ export type UserType = {
   role: UserRoleEnum;
   phone?: string; 
   reservations?: ReservationMaterialInput[]
+}
+
+export type ReservationType = {
+  id: string;
+  user: UserType;
+  start_date: Date;
+  end_date: Date;
+  createdAt: Date
+  status: StatutReservation;
+  reservationMaterials: ReservationMaterial[];
 }

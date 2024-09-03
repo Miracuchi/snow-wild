@@ -4,6 +4,7 @@ import { SignJWT } from "jose";
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { MyContext } from "../";
 import User, {
+  InputAdminCreateUser,
   InputAdminUpdateUser,
   InputLogin,
   InputRegister,
@@ -13,7 +14,6 @@ import User, {
 } from "../entities/user.entity";
 import UserService from "../services/user.service";
 
-import { Payload } from "../";
 @Resolver()
 export default class UserResolver {
   @Query(() => [User])
@@ -105,6 +105,27 @@ export default class UserResolver {
     }
     
     const newUser = await new UserService().updateUser(infos, id);
+    return newUser;
+  }
+
+  @Mutation(() => User)
+  async deleteAdminUser(@Arg('id') id: string) {
+    const deletedUser = await new UserService().adminDeleteUser(id);
+    return deletedUser
+  }
+
+  @Mutation(() => UpdateUserWithoutPassword)
+  async adminCreateUser(@Arg("infos") infos: InputAdminCreateUser) {
+    const user = await new UserService().findUserByEmail(infos.email);
+    if (user) {
+      throw new Error("Cet email est déjà pris!");
+    }
+    const hashPassword = await argon2.hash(infos.password);
+    if(hashPassword) {
+      infos.password = hashPassword;
+    }
+    
+    const newUser = await new UserService().createAdminUser(infos);
     return newUser;
   }
 }

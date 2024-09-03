@@ -10,14 +10,10 @@ import {
 } from 'typeorm'
 import { ReservationMaterial } from './reservation_material.entity'
 import User from './user.entity'
+import { StatutReservation } from '../types'
 
-export enum StatutReservation {
-  AWAITING = 'en_attente',
-  CONFIRMATION = 'confirmée',
-  PAID = 'payée',
-  CANCEL = 'annulée',
-  FINISHED = 'terminée',
-}
+
+
 
 // =================================================================
 //                           OBJECT TYPE
@@ -126,4 +122,46 @@ export class UpdateReservationInput {
 
   @Field({ nullable: true })
   end_date?: Date
+}
+
+@ObjectType()
+export class AdminDeletedReservation {
+  @Field(() => User)
+  user: User
+
+  @Field(() => [ReservationMaterial])
+  reservationMaterials: ReservationMaterial[] // Liste des matériels réservés avec leur quantité
+
+  @Field()
+  status: StatutReservation.CANCEL
+
+  @Field()
+  start_date: Date
+
+  @Field()
+  end_date: Date
+
+  @Field()
+  createdAt: Date
+}
+
+@ObjectType()
+export class AdminGetReservations {
+  @Field(() => User)
+  user: User
+
+  @Field(() => [ReservationMaterial])
+  reservationMaterials: ReservationMaterial[] // Liste des matériels réservés avec leur quantité
+
+  @Field()
+  status: StatutReservation.CANCEL
+
+  @Field()
+  start_date: Date
+
+  @Field()
+  end_date: Date
+
+  @Field()
+  createdAt: Date
 }

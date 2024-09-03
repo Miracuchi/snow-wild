@@ -13,19 +13,13 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-// import { PhoneInputShadcnUiPhoneInput } from "@/components/phone-input";
-import { isValidPhoneNumber } from "react-phone-number-input";
 import { PhoneInput } from "@/components/ui/phone-input";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from "@/components/ui/command";
-import { CalendarIcon, RocketIcon } from "lucide-react";
-import { FaceIcon, PersonIcon, EnvelopeClosedIcon, GearIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/router";
 const phoneValidation = new RegExp(/(?:([+]\d{1,4})[-.\s]?)?(?:[(](\d{1,3})[)][-.\s]?)?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,9})/g);
 // console.log(phoneValidation.test('+330612345678'))
@@ -87,7 +81,7 @@ export function FormHook() {
       },
       onCompleted:(data) => {
         console.log("succes")
-        console.log(data)
+        console.log("data: => ", data)
         toast({
           title: "Success",
           description: "You successfully registred a new user",

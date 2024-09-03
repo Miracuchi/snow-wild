@@ -1,4 +1,4 @@
-import User, { InputAdminUpdateUser, InputRegister } from '../entities/user.entity'
+import User, { InputAdminCreateUser, InputAdminUpdateUser, InputRegister } from '../entities/user.entity'
 import { Repository } from 'typeorm'
 import datasource from '../db'
 
@@ -63,5 +63,18 @@ export default class UserService {
       
     
     return await this.db.save(userToSave)
+  }
+
+  async createAdminUser(infos: InputAdminCreateUser) {
+    const createdAdminUser = this.db.create(infos)
+    console.log('createdAdminUser: ', createdAdminUser)
+    return await this.db.save(createdAdminUser)
+  }
+
+  async adminDeleteUser(id: string) {
+    const user = (await this.findUserById(id)) as User
+
+    const deletedUser = await this.db.remove(user)
+    return { ...deletedUser, id }
   }
 }

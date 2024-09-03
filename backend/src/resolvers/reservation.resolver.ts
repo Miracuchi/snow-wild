@@ -3,6 +3,7 @@ import { Arg, Mutation, Query, Resolver } from 'type-graphql'
 
 import { GraphQLDate } from 'graphql-scalars'
 import Reservation, {
+  AdminDeletedReservation,
   CreateReservationInput,
   ReservationDeleted,
   UpdateReservationInput,
@@ -95,5 +96,18 @@ export default class ReservationResolver {
       await new ReservationService().deleteReservation(id)
 
     return { ...reservation }
+  }
+
+  @Mutation(() => AdminDeletedReservation)
+  async adminDeleteReservation(@Arg('id') id: string) {
+    const { id: idReservation, ...reservation } =
+      await new ReservationService().deleteReservation(id)
+
+    return { ...reservation }
+  }
+
+  @Query(() => [Reservation])
+  async adminGetReservations() {
+    return await new ReservationService().listReservations()
   }
 }
