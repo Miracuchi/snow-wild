@@ -30,12 +30,14 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   title?: string
+  createEntity: string
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   title,
+  createEntity,
 }: DataTableProps<TData, TValue>) {
 
   const [sorting, setSorting] = useState<SortingState>([])
@@ -61,7 +63,7 @@ export function DataTable<TData, TValue>({
         <div>
           <Link 
             className={buttonVariants({ variant: "outline" })}
-            href={'/admin/users/create'}
+            href={`/admin/${createEntity}/create`}
           >
             Add
           </Link>

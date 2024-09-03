@@ -1,14 +1,14 @@
 import { gql } from "@apollo/client";
 
 export const CREATE_USERS_BY_ADMIN = gql`
-mutation AdminRegister($infos: AdminInputRegister!) {
-  adminRegister(infos: $infos) {
+mutation AdminCreateUser($infos: InputAdminCreateUser!) {
+  adminCreateUser(infos: $infos) {
     email
     firstName
     id
     lastName
-    role
     phone
+    role
   }
 }
 `

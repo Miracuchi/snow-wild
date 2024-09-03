@@ -156,6 +156,27 @@ export class InputChangePassword {
 }
 
 @InputType()
+export class InputAdminCreateUser {
+  @Field({ nullable: false })
+  firstName: string
+
+  @Field({ nullable: false })
+  lastName: string
+
+  @Field({ nullable: false })
+  email: string
+
+  @Field({ nullable: false })
+  password: string
+  
+  @Field({ nullable: false })
+  phone: string
+
+  @Field({ nullable: false })
+  role: UserRoleEnum
+}
+
+@InputType()
 export class InputAdminUpdateUser extends User {
   @Field({ nullable: false })
   firstName: string
@@ -174,7 +195,6 @@ export class InputAdminUpdateUser extends User {
 
   @Field({ nullable: false })
   role: UserRoleEnum
-
 }
 
 @ObjectType()
@@ -204,4 +224,5 @@ export class UpdateUserWithoutPassword
   @Field(() => String)
   role: UserRoleEnum
 }
+
 

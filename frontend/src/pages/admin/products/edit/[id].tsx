@@ -20,7 +20,7 @@ import { Input } from '@/components/ui/input';
 import { SkiSizes, SnowboardSizes, BootsSizes, ClothSizes, StickSizes } from '@/pages/admin/constantes';
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { CategoryType } from "@/types";
+import { CategoryType, SizeType } from "@/types";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ControlledInput from "@/admin/components/ControlledInput";
@@ -288,9 +288,9 @@ const EditProductAdmin = () => {
                         <CircleX 
                           className="hover:text-red-400 hover:cursor-pointer"
                           onClick={() => {
-                            let arrCopy = watchSizes.filter((s) => s.size !== field.value[index].size);
+                            let arrCopy: any = watchSizes.filter((s) => s.size !== field.value[index].size);
                             
-                            form.setValue('sizes', arrCopy)
+                            form.setValue('sizes', arrCopy )
                           }}
                         />
                       </div>
@@ -323,7 +323,7 @@ const EditProductAdmin = () => {
               render={({ field }) => (
                 <FormItem 
                   className="mb-3"
-                  onChange={(e) => { field.onChange(e.target?.value)}}>
+                  onChange={(e: any) => { field.onChange(e.target?.value)}}>
                   <FormLabel className="font-bold">Product&apos;s name</FormLabel>
                   <FormControl>
                     <Input 
@@ -341,7 +341,7 @@ const EditProductAdmin = () => {
               render={({ field }) => (
                 <FormItem 
                   className="mb-3"
-                  onChange={(e: Event) => { field.onChange(e.target?.value)}}>
+                  onChange={(e: any) => { field.onChange(e.target?.value)}}>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
                     <Textarea
@@ -419,7 +419,7 @@ const EditProductAdmin = () => {
                 
                       
                       onValueChange={(value) => { 
-                        handleChangeCategory(value, field) 
+                        handleChangeCategory(value, field as any) 
                       }}
                     >
                       <FormControl>
@@ -435,7 +435,7 @@ const EditProductAdmin = () => {
                       
                       >
                         <SelectGroup>
-                          {!loading && data?.categories.map((c: CategoryType, index) => {
+                          {!loading && data?.categories.map((c: CategoryType, index: number) => {
                             return (
                               <SelectItem 
                                 key={`category_${c.id}_${index}`}

@@ -41,7 +41,7 @@ const ProductsAdminPage = () => {
         console.log("successfully delete")
         toast({
           title: "Delete",
-          description: "Successfully delete"
+          description: "Successfully deleted"
         })
         router.reload();
       }),
@@ -213,6 +213,7 @@ const ProductsAdminPage = () => {
             columns={columns} 
             data={data.listMaterials}
             title="List of Products"
+            createEntity="products"
           />
         )}       
       </div>

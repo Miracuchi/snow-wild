@@ -2,10 +2,9 @@ import { Repository } from 'typeorm'
 import datasource from '../db'
 import Reservation, {
   CreateReservationInput,
-  StatutReservation,
   UpdateReservationInput,
 } from '../entities/reservation.entity'
-
+import { StatutReservation } from '../types';
 export default class ReservationService {
   db: Repository<Reservation>
   constructor() {
@@ -13,7 +12,14 @@ export default class ReservationService {
   }
 
   async listReservations() {
-    return this.db.find()
+    return this.db.find({
+      relations: {
+        user: true,
+        reservationMaterials: {
+          material: true
+        }
+      }
+    })
   }
 
   async findReservationById(id: string) {

@@ -1,3 +1,10 @@
+export enum StatutReservation {
+  AWAITING = 'en_attente',
+  CONFIRMATION = 'confirmée',
+  PAID = 'payée',
+  CANCEL = 'annulée',
+  FINISHED = 'terminée',
+}
 export interface ReservationInput {
   startDate: String!;
   endDate: String!;
@@ -22,12 +29,13 @@ interface Material {
 }
 
 // Type pour ReservationMaterial
-interface ReservationMaterial {
+export type ReservationMaterial = {
   id: string;
   price: number;
   quantity: number;
   size: string;
   material: Material;
+  reservation: Reservation;
 }
 
 // Type pour Reservation

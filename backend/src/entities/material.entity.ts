@@ -43,7 +43,9 @@ export default class Material {
   @Field(() => Category)
   @ManyToOne(() => Category, (c) => c.material, {
     cascade: true,
-    nullable: false,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    nullable: true,
   })
   category: Category
 

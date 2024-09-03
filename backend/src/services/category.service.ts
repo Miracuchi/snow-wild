@@ -1,6 +1,7 @@
 import { Repository } from 'typeorm'
 import datasource from '../db'
-import Category, { CreateCategoryInput } from '../entities/category.entity'
+import Category, { AdminUpdateCategoryInput, CreateCategoryInput } from '../entities/category.entity'
+import { Arg } from 'type-graphql'
 
 export default class CategoryService {
   db: Repository<Category>
@@ -41,5 +42,28 @@ export default class CategoryService {
       throw new Error("La catégorie n'existe pas!")
     }
     return category
+  }
+
+  async findCategoryByName(name: string) {
+    const category = await this.db.findOne({
+      where: { name },
+      relations: { material: true },
+    })
+    return category
+  }
+
+  async updateCategory(@Arg('data') data: AdminUpdateCategoryInput) {
+    const { id } = data
+    const categoryToUpdate = await this.find(id)
+    if (!categoryToUpdate) {
+      throw new Error("Error, category id not found!")
+    }
+
+    const categoryToSave = this.db.merge(categoryToUpdate, {
+      ...data,
+    })
+
+    return await this.db.save(categoryToSave)
+
   }
 }
