@@ -1,26 +1,27 @@
+/* eslint-disable no-case-declarations */
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { ApolloServer } from '@apollo/server'
 import { expressMiddleware } from '@apollo/server/express4'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
-import datasource from './db'
-import MaterialResolver from './resolvers/material.resolver'
-import ReservationResolver from './resolvers/reservation.resolver'
-import UserResolver from './resolvers/user.resolver'
 import Cookies from 'cookies'
-import UserService from './services/user.service'
-import PaymentResolver from "./resolvers/payment.resolver";
-
 import cors from 'cors'
 import express from 'express'
 import http from 'http'
+import { jwtVerify } from 'jose'
 import 'reflect-metadata'
 import { buildSchema } from 'type-graphql'
+import datasource from './db'
 import User from './entities/user.entity'
-import CategoryResolver from './resolvers/category.resolver'
-
-import ReservationMaterialResolver from './resolvers/reservation_material.resolver'
-
-import { jwtVerify } from 'jose'
 import { customAuthChecker } from './lib/authChecker'
+import CategoryResolver from './resolvers/category.resolver'
+import MaterialResolver from './resolvers/material.resolver'
+import PaymentResolver from './resolvers/payment.resolver'
+import ReservationResolver from './resolvers/reservation.resolver'
+import ReservationMaterialResolver from './resolvers/reservation_material.resolver'
+import UserResolver from './resolvers/user.resolver'
+import ReservationService from './services/reservation.service'
+import UserService from './services/user.service'
+import { StatutReservation } from './types'
 
 export interface MyContext {
   req: express.Request
@@ -34,8 +35,9 @@ export interface Payload {
   userId: string
 }
 
-const app = express()
+export const app = express()
 const httpServer = http.createServer(app)
+const stripe = require('stripe')(process.env.STRIPE_PRIVATE_API_KEY!)
 
 async function main() {
   const schema = await buildSchema({
@@ -45,7 +47,7 @@ async function main() {
       UserResolver,
       ReservationResolver,
       ReservationMaterialResolver,
-      PaymentResolver
+      PaymentResolver,
     ],
     validate: false,
     authChecker: customAuthChecker,
@@ -57,16 +59,68 @@ async function main() {
   })
 
   await server.start()
+
+  app.post(
+    '/webhooks',
+    express.raw({ type: 'application/json' }), // Utiliser express.raw pour les webhooks Stripe
+    (request, response) => {
+      // console.log('received request froms stripe')
+      // console.log(request.body)
+      const sig = request.headers['stripe-signature']
+      const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET // Secret de webhook Stripe
+
+      console.log('endpoint secret', endpointSecret)
+      console.log('sig', sig)
+
+      let event
+      try {
+        // Vérification de la signature du webhook
+        event = stripe.webhooks.constructEvent(
+          request.body,
+          sig,
+          endpointSecret
+        )
+      } catch (err) {
+        console.error(`⚠️  Erreur de signature du webhook`, err)
+        return response.sendStatus(400)
+      }
+
+      console.log('WEBHOOK', event)
+
+      // Gestion des événements Stripe
+      switch (event.type) {
+        case 'payment_intent.succeeded':
+          const paymentIntent = event.data.object
+          const id = paymentIntent.metadata.reservationId
+          console.log('HELLOOOOOOOEDDDDDD', id)
+
+          new ReservationService().updateReservation(id, {
+            status: StatutReservation.PAID,
+          })
+          console.log('Paiement réussi pour:', paymentIntent.id)
+          // Vous pouvez mettre à jour votre base de données ici
+          break
+        case 'payment_method.attached':
+          const paymentMethod = event.data.object
+          console.log('Méthode de paiement attachée:', paymentMethod.id)
+          break
+        default:
+          console.log(`Unhandled event type ${event.type}`)
+      }
+
+      response.json({ received: true })
+    }
+  )
+
   app.use(
     '/',
     cors<cors.CorsRequest>({
-      origin: [
-        'http://localhost:3000',
-        'http://localhost:8000',
-      ],
+      origin: ['http://localhost:3000', 'http://localhost:8000'],
       credentials: true,
     }),
     express.json(),
+    // TODO: find how to handle http request + graphql request
+    // This line intercept all request and need a token, we should add an exception for our /webhooks route
     expressMiddleware(server, {
       context: async ({ req, res }) => {
         let user: User | null = null
@@ -87,6 +141,7 @@ async function main() {
       },
     })
   )
+
   await datasource.initialize()
   await new Promise<void>((resolve) =>
     httpServer.listen({ port: 4000 }, resolve)

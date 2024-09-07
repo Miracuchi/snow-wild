@@ -8,12 +8,9 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm'
+import { StatutReservation } from '../types'
 import { ReservationMaterial } from './reservation_material.entity'
 import User from './user.entity'
-import { StatutReservation } from '../types'
-
-
-
 
 // =================================================================
 //                           OBJECT TYPE
@@ -122,6 +119,9 @@ export class UpdateReservationInput {
 
   @Field({ nullable: true })
   end_date?: Date
+
+  @Field({ nullable: true })
+  status: StatutReservation
 }
 
 @ObjectType()

@@ -1,13 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useStepper } from "@/components/stepper";
-import {
-  BANK_STORAGE_KEY,
-  CART_STORAGE_KEY,
-  DATES_STORAGE_KEY,
-} from "@/constants";
 import { AuthContext } from "@/contexts/authContext";
 import { useCart } from "@/contexts/CartContext";
-import { EmptyLocalStorage } from "@/hooks/useLocalStorage";
 import { CREATE_RESERVATION } from "@/requetes/mutations/reservation.mutations";
 import { useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
@@ -52,7 +46,8 @@ function BasketComponent({ dateFormInfo }: { dateFormInfo: DateFormInfos }) {
         },
       });
       console.log("Reservation created successfully:", response.data);
-      
+      const reservationId = response.data.createReservation.id;
+      localStorage.setItem("reservationId", reservationId);
       nextStep();
     } catch (error) {
       console.error("Error creating reservation:", error);
@@ -89,11 +84,11 @@ function BasketComponent({ dateFormInfo }: { dateFormInfo: DateFormInfos }) {
                   />
                 </div>
                 <div className="p-6 flex flex-col w-full">
-                  
-                    <h2 className="text-2xl font-bold mb-2">{item.name}</h2>
-                    <div className=" flex mt-2 items-center gap-6 ">
+                  <h2 className="text-2xl font-bold mb-2">{item.name}</h2>
+                  <div className=" flex mt-2 items-center gap-6 ">
                     <p className="text-gray-700">
-                      Taille : <span className="underline">{item.selectedSize}</span>
+                      Taille :{" "}
+                      <span className="underline">{item.selectedSize}</span>
                     </p>
                     <div className="flex items-center">
                       <span className="mr-2">Quantité : {item.quantity}</span>
