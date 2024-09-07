@@ -15,8 +15,8 @@ import {
 
 import type { CategoryNameResponseData, ResponseData } from '../type_tests'
 
-const id1 = uuid();
-const id2 = uuid();
+const id1 = '1';
+const id2 = '2';
 const categoryData: Category[] = [
   { id: id1, name: 'Categorie 1', material: [] },
   { id: id2, name: 'Catégorie 2', material: [] },
@@ -80,7 +80,10 @@ describe('Test sur les categories', () => {
     })
     assert(response.body.kind === 'single')
     expect(response.body.singleResult.data).toEqual({
-      findCategory: categoryData[0],
+      findCategory: {
+        id: categoryData[0].id,
+        name: categoryData[0].name,
+      }
     })
   })
 })
