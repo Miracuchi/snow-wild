@@ -135,7 +135,7 @@ const EditProductAdmin = () => {
     // console.log('formData: ', formData)
     axios.post(`${process.env.NEXT_PUBLIC_IMAGE_URL}/upload`, formData)
     .then((result) => {
-      // console.log('result', result)
+      console.log('result', result)
       if (result?.data?.status == "success") {
         updateMaterial({
           variables: {
@@ -416,8 +416,6 @@ const EditProductAdmin = () => {
                     <FormLabel>Category</FormLabel>
                     
                     <Select
-                
-                      
                       onValueChange={(value) => { 
                         handleChangeCategory(value, field as any) 
                       }}

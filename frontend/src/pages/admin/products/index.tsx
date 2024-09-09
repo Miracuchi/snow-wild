@@ -80,7 +80,7 @@ const ProductsAdminPage = () => {
           </Button>
         )
       },
-      cell: ({ row }) => <div className="lowercase"><img src={row.getValue("picture")} alt="#" width={"auto"} height={"50px"} style={{height: '50px'}} /></div>
+      cell: ({ row }) => <div className="lowercase"><img src={`${process.env.NEXT_PUBLIC_IMAGE_URL}`+row.getValue("picture")} alt="#" width={"auto"} height={"50px"} style={{height: '50px'}} /></div>
     },
     {
       accessorKey: "name",
@@ -163,7 +163,7 @@ const ProductsAdminPage = () => {
           <div className="flex lowercase gap-2">
   
            <Link
-              href={`/admin/users/${row.original.id}`}
+              href={`/admin/products/${row.original.id}`}
             >
                <div className='
                 flex rounded-full bg-gray-200 shadow-sm p-2
@@ -175,7 +175,7 @@ const ProductsAdminPage = () => {
   
             <Link
   
-              href={`/admin/users/edit/${row.original.id}`}
+              href={`/admin/products/edit/${row.original.id}`}
             >
                <div className='
                 flex rounded-full bg-gray-200 shadow-sm p-2
