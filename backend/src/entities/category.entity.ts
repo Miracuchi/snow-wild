@@ -17,13 +17,8 @@ export default class Category {
   @JoinColumn()
   @OneToMany(() => Material, (m) => m.category, )
   material: Material[]
-
-  // @JoinColumn()
-  // @ManyToOne(() => Material, (material) => material.id, {
-  //   cascade: true,
-  //   onDelete: 'CASCADE',
-  // })
-}
+  
+ }
 
 @InputType()
 export class CreateCategoryInput {

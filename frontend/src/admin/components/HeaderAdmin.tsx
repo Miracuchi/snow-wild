@@ -10,8 +10,10 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/router";
-import Navigation
- from "./Navigation";
+import Navigation from "./Navigation";
+import { AuthContext } from "@/contexts/authContext";
+import { useContext } from "react";
+
 type LinkType = {
   name: string,
   link: string,
@@ -48,7 +50,15 @@ const links = [
 
 const HeaderAdmin = () => {
   const router = useRouter()
+  const authCtx = useContext(AuthContext);
   const { pathname } = router;
+
+  const handleLogout = () => {
+    console.log("click to logout")
+    console.log(authCtx)
+    authCtx.logout();
+  }
+
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
       <Sheet>
@@ -106,7 +116,14 @@ const HeaderAdmin = () => {
             <DropdownMenuItem>Settings</DropdownMenuItem>
             <DropdownMenuItem>Support</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Logout</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Button
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+              
+            </DropdownMenuItem>
           </Card>
         </DropdownMenuContent>
       </DropdownMenu>
