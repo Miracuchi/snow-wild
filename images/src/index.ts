@@ -7,6 +7,7 @@ import path from "path";
 const app = express();
 const port = 8000;
 app.use(cors());
+app.use('/uploads', express.static('uploads'));
 
 app.get("/", (_, res) => {
   res.send("Hello World!");
@@ -14,7 +15,8 @@ app.get("/", (_, res) => {
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../uploads/"));
+    console.log(path.join(__dirname, "../uploads/"));
+    cb(null, path.join(__dirname, "../uploads/"))
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + "-" + file.originalname);
@@ -28,9 +30,10 @@ app.post("/upload", upload.single("file"), (req: any, res: Response) => {
       console.log("Error: ", err);
       res.status(500).json({ error: err });
     } else {
+      console.log('response images:', res)
       res
         .status(201)
-        .json({ status: "success", filename: "/files/" + req.file.filename });
+        .json({ status: "success", filename: "/uploads/" + req.file.filename });
     }
   });
 });

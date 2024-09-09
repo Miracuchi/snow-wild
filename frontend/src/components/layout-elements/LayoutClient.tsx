@@ -1,5 +1,6 @@
 import Footer from "./Footer";
 import TopBar from "./Topbar";
+import { Toaster } from "@/components/ui/toaster";
 
 function LayoutClient ({ children }: { children: JSX.Element }){
 
@@ -7,6 +8,7 @@ function LayoutClient ({ children }: { children: JSX.Element }){
         <div>
             <TopBar />
             {children}
+            <Toaster />
             <Footer />
         </div>
     )

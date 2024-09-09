@@ -72,7 +72,7 @@ async function main() {
       {
         name: 'Liberty',
         picture:
-          'https://static.netski.com/media-resize/eyJhdXRvV2VicCI6dHJ1ZSwiYnVja2V0Ijoic2tpc2V0LW1lZGlhcyIsImtleSI6Im1lZGlhLW1hdGVyaWFsXC9zZWFzb25fMjRcL3Nub3dib2FyZFwvYmlnLXZcL3Nub3dib2FyZF8yODIucG5nIn0=',
+          '/uploads/liberty.jpg',
         price: 49,
         sizes: [
           { size: '110', quantity: 20 },
@@ -94,7 +94,7 @@ async function main() {
       {
         name: 'REDSTER Q7.8 REVOSHOCK S',
         picture:
-          'https://static.netski.com/media-resize/eyJhdXRvV2VicCI6dHJ1ZSwiYnVja2V0Ijoic2tpc2V0LW1lZGlhcyIsImtleSI6Im1lZGlhLW1hdGVyaWFsXC9zZWFzb25fMjRcL3NraVwvYmlnLXZcL2RiLXNraV8xMjQ0LnBuZyJ9',
+          '/uploads/redster.jpg',
         price: 33,
         sizes: [
           { size: '150', quantity: 20 },
@@ -116,7 +116,7 @@ async function main() {
       {
         name: 'Black Pearl 88 SP',
         picture:
-          'https://static.netski.com/media-resize/eyJhdXRvV2VicCI6dHJ1ZSwiYnVja2V0Ijoic2tpc2V0LW1lZGlhcyIsImtleSI6Im1lZGlhLW1hdGVyaWFsXC9zZWFzb25fMjRcL3NraVwvYmlnLXZcL2RiLXNraV80ODAucG5nIn0=',
+          '/uploads/black-pearl.jpg',
         price: 33,
         sizes: [
           { size: '200', quantity: 20 },
@@ -138,7 +138,7 @@ async function main() {
       {
         name: 'TRIXIE',
         picture:
-          'https://static.netski.com/media-resize/eyJhdXRvV2VicCI6dHJ1ZSwiYnVja2V0Ijoic2tpc2V0LW1lZGlhcyIsImtleSI6Im1lZGlhLW1hdGVyaWFsXC9zZWFzb25fMjRcL3Nob2VzXC9iaWdcL3Nob2VzXzYyNi5wbmcifQ==',
+          '/uploads/trixie.jpg',
         price: 20,
         sizes: [
           { size: '36', quantity: 20 },
@@ -160,7 +160,7 @@ async function main() {
       {
         name: 'Bâtons de Ski Leki Bold Lite',
         picture:
-          'https://cdn.etrias.nl/media/cache/product_lg/S/k/Skistok-Leki-Bold-Lite-S-Black-Fluorescent-Red-White.jpg',
+          '/uploads/leki-bold-lite.jpg',
         price: 10,
         sizes: [
           { size: '150', quantity: 20 },
@@ -182,7 +182,7 @@ async function main() {
       {
         name: 'Allspeed Visor Impacts',
         picture:
-          'https://contents.mediadecathlon.com/m4169172/k$6ff133dacc382160fb170fdcc836ef50/sq/casque-de-skisnow-allspeed-visor-impacts-photochromique-homme.jpg?format=auto&f=2400x2400',
+          '/uploads/allspeed-visor.jpg',
         price: 15,
         sizes: [
           { size: 'S', quantity: 20 },
