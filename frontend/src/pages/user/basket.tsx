@@ -73,61 +73,65 @@ const Basket: React.FC = () => {
           {cart.map((item) => (
             <div
               key={`${item.id}-${item.selectedSize}`}
-              className="bg-white flex rounded-lg  overflow-hidden"
+              className=" flex rounded-lg  overflow-hidden border-4 border-blue-300 shadow-lg"
             >
               <div className="relative h-48">
                 <img
                   className="m-5 max-w-28 object-contain"
-                  src={item.picture}
+                  src={process.env.NEXT_PUBLIC_IMAGE_URL + item.picture}
                   alt={item.name}
                 />
               </div>
               <div className="p-6 flex justify-between items-center">
-               
                 <div>
                   <h2 className="text-2xl font-bold mb-2">{item.name}</h2>
-                  <p className="text-gray-700 w-9/12">{item.description}</p>
-                  
+                  <p className="text-gray-700 w-9/12 line-clamp-3">
+                    {item.description}
+                  </p>
+
                   <div className=" flex mt-5 items-center gap-6 ">
-                  <p className="text-gray-700">Taille : <span className="underline">{item.selectedSize}</span></p>
-                  <div className="flex items-center">
-                    <span className="mr-2">Quantité:</span>
-                    <select
-                      value={item.quantity}
-                      onChange={(e) =>
-                        updateQuantity(
-                          item.id,
-                          item.selectedSize,
-                          parseInt(e.target.value)
-                        )
+                    <p className="text-gray-700">
+                      Taille :{" "}
+                      <span className="underline">{item.selectedSize}</span>
+                    </p>
+                    <div className="flex items-center">
+                      <span className="mr-2">Quantité:</span>
+                      <select
+                        value={item.quantity}
+                        onChange={(e) =>
+                          updateQuantity(
+                            item.id,
+                            item.selectedSize,
+                            parseInt(e.target.value)
+                          )
+                        }
+                        className="px-2 py-1 border rounded"
+                      >
+                        {[1, 2, 3, 4, 5].map((q) => (
+                          <option key={q} value={q}>
+                            {q}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <button
+                      onClick={() =>
+                        confirmRemoveItem(item.id, item.selectedSize)
                       }
-                      className="px-2 py-1 border rounded"
+                      className="ml-4 text-red-500 hover:text-red-700"
                     >
-                      {[1, 2, 3, 4, 5].map((q) => (
-                        <option key={q} value={q}>
-                          {q}
-                        </option>
-                      ))}
-                    </select>
-                   
-                  </div> 
-                  <button
-                  onClick={() => confirmRemoveItem(item.id, item.selectedSize)}
-                  className="ml-4 text-red-500 hover:text-red-700"
-                >
-                  supprimer 
-                </button>
+                      supprimer
+                    </button>
                   </div>
-                </div> 
+                </div>
                 <p className="text-gray-700 text-xl font-bold">{item.price}€</p>
-                
               </div>
             </div>
           ))}
         </div>
       </div>
-      <div className="col-span-1">
-        <div className="bg-white p-5 rounded-lg ">
+      <div className="col-span-1 mt-[69px]">
+        <div className=" p-5 rounded-lg border-4 border-blue-300 shadow-lg">
           <h2 className="text-2xl font-bold mb-6">Récapitulatif</h2>
           <div className="flex justify-between items-center border-b-2 pb-2">
             <p className="text-gray-700">{numberOfArticleText}</p>

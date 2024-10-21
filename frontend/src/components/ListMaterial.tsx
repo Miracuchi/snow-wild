@@ -1,32 +1,53 @@
-import { useQuery, useLazyQuery } from "@apollo/client";
 import { LIST_CATEGORIES } from "@/requetes/queries/category.queries";
-import { LIST_MATERIAL, LIST_MATERIAL_BY_CATEGORY_ID } from "@/requetes/queries/material.queries";
-import { Category, CategoryQuery } from "@/types/category";
+import {
+  LIST_MATERIAL,
+  LIST_MATERIAL_BY_CATEGORY_ID,
+} from "@/requetes/queries/material.queries";
+import { CategoryQuery } from "@/types/category";
 import { MaterialQuery } from "@/types/material";
-import { useState } from "react";
+import { useLazyQuery, useQuery } from "@apollo/client";
 import Link from "next/link";
+import { useState } from "react";
 
 const ListMaterial: React.FC = () => {
-  const { data: categoriesData, loading: categoriesLoading, error: categoriesError } = useQuery<CategoryQuery>(LIST_CATEGORIES);
+  const {
+    data: categoriesData,
+    loading: categoriesLoading,
+    error: categoriesError,
+  } = useQuery<CategoryQuery>(LIST_CATEGORIES);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const { data: allMaterialsData, loading: allMaterialsLoading, error: allMaterialsError } = useQuery<MaterialQuery>(LIST_MATERIAL);
-  const [getMaterialsByCategory, { data: materialsData, loading: materialsLoading, error: materialsError }] = useLazyQuery<MaterialQuery>(LIST_MATERIAL_BY_CATEGORY_ID);
+  const {
+    data: allMaterialsData,
+    loading: allMaterialsLoading,
+    error: allMaterialsError,
+  } = useQuery<MaterialQuery>(LIST_MATERIAL);
+  const [
+    getMaterialsByCategory,
+    { data: materialsData, loading: materialsLoading, error: materialsError },
+  ] = useLazyQuery<MaterialQuery>(LIST_MATERIAL_BY_CATEGORY_ID);
 
   const handleCategoryClick = (categoryId: string | null) => {
     setSelectedCategory(categoryId);
     if (categoryId) {
-      getMaterialsByCategory({ variables: { findMaterialByCategoriesId: categoryId } });
+      getMaterialsByCategory({
+        variables: { findMaterialByCategoriesId: categoryId },
+      });
     }
   };
 
-  const materialsToDisplay = selectedCategory ? materialsData?.findMaterialByCategories : allMaterialsData?.listMaterials;
+  const materialsToDisplay = selectedCategory
+    ? materialsData?.findMaterialByCategories
+    : allMaterialsData?.listMaterials;
+  console.log(materialsToDisplay);
 
   return (
     <div className="container mx-auto px-4 py-8 font-poppins">
       <div className="flex justify-center space-x-4 mb-6">
         {categoriesLoading && <p>Loading categories...</p>}
-        {categoriesError && <p>Error loading categories: {categoriesError.message}</p>}
+        {categoriesError && (
+          <p>Error loading categories: {categoriesError.message}</p>
+        )}
         <button
           onClick={() => handleCategoryClick(null)}
           className="px-4 py-2 w-48 border uppercase border-stone-950 text-black rounded-lg hover:bg-stone-950 hover:text-white transition"
@@ -39,16 +60,17 @@ const ListMaterial: React.FC = () => {
             onClick={() => handleCategoryClick(c.id)}
             className="px-4 py-2 w-48 border uppercase border-stone-950 text-black rounded-lg hover:bg-stone-950 hover:text-white transition"
           >
-
             {c.name}
           </button>
-
-
         ))}
       </div>
 
-      {(allMaterialsLoading || materialsLoading) && <p className="text-gray-500">Chargement des articles...</p>}
-      {(allMaterialsError || materialsError) && <p className="text-red-500">Erreur lors du chargement des articles.</p>}
+      {(allMaterialsLoading || materialsLoading) && (
+        <p className="text-gray-500">Chargement des articles...</p>
+      )}
+      {(allMaterialsError || materialsError) && (
+        <p className="text-red-500">Erreur lors du chargement des articles.</p>
+      )}
 
       {materialsToDisplay && (
         <main className="container mx-auto px-4 py-8 font-poppins">
@@ -63,7 +85,7 @@ const ListMaterial: React.FC = () => {
                     <div className="relative flex rounded-lg shadow-lg justify-center items-center h-52 overflow-hidden  rounded-t-lg">
                       <img
                         className="object-cover h-full "
-                        src={item.picture}
+                        src={process.env.NEXT_PUBLIC_IMAGE_URL + item.picture}
                         alt={item.name}
                       />
                       <div className="absolute   inset-0 bg-gradient-to-b from-transparent to-neutral-700  opacity-50"></div>

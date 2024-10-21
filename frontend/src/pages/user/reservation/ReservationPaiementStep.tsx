@@ -90,18 +90,18 @@ function ReservationPaiementStep() {
     handleGetStripeSession();
   }, []);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div>{usableReservationObject.id}</div>
-      <div className="bg-gray-100 h-screen w-screen py-8">
+    <main className="flex min-h-screen flex-col items-center justify-between pb-24">
+      <div className=" h-screen w-screen py-8">
         <div className="container mx-auto px-4">
-          <h1 className="text-2xl font-semibold mb-4">Panier</h1>
+          <h1 className="text-3xl text-neutral-950 font-bold mb-4">Panier</h1>
           <div className="flex flex-col md:flex-row gap-4">
             <div className="md:w-3/4">
-              <div className="bg-white rounded-lg shadow-md p-6 mb-4">
+              <div className="bg-white rounded-lg shadow-lg border-4 border-blue-300 p-6 mb-4">
                 <table className="w-full">
                   <thead>
                     <tr>
                       <th className="text-left font-semibold">Product</th>
+                      <th className="text-left font-semibold">Size</th>
                       <th className="text-left font-semibold">Price</th>
                       <th className="text-left font-semibold">Quantity</th>
                       <th className="text-left font-semibold">Total</th>
@@ -116,39 +116,24 @@ function ReservationPaiementStep() {
                             <span className="font-semibold">{d.name}</span>
                           </div>
                         </td>
+                        <td className="py-4">
+                          <div className="flex items-center">
+                            {/*<img className="object-cover h-full " src={d.picture} alt={d.name} />*/}
+                            <span className="font-semibold">
+                              {d.selectedSize}
+                            </span>
+                          </div>
+                        </td>
                         <td className="py-4">{formatMoney(d.price)}</td>
                         <td className="py-4">
                           <div className="flex items-center">
-                            <button
-                              disabled={d.quantity === 1}
-                              className="border rounded-md py-2 px-4 mr-2"
-                              onClick={() =>
-                                removeFromCart(d.id, d.selectedSize)
-                              }
-                            >
-                              -
-                            </button>
                             <span className="text-center w-8">
                               {d.quantity}
                             </span>
-                            <button
-                              className="border rounded-md py-2 px-4 ml-2"
-                              onClick={() => addToCart(d, d.selectedSize)}
-                            >
-                              +
-                            </button>
                           </div>
                         </td>
                         <td className="py-4">
                           {formatMoney(d.price * d.quantity)}
-                        </td>
-                        <td className="py-4">
-                          <button
-                            className="flex items-center"
-                            onClick={() => removeFromCart(d.id, d.selectedSize)}
-                          >
-                            Supprimer
-                          </button>
                         </td>
                       </tr>
                     ))}
@@ -166,6 +151,12 @@ function ReservationPaiementStep() {
                               </span>
                             </div>
                           </td>
+                          <td className="py-4">
+                            <div className="flex items-center">
+                              {/*<img className="object-cover h-full " src={d.picture} alt={d.name} />*/}
+                              <span className="font-semibold">{d.size}</span>
+                            </div>
+                          </td>
                           <td className="py-4">{formatMoney(d.price)}</td>
                           <td className="py-4">
                             <div className="flex items-center">
@@ -174,16 +165,14 @@ function ReservationPaiementStep() {
                               </span>
                             </div>
                           </td>
-                          <td className="py-4">
-                            {formatMoney(d.price * d.quantity)}
-                          </td>
+                          <td className="py-4">{formatMoney(d.price)}</td>
                         </tr>
                       ))}
                   </tbody>
                 </table>
               </div>
             </div>
-            <div className="md:w-1/4">
+            <div className="md:w-1/4 rounded-lg shadow-lg border-4 border-blue-300 ">
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h2 className="text-lg font-semibold mb-4">Résumé</h2>
                 <div className="flex justify-between mb-2">
