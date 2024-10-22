@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { toast } from "@/components/ui/use-toast";
 import { useCart } from "@/contexts/CartContext";
 import { GET_MATERIAL_BY_ID } from "@/requetes/queries/material.queries";
 import { Material } from "@/types/material";
@@ -11,7 +12,7 @@ function MaterialDetail() {
   const router = useRouter();
 
   const [getAd, { data, loading, error }] = useLazyQuery(GET_MATERIAL_BY_ID);
-  console.log(data)
+  console.log(data);
   const { addToCart } = useCart();
   const [selectedSize, setSelectedSize] = useState<string>();
 
@@ -39,17 +40,17 @@ function MaterialDetail() {
     if (material && selectedSize) {
       const materialWithSize = { ...material, selectedSize };
       addToCart(materialWithSize, selectedSize);
+      toast({ description: "Ajouté au panier" });
     }
-    
   };
 
   return (
     <main className="container mx-auto px-4 py-8 font-poppins">
-      <div className="bg-white py-5 flex rounded-lg shadow-lg overflow-hidden">
+      <div className="bg-white py-5 flex rounded-lg shadow-lg border-4 border-blue-300 overflow-hidden">
         <div className="flex-auto w-64 flex items-center justify-center">
           <img
             className="max-w-28 object-contain"
-            src={material?.picture}
+            src={process.env.NEXT_PUBLIC_IMAGE_URL + material?.picture}
             alt={material?.name}
           />
         </div>

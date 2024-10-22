@@ -3,13 +3,12 @@ import { loadStripe, Stripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
 import PaymentModuleForm from "./PaymentModuleForm";
 
-
 function PaymentModule({ clientSecret }: { clientSecret: string }) {
   const options = {
     clientSecret,
   };
   const [stripe, setStripe] = useState<Stripe | null>();
- 
+
   const getStripeInstance = async () => {
     try {
       const stripePromise = await loadStripe(
@@ -18,12 +17,14 @@ function PaymentModule({ clientSecret }: { clientSecret: string }) {
       setStripe(stripePromise);
     } catch (err) {
       console.log("Il y a eu une erreur");
-      console.log(err)
+      console.log(err);
     }
   };
   useEffect(() => {
     getStripeInstance();
-  }, [clientSecret]);
+  }, []);
+
+  console.log("clientSec", clientSecret, stripe);
 
   return clientSecret && stripe ? (
     <Elements stripe={stripe} options={options}>

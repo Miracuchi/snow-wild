@@ -19,13 +19,12 @@
  *
  *------------------------**/
 import PaymentModule from "@/components/layout-elements/PaymentModule";
-import {useCart} from "@/contexts/CartContext";
-import { useLazyQuery } from "@apollo/client";
-import { formatMoney } from "@/utilities"; 
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCart } from "@/contexts/CartContext";
 import { CREATE_SESSION } from "@/requetes/queries/payment.queries";
-import { Item } from "@radix-ui/react-dropdown-menu";
+import { Reservation } from "@/types/reservation";
+import { formatMoney } from "@/utilities";
+import { useLazyQuery } from "@apollo/client";
+import { useEffect } from "react";
 
 interface Prices {
   subtotal: number;
@@ -35,14 +34,24 @@ interface Prices {
 }
 
 function ReservationPaiementStep() {
-  const { addToCart, cart,  removeFromCart } = useCart();
+  const { addToCart, cart, removeFromCart } = useCart();
+  const reservationId = localStorage.getItem("reservationId");
+  const reservationObject = localStorage.getItem("reservation");
+  const usableReservationObject: Reservation =
+    reservationObject && JSON.parse(reservationObject);
+
+  console.log("MEGARDHDGHDGHGD", usableReservationObject);
   const calculatePrices = (): Prices => {
     const taxRate = 0.2; // 20% taxe par défaut
     const shippingCost = 0.0; // frais d'envoi par défaut
 
-    const subtotal = cart.reduce((sum, item) => {
-      return sum + item.price * item.quantity;
-    }, 0);
+    const subtotal =
+      cart.reduce((sum, item) => {
+        return sum + item.price * item.quantity;
+      }, 0) ||
+      usableReservationObject.reservationMaterials.reduce((sum, item) => {
+        return sum + item.price * item.quantity;
+      }, 0);
 
     const totalTax = subtotal * taxRate;
     const total = subtotal + totalTax + shippingCost;
@@ -57,10 +66,20 @@ function ReservationPaiementStep() {
   const prices = calculatePrices();
 
   const [getStripeSession, { data }] = useLazyQuery(CREATE_SESSION);
+  console.log(data);
+
   const handleGetStripeSession = () => {
     getStripeSession({
       variables: {
-        data: cart.map((item) => ({ id: item.id, quantity: item.quantity })),
+        data:
+          cart.length > 0
+            ? cart.map(({ id, quantity }) => ({ id, quantity }))
+            : usableReservationObject.reservationMaterials.map((item) => ({
+                id: item.material.id,
+                quantity: item.quantity,
+              })),
+        reservationId:
+          cart.length > 0 ? reservationId : usableReservationObject.id,
       },
       onError(error) {
         console.log(error);
@@ -71,17 +90,18 @@ function ReservationPaiementStep() {
     handleGetStripeSession();
   }, []);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="bg-gray-100 h-screen w-screen py-8">
+    <main className="flex min-h-screen flex-col items-center justify-between pb-24">
+      <div className=" h-screen w-screen py-8">
         <div className="container mx-auto px-4">
-          <h1 className="text-2xl font-semibold mb-4">Panier</h1>
+          <h1 className="text-3xl text-neutral-950 font-bold mb-4">Panier</h1>
           <div className="flex flex-col md:flex-row gap-4">
             <div className="md:w-3/4">
-              <div className="bg-white rounded-lg shadow-md p-6 mb-4">
+              <div className="bg-white rounded-lg shadow-lg border-4 border-blue-300 p-6 mb-4">
                 <table className="w-full">
                   <thead>
                     <tr>
                       <th className="text-left font-semibold">Product</th>
+                      <th className="text-left font-semibold">Size</th>
                       <th className="text-left font-semibold">Price</th>
                       <th className="text-left font-semibold">Quantity</th>
                       <th className="text-left font-semibold">Total</th>
@@ -92,51 +112,67 @@ function ReservationPaiementStep() {
                       <tr key={d.id}>
                         <td className="py-4">
                           <div className="flex items-center">
-                          {/*<img className="object-cover h-full " src={d.picture} alt={d.name} />*/}
+                            {/*<img className="object-cover h-full " src={d.picture} alt={d.name} />*/}
                             <span className="font-semibold">{d.name}</span>
                           </div>
                         </td>
-                     <td className="py-4">
-                         {formatMoney(d.price)} 
-                        </td>
                         <td className="py-4">
                           <div className="flex items-center">
-                            <button
-                              disabled={d.quantity === 1}
-                              className="border rounded-md py-2 px-4 mr-2"
-                              onClick={() => removeFromCart(d.id, d.selectedSize)}
-                            >
-                              -
-                            </button>
+                            {/*<img className="object-cover h-full " src={d.picture} alt={d.name} />*/}
+                            <span className="font-semibold">
+                              {d.selectedSize}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="py-4">{formatMoney(d.price)}</td>
+                        <td className="py-4">
+                          <div className="flex items-center">
                             <span className="text-center w-8">
                               {d.quantity}
                             </span>
-                            <button
-                              className="border rounded-md py-2 px-4 ml-2"
-                              onClick={() => addToCart(d , d.selectedSize)}
-                            >
-                              +
-                            </button>
                           </div>
                         </td>
                         <td className="py-4">
                           {formatMoney(d.price * d.quantity)}
                         </td>
-                        <td className="py-4">
-                          <button
-                            className="flex items-center"
-                            onClick={() => removeFromCart(d.id, d.selectedSize)}
-                          >
-                            Supprimer
-                          </button>
-                        </td>
                       </tr>
                     ))}
+                  </tbody>
+
+                  <tbody>
+                    {usableReservationObject &&
+                      usableReservationObject.reservationMaterials.map((d) => (
+                        <tr key={d.id}>
+                          <td className="py-4">
+                            <div className="flex items-center">
+                              {/*<img className="object-cover h-full " src={d.picture} alt={d.name} />*/}
+                              <span className="font-semibold">
+                                {d.material.name}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="py-4">
+                            <div className="flex items-center">
+                              {/*<img className="object-cover h-full " src={d.picture} alt={d.name} />*/}
+                              <span className="font-semibold">{d.size}</span>
+                            </div>
+                          </td>
+                          <td className="py-4">{formatMoney(d.price)}</td>
+                          <td className="py-4">
+                            <div className="flex items-center">
+                              <span className="text-center w-8">
+                                {d.quantity}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="py-4">{formatMoney(d.price)}</td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
             </div>
-            <div className="md:w-1/4">
+            <div className="md:w-1/4 rounded-lg shadow-lg border-4 border-blue-300 ">
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h2 className="text-lg font-semibold mb-4">Résumé</h2>
                 <div className="flex justify-between mb-2">
@@ -149,19 +185,24 @@ function ReservationPaiementStep() {
                 </div>
                 <div className="flex justify-between mb-2">
                   <span>Frais de livraison</span>
-                   <span>{formatMoney(prices.shipping)}</span>
+                  <span>{formatMoney(prices.shipping)}</span>
                 </div>
                 <div className="flex justify-between mb-2">
                   <span className="font-semibold">Total</span>
-                   <span className="font-semibold">
+                  <span className="font-semibold">
                     {formatMoney(prices.total)}
                   </span>
                 </div>
-                {cart.length > 0 && (
+
+                <PaymentModule
+                  clientSecret={data?.createSession?.client_secret}
+                />
+
+                {/* {cart.length > 0 && (
                   <PaymentModule
                     clientSecret={data?.createSession?.client_secret}
                   />
-                )}
+                )} */}
               </div>
             </div>
           </div>

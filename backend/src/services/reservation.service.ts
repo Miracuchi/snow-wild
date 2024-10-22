@@ -4,7 +4,7 @@ import Reservation, {
   CreateReservationInput,
   UpdateReservationInput,
 } from '../entities/reservation.entity'
-import { StatutReservation } from '../types';
+import { StatutReservation } from '../types'
 export default class ReservationService {
   db: Repository<Reservation>
   constructor() {
@@ -16,9 +16,9 @@ export default class ReservationService {
       relations: {
         user: true,
         reservationMaterials: {
-          material: true
-        }
-      }
+          material: true,
+        },
+      },
     })
   }
 
@@ -33,7 +33,11 @@ export default class ReservationService {
   async findReservationsByUserId(id: string) {
     const reservationByUserId = await this.db.find({
       where: { user: { id } },
-      relations:['user', 'reservationMaterials', 'reservationMaterials.material'],
+      relations: [
+        'user',
+        'reservationMaterials',
+        'reservationMaterials.material',
+      ],
     })
 
     return reservationByUserId
@@ -73,11 +77,12 @@ export default class ReservationService {
     if (!reservationToUpdate) {
       throw new Error("La réservation n'existe pas !")
     }
-    const { start_date, end_date } = data
+    const { start_date, end_date, status } = data
 
     const reservationToSave = this.db.merge(reservationToUpdate, {
       start_date,
       end_date,
+      status,
     })
     await this.db.save(reservationToSave)
     return await this.findReservationById(reservationToSave.id)

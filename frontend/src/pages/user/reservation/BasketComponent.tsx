@@ -1,13 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useStepper } from "@/components/stepper";
-import {
-  BANK_STORAGE_KEY,
-  CART_STORAGE_KEY,
-  DATES_STORAGE_KEY,
-} from "@/constants";
 import { AuthContext } from "@/contexts/authContext";
 import { useCart } from "@/contexts/CartContext";
-import { EmptyLocalStorage } from "@/hooks/useLocalStorage";
 import { CREATE_RESERVATION } from "@/requetes/mutations/reservation.mutations";
 import { useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
@@ -52,7 +46,8 @@ function BasketComponent({ dateFormInfo }: { dateFormInfo: DateFormInfos }) {
         },
       });
       console.log("Reservation created successfully:", response.data);
-      
+      const reservationId = response.data.createReservation.id;
+      localStorage.setItem("reservationId", reservationId);
       nextStep();
     } catch (error) {
       console.error("Error creating reservation:", error);
@@ -75,34 +70,34 @@ function BasketComponent({ dateFormInfo }: { dateFormInfo: DateFormInfos }) {
           <h1 className="text-3xl text-neutral-950 font-bold mb-8 mt-8">
             Votre panier
           </h1>
-          <div className="space-y-4 rounded-lg  max-h-96 overflow-y-auto ">
+          <div className="space-y-4 rounded-lg  ">
             {cart.map((item, index) => (
               <div
                 key={`${item.id}-${item.selectedSize}`}
-                className="bg-white flex overflow-hidden relative"
+                className=" flex overflow-hidden relative border-4 border-blue-300 rounded-lg shadow-lg"
               >
                 <div className="relative h-48">
                   <img
                     className="m-5 max-w-28 object-contain"
-                    src={item.picture}
+                    src={process.env.NEXT_PUBLIC_IMAGE_URL + item.picture}
                     alt={item.name}
                   />
                 </div>
                 <div className="p-6 flex flex-col w-full">
-                  
-                    <h2 className="text-2xl font-bold mb-2">{item.name}</h2>
-                    <div className=" flex mt-2 items-center gap-6 ">
+                  <h2 className="text-2xl font-bold mb-2">{item.name}</h2>
+                  <div className=" flex mt-2 items-center gap-6 ">
                     <p className="text-gray-700">
-                      Taille : <span className="underline">{item.selectedSize}</span>
+                      Taille :
+                      <span className="underline">{item.selectedSize}</span>
                     </p>
                     <div className="flex items-center">
                       <span className="mr-2">Quantité : {item.quantity}</span>
                     </div>
                   </div>
                 </div>
-                {index < cart.length - 1 && (
+                {/* {index < cart.length - 1 && (
                   <div className="absolute bottom-0 mt-2 left-6 right-6 border-t-2 border-black"></div>
-                )}
+                )} */}
                 {/* {index < cart.length - 1 && (
                   <div className="flex justify-center">
                     <div className="border-t-2 border-gray-300 w-2/3"></div>
@@ -112,8 +107,8 @@ function BasketComponent({ dateFormInfo }: { dateFormInfo: DateFormInfos }) {
             ))}
           </div>
         </div>
-        <div className="col-span-1">
-          <div className="bg-white p-5 rounded-lg ">
+        <div className="col-span-1 mt-[99px]">
+          <div className=" p-5  border-4 border-blue-300 rounded-lg shadow-lg ">
             <h2 className="text-2xl font-bold mb-4">Récapitulatif</h2>
             <div className="flex justify-between mt-6 items-center border-b-2 pb-2">
               <p className="text-gray-700">{numberOfArticleText}</p>
