@@ -15,7 +15,7 @@
     "prettier:fix": "npm run prettier -- --write",
     "format": "npm run prettier:fix && npm run lint:fix",
     "resetDb": "ts-node-dev src/resetDb.ts",
-    "createDb": "npm run resetDb && npm run build"
+    "createDb": "npm run resetDb && npm run start"
   },
   "license": "MIT",
   "dependencies": {

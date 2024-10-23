@@ -7,4 +7,4 @@ COPY src src
 COPY public public
 # COPY codegen.ts .
 COPY tsconfig.json .
-CMD npm run createDb
+CMD npm run start
