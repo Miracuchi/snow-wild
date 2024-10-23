@@ -44,7 +44,6 @@ const PORT = process.env.PORT || 4000
 const stripe = require('stripe')(process.env.STRIPE_PRIVATE_API_KEY!)
 
 async function main() {
-  console.log('Hello from backend')
   const schema = await buildSchema({
     resolvers: [
       CategoryResolver,
@@ -63,10 +62,6 @@ async function main() {
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   })
 
-  await server.start()
-  app.listen(PORT, () => {
-    console.log(`Example app listening on PORT ${PORT}`)
-  })
   app.post(
     '/webhooks',
     express.raw({ type: 'application/json' }), // Utiliser express.raw pour les webhooks Stripe
