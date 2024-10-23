@@ -61,7 +61,7 @@ async function main() {
     schema,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   })
-
+  await server.start()
   app.post(
     '/webhooks',
     express.raw({ type: 'application/json' }), // Utiliser express.raw pour les webhooks Stripe
