@@ -40,9 +40,7 @@ export const app = express()
 dotenv.config()
 const httpServer = http.createServer(app)
 const PORT = process.env.PORT || 4000
-app.listen(PORT, () => {
-  console.log(`Example app listening on PORT ${PORT}`)
-})
+
 const stripe = require('stripe')(process.env.STRIPE_PRIVATE_API_KEY!)
 
 async function main() {
@@ -66,7 +64,9 @@ async function main() {
   })
 
   await server.start()
-
+  app.listen(PORT, () => {
+    console.log(`Example app listening on PORT ${PORT}`)
+  })
   app.post(
     '/webhooks',
     express.raw({ type: 'application/json' }), // Utiliser express.raw pour les webhooks Stripe
