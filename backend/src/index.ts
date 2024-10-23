@@ -63,6 +63,9 @@ async function main() {
   })
 
   await server.start()
+  app.listen(PORT, () => {
+    console.log(`Example app listening on PORT ${PORT}`)
+  })
 
   app.post(
     '/webhooks',
@@ -111,7 +114,11 @@ async function main() {
   app.use(
     '/',
     cors<cors.CorsRequest>({
-      origin: ['http://localhost:3000', 'http://localhost:8000'],
+      origin: [
+        'http://localhost:3000',
+        'http://localhost:8000',
+        'https://snow-wild.vercel.app/',
+      ],
       credentials: true,
     }),
 
@@ -141,9 +148,6 @@ async function main() {
       },
     })
   )
-  app.listen(PORT, () => {
-    console.log(`Example app listening on PORT ${PORT}`)
-  })
 
   await datasource.initialize()
   await new Promise<void>((resolve) =>
