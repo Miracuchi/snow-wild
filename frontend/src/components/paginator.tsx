@@ -1,6 +1,12 @@
 // this is where you'd implement some pagination logic like whether a next page is available, which can then be imported to the DataTable
 
-import { Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { generatePaginationLinks } from "./generate-pages";
 
 type PaginatorProps = {
@@ -8,7 +14,7 @@ type PaginatorProps = {
   totalPages: number;
   onPageChange: (pageNumber: number) => void;
   showPreviousNext: boolean;
-}
+};
 
 export default function Paginator({
   currentPage,
@@ -16,7 +22,6 @@ export default function Paginator({
   onPageChange,
   showPreviousNext,
 }: PaginatorProps) {
-
   return (
     <Pagination>
       <PaginationContent>
@@ -24,7 +29,7 @@ export default function Paginator({
           <PaginationItem>
             <PaginationPrevious
               onClick={() => onPageChange(currentPage - 1)}
-              disabled={currentPage - 1 < 1}
+              // disabled={currentPage - 1 < 1}
             />
           </PaginationItem>
         ) : null}
@@ -33,11 +38,11 @@ export default function Paginator({
           <PaginationItem>
             <PaginationNext
               onClick={() => onPageChange(currentPage + 1)}
-              disabled={currentPage > totalPages - 1}
+              // disabled={currentPage > totalPages - 1}
             />
           </PaginationItem>
-        ): null}
+        ) : null}
       </PaginationContent>
     </Pagination>
-  )
+  );
 }
