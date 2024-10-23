@@ -11,7 +11,7 @@ import http from 'http'
 import { jwtVerify } from 'jose'
 import 'reflect-metadata'
 import { buildSchema } from 'type-graphql'
-import datasource from './db'
+import datasource from './db.prod'
 import User from './entities/user.entity'
 import { customAuthChecker } from './lib/authChecker'
 import CategoryResolver from './resolvers/category.resolver'
@@ -63,19 +63,13 @@ async function main() {
   })
 
   await server.start()
-  console.log('Hello from backend')
 
   app.post(
     '/webhooks',
     express.raw({ type: 'application/json' }), // Utiliser express.raw pour les webhooks Stripe
     (request, response) => {
-      // console.log('received request froms stripe')
-      // console.log(request.body)
       const sig = request.headers['stripe-signature']
       const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET // Secret de webhook Stripe
-
-      console.log('endpoint secret', endpointSecret)
-      console.log('sig', sig)
 
       let event
       try {
@@ -90,14 +84,11 @@ async function main() {
         return response.sendStatus(400)
       }
 
-      console.log('WEBHOOK', event)
-
       // Gestion des événements Stripe
       switch (event.type) {
         case 'payment_intent.succeeded':
           const paymentIntent = event.data.object
           const id = paymentIntent.metadata.reservationId
-          console.log('HELLOOOOOOOEDDDDDD', id)
 
           new ReservationService().updateReservation(id, {
             status: StatutReservation.PAID,
@@ -116,7 +107,6 @@ async function main() {
       response.json({ received: true })
     }
   )
-  console.log('Hello from backend 3')
 
   app.use(
     '/',
@@ -130,16 +120,10 @@ async function main() {
     // This line intercept all request and need a token, we should add an exception for our /webhooks route
     expressMiddleware(server, {
       context: async ({ req, res }) => {
-        console.log('Hello from backend')
-
         let user: User | null = null
-        console.log('Hello from backend 4')
 
         const cookies = new Cookies(req, res)
         const token = cookies.get('token')
-        console.log('KEYBACK', process.env.JWT_SECRET_KEY)
-
-        console.log('token back 2', token)
 
         if (token) {
           try {
