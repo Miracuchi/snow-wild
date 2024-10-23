@@ -40,6 +40,7 @@ export const app = express()
 dotenv.config()
 const httpServer = http.createServer(app)
 const PORT = Number(process.env.PORT) || 4000
+console.log('hello')
 
 const stripe = require('stripe')(process.env.STRIPE_PRIVATE_API_KEY!)
 
