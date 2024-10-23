@@ -5,6 +5,7 @@ import { expressMiddleware } from '@apollo/server/express4'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
 import Cookies from 'cookies'
 import cors from 'cors'
+import dotenv from 'dotenv'
 import express from 'express'
 import http from 'http'
 import { jwtVerify } from 'jose'
@@ -36,10 +37,12 @@ export interface Payload {
 }
 
 export const app = express()
+dotenv.config()
 const httpServer = http.createServer(app)
 const stripe = require('stripe')(process.env.STRIPE_PRIVATE_API_KEY!)
 
 async function main() {
+  console.log('Hello from backend')
   const schema = await buildSchema({
     resolvers: [
       CategoryResolver,
@@ -59,6 +62,7 @@ async function main() {
   })
 
   await server.start()
+  console.log('Hello from backend')
 
   app.post(
     '/webhooks',
@@ -111,6 +115,7 @@ async function main() {
       response.json({ received: true })
     }
   )
+  console.log('Hello from backend 3')
 
   app.use(
     '/',
@@ -118,14 +123,23 @@ async function main() {
       origin: ['http://localhost:3000', 'http://localhost:8000'],
       credentials: true,
     }),
+
     express.json(),
     // TODO: find how to handle http request + graphql request
     // This line intercept all request and need a token, we should add an exception for our /webhooks route
     expressMiddleware(server, {
       context: async ({ req, res }) => {
+        console.log('Hello from backend')
+
         let user: User | null = null
+        console.log('Hello from backend 4')
+
         const cookies = new Cookies(req, res)
         const token = cookies.get('token')
+        console.log('KEYBACK', process.env.JWT_SECRET_KEY)
+
+        console.log('token back 2', token)
+
         if (token) {
           try {
             const verify = await jwtVerify<Payload>(
@@ -133,6 +147,7 @@ async function main() {
               new TextEncoder().encode(process.env.JWT_SECRET_KEY)
             )
             user = await new UserService().findUserByEmail(verify.payload.email)
+            console.log(user)
           } catch (err) {
             console.log(err)
           }

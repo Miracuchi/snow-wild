@@ -72,5 +72,4 @@ export const routes: { [key: string]: Route } = {
     title: "Votre compte",
     protected: "PRIVATE",
   },
- 
 };

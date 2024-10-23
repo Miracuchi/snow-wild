@@ -56,13 +56,13 @@ services:
       - 5432:5432
     volumes:
       - snowwild-data:/var/lib/postgresql/data
-  adminer:
-    image: adminer
-    depends_on:
-      - db
-    restart: always
-    ports:
-      - 8080:8080
+  # adminer:
+  #   image: adminer
+  #   depends_on:
+  #     - db
+  #   restart: always
+  #   ports:
+  #     - 8080:8080
   images:
     build: ./images
     volumes:
