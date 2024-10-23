@@ -39,7 +39,7 @@ export interface Payload {
 export const app = express()
 dotenv.config()
 const httpServer = http.createServer(app)
-const PORT = process.env.PORT || 4000
+const PORT = Number(process.env.PORT) || 4000
 
 const stripe = require('stripe')(process.env.STRIPE_PRIVATE_API_KEY!)
 
