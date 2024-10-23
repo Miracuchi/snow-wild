@@ -157,6 +157,9 @@ async function main() {
       },
     })
   )
+  app.listen(PORT, () => {
+    console.log(`Example app listening on PORT ${PORT}`)
+  })
 
   await datasource.initialize()
   await new Promise<void>((resolve) =>
