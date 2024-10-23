@@ -39,6 +39,7 @@ export interface Payload {
 export const app = express()
 dotenv.config()
 const httpServer = http.createServer(app)
+const PORT = process.env.PORT || 4000
 const stripe = require('stripe')(process.env.STRIPE_PRIVATE_API_KEY!)
 
 async function main() {
@@ -159,7 +160,7 @@ async function main() {
 
   await datasource.initialize()
   await new Promise<void>((resolve) =>
-    httpServer.listen({ port: 4000 }, resolve)
+    httpServer.listen({ port: PORT }, resolve)
   )
   console.log(`🚀 Server lancé sur http://localhost:4000/`)
 }
