@@ -1,5 +1,19 @@
 {
   "dependencies": {
     "@radix-ui/react-icons": "^1.3.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "start:backend": "cd backend && npm run resetDb && npm start",
+    "start:frontend": "cd frontend && npm run dev",
+    "start:db": "pg_ctl -D \"C:\\Program Files\\PostgreSQL\\15\\data\" start",
+    "start:images": "cd images && npm start",
+    "start:all": "concurrently \"npm run start:db\" \"npm run start:backend\" \"npm run start:frontend\" \"npm run start:images\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
   }
 }

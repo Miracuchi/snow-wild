@@ -24,7 +24,7 @@ function Login() {
     if (data.email && data.password) {
       login({
         variables: { infos: { email: data.email, password: data.password } },
-        onCompleted:(data) => {
+        onCompleted: (data) => {
           if (data) {
             setAuthUser({
               userId: data.login.id,
