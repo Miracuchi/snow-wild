@@ -109,8 +109,8 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "role", void 0);
 User = __decorate([
-    (0, type_graphql_1.ObjectType)(),
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)({ name: 'User' }),
+    (0, type_graphql_1.ObjectType)()
 ], User);
 exports.default = User;
 let Message = class Message {

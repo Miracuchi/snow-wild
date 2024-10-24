@@ -69,8 +69,8 @@ __decorate([
     __metadata("design:type", Array)
 ], Material.prototype, "reservationMaterials", void 0);
 Material = __decorate([
-    (0, type_graphql_1.ObjectType)(),
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)({ name: 'Material' }),
+    (0, type_graphql_1.ObjectType)()
 ], Material);
 exports.default = Material;
 let SizeQuantity = class SizeQuantity {

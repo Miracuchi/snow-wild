@@ -61,8 +61,8 @@ __decorate([
     __metadata("design:type", String)
 ], ReservationMaterial.prototype, "size", void 0);
 ReservationMaterial = __decorate([
-    (0, type_graphql_1.ObjectType)(),
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)({ name: 'ReservationMaterial' }),
+    (0, type_graphql_1.ObjectType)()
 ], ReservationMaterial);
 exports.default = ReservationMaterial;
 // =================================================================

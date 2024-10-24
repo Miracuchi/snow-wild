@@ -35,8 +35,8 @@ __decorate([
     __metadata("design:type", Array)
 ], Category.prototype, "material", void 0);
 Category = __decorate([
-    (0, type_graphql_1.ObjectType)(),
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)({ name: 'Category' }),
+    (0, type_graphql_1.ObjectType)()
 ], Category);
 exports.default = Category;
 let CreateCategoryInput = class CreateCategoryInput {

@@ -70,8 +70,8 @@ __decorate([
     __metadata("design:type", Array)
 ], Reservation.prototype, "reservationMaterials", void 0);
 Reservation = __decorate([
-    (0, type_graphql_1.ObjectType)(),
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)({ name: 'Reservation' }),
+    (0, type_graphql_1.ObjectType)()
 ], Reservation);
 exports.default = Reservation;
 // Quand on fait un ObjectType à supprimer, ne pas mettre d'id. Il sera supprimé, donc pas de retour.

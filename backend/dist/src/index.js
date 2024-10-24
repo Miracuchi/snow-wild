@@ -89,6 +89,8 @@ async function main() {
         origin: [
             'http://localhost:3000',
             'http://localhost:8000',
+            'http://localhost:8080',
+            'https://snow-wild-production.up.railway.app/',
             'https://snow-wild.vercel.app/',
         ],
         credentials: true,
@@ -115,12 +117,7 @@ async function main() {
     }));
     await db_prod_1.default.initialize();
     console.log();
-    // await new Promise<void>((resolve) =>
-    //   httpServer.listen({ port: PORT }, resolve)
-    // )
-    exports.app.listen(PORT, () => {
-        console.log(`Example app listening on port ${PORT}`);
-    });
-    console.log(`🚀 Server lancé sur http://localhost:4000/`);
+    await new Promise((resolve) => httpServer.listen({ port: PORT }, resolve));
+    console.log(`🚀 Server lancé ${PORT} sur http://localhost:${PORT}/`);
 }
 main();
