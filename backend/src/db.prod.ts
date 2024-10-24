@@ -6,7 +6,7 @@ export default new DataSource({
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  synchronize: true, //en dev, en prod on préfera utiliser les migrations
+  synchronize: false, //en dev, en prod on préfera utiliser les migrations
   logging: true,
   entities: [__dirname + '/../dist/src/entities/*.entity.{js,ts}'],
 })
