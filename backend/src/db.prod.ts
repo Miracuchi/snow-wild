@@ -1,9 +1,4 @@
 import { DataSource } from 'typeorm'
-import Category from './entities/category.entity'
-import Material from './entities/material.entity'
-import Reservation from './entities/reservation.entity'
-import ReservationMaterial from './entities/reservation_material.entity'
-import User from './entities/user.entity'
 export default new DataSource({
   type: 'postgres',
   host: process.env.DB_HOST,
@@ -13,7 +8,7 @@ export default new DataSource({
   database: process.env.DB_NAME,
   // synchronize: true, //en dev, en prod on préfera utiliser les migrations
   // logging: true,
-  entities: [Category, Material, ReservationMaterial, User, Reservation],
+  entities: ['src/entities/*.entity.{js,ts}'],
 })
 // Category, Material, ReservationMaterial, User, Reservation
 //__dirname + '../dist/src/entities/*.entity.{js,ts}'
