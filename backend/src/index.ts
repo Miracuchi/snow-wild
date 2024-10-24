@@ -148,12 +148,12 @@ async function main() {
   await datasource.initialize()
   console.log()
 
-  // await new Promise<void>((resolve) =>
-  //   httpServer.listen({ port: PORT }, resolve)
-  // )
-  app.listen(PORT, () => {
-    console.log(`Example app listening on port ${PORT}`)
-  })
+  await new Promise<void>((resolve) =>
+    httpServer.listen({ port: PORT }, resolve)
+  )
+  // app.listen(PORT, () => {
+  //   console.log(`Example app listening on port ${PORT}`)
+  // })
   console.log(`🚀 Server lancé sur http://localhost:4000/`)
 }
 
