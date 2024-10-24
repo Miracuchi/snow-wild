@@ -9,15 +9,5 @@ export default new DataSource({
   database: process.env.DB_NAME,
   synchronize: true, //en dev, en prod on préfera utiliser les migrations
   logging: true,
-  entities: [
-    Category,
-    './entities/category.entity.ts',
-    './src/entities/*',
-    './src/entities',
-    './dist/src/entities',
-    './dist/src/entities/*',
-    './dist/src/entities/category.entity.ts',
-    'app/dist/src/entities/category.entity.ts',
-    'app/src/entities/category.entity.ts',
-  ],
+  entities: [Category],
 })
