@@ -113,6 +113,8 @@ async function main() {
       origin: [
         'http://localhost:3000',
         'http://localhost:8000',
+        'http://localhost:8080',
+
         'https://snow-wild.vercel.app/',
       ],
       credentials: true,
@@ -152,7 +154,7 @@ async function main() {
     httpServer.listen({ port: PORT }, resolve)
   )
 
-  console.log(`🚀 Server lancé sur http://localhost:${PORT}/`)
+  console.log(`🚀 Server lancé ${PORT} sur http://localhost:${PORT}/`)
 }
 
 main()
