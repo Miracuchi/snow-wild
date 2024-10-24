@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { ApolloServer } from '@apollo/server'
 import { expressMiddleware } from '@apollo/server/express4'
-import { ApolloServerPluginLandingPageDisabled } from '@apollo/server/plugin/disabled'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
 import Cookies from 'cookies'
 import cors from 'cors'
@@ -61,10 +60,7 @@ async function main() {
 
   const server = new ApolloServer<MyContext>({
     schema,
-    plugins: [
-      ApolloServerPluginDrainHttpServer({ httpServer }),
-      ApolloServerPluginLandingPageDisabled(),
-    ],
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   })
   await server.start()
   console.log(process.env.NODE_ENV)
