@@ -11,7 +11,7 @@ import http from 'http'
 import { jwtVerify } from 'jose'
 import 'reflect-metadata'
 import { buildSchema } from 'type-graphql'
-import datasource from './db.dev'
+import datasource from './db'
 import User from './entities/user.entity'
 import { customAuthChecker } from './lib/authChecker'
 import CategoryResolver from './resolvers/category.resolver'
@@ -63,6 +63,7 @@ async function main() {
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   })
   await server.start()
+  console.log(process.env.APP_ENV)
 
   app.post(
     '/webhooks',

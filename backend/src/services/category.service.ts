@@ -1,6 +1,6 @@
 import { Arg } from 'type-graphql'
 import { Repository } from 'typeorm'
-import datasource from '../db.dev'
+import datasource from '../db'
 import Category, {
   AdminUpdateCategoryInput,
   CreateCategoryInput,

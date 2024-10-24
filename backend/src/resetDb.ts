@@ -1,5 +1,5 @@
 import * as argon2 from 'argon2'
-import db from './db.dev'
+import db from './db'
 import Category from './entities/category.entity'
 import Material from './entities/material.entity'
 import User from './entities/user.entity'

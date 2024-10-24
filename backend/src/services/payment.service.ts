@@ -1,6 +1,6 @@
 import type { Stripe } from 'stripe'
 import { Repository } from 'typeorm'
-import datasource from '../db.dev'
+import datasource from '../db'
 import Material from '../entities/material.entity'
 import { ProductForSessionInput } from '../resolvers/payment.resolver'
 

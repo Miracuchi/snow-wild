@@ -1,6 +1,6 @@
 import { validate } from 'class-validator'
 import { Repository } from 'typeorm'
-import datasource from '../db.dev'
+import datasource from '../db'
 import Material, {
   CreateMaterialInput,
   UpdateMaterialInput,
