@@ -5,12 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
 const db_1 = __importDefault(require("../db"));
-const reservation_material_entity_1 = require("./../entities/reservation_material.entity");
+const reservation_material_entity_1 = __importDefault(require("../entities/reservation_material.entity"));
 const material_service_1 = __importDefault(require("./material.service"));
 const reservation_service_1 = __importDefault(require("./reservation.service"));
 class ReservationMaterialService {
     constructor() {
-        this.db = db_1.default.getRepository(reservation_material_entity_1.ReservationMaterial);
+        this.db = db_1.default.getRepository(reservation_material_entity_1.default);
     }
     async listReservationsMaterial() {
         return this.db.find();

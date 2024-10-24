@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FindReservationMaterialsBetweenTwoDateInput = exports.UpdateReservationMaterialInput = exports.CreateReservationMaterialInput = exports.ReservationMaterial = void 0;
+exports.FindReservationMaterialsBetweenTwoDateInput = exports.UpdateReservationMaterialInput = exports.CreateReservationMaterialInput = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const material_entity_1 = __importDefault(require("./material.entity"));
@@ -22,7 +22,6 @@ const reservation_entity_1 = __importDefault(require("./reservation.entity"));
 // =================================================================
 let ReservationMaterial = class ReservationMaterial {
 };
-exports.ReservationMaterial = ReservationMaterial;
 __decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
@@ -61,10 +60,11 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], ReservationMaterial.prototype, "size", void 0);
-exports.ReservationMaterial = ReservationMaterial = __decorate([
+ReservationMaterial = __decorate([
     (0, type_graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)()
 ], ReservationMaterial);
+exports.default = ReservationMaterial;
 // =================================================================
 //                           INPUT TYPE
 // =================================================================

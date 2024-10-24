@@ -16,7 +16,7 @@ exports.UpdateMaterialInput = exports.CreateMaterialInput = exports.PartialCateg
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const category_entity_1 = __importDefault(require("./category.entity"));
-const reservation_material_entity_1 = require("./reservation_material.entity");
+const reservation_material_entity_1 = __importDefault(require("./reservation_material.entity"));
 // =================================================================
 //                           OBJECT TYPE
 // =================================================================
@@ -63,9 +63,9 @@ __decorate([
     __metadata("design:type", category_entity_1.default)
 ], Material.prototype, "category", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => [reservation_material_entity_1.ReservationMaterial]),
+    (0, type_graphql_1.Field)(() => [reservation_material_entity_1.default]),
     (0, typeorm_1.JoinColumn)(),
-    (0, typeorm_1.OneToMany)(() => reservation_material_entity_1.ReservationMaterial, (r) => r.material),
+    (0, typeorm_1.OneToMany)(() => reservation_material_entity_1.default, (r) => r.material),
     __metadata("design:type", Array)
 ], Material.prototype, "reservationMaterials", void 0);
 Material = __decorate([

@@ -114,6 +114,7 @@ async function main() {
         },
     }));
     await db_prod_1.default.initialize();
+    console.log();
     // await new Promise<void>((resolve) =>
     //   httpServer.listen({ port: PORT }, resolve)
     // )

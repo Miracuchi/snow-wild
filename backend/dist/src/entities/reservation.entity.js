@@ -16,7 +16,7 @@ exports.AdminGetReservations = exports.AdminDeletedReservation = exports.UpdateR
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const types_1 = require("../types");
-const reservation_material_entity_1 = require("./reservation_material.entity");
+const reservation_material_entity_1 = __importDefault(require("./reservation_material.entity"));
 const user_entity_1 = __importDefault(require("./user.entity"));
 // =================================================================
 //                           OBJECT TYPE
@@ -64,9 +64,9 @@ __decorate([
     __metadata("design:type", String)
 ], Reservation.prototype, "status", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => [reservation_material_entity_1.ReservationMaterial]),
+    (0, type_graphql_1.Field)(() => [reservation_material_entity_1.default]),
     (0, typeorm_1.JoinColumn)(),
-    (0, typeorm_1.OneToMany)(() => reservation_material_entity_1.ReservationMaterial, (r) => r.reservation),
+    (0, typeorm_1.OneToMany)(() => reservation_material_entity_1.default, (r) => r.reservation),
     __metadata("design:type", Array)
 ], Reservation.prototype, "reservationMaterials", void 0);
 Reservation = __decorate([
@@ -83,7 +83,7 @@ __decorate([
     __metadata("design:type", user_entity_1.default)
 ], ReservationDeleted.prototype, "user", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => [reservation_material_entity_1.ReservationMaterial]),
+    (0, type_graphql_1.Field)(() => [reservation_material_entity_1.default]),
     __metadata("design:type", Array)
 ], ReservationDeleted.prototype, "reservationMaterials", void 0);
 __decorate([
@@ -177,7 +177,7 @@ __decorate([
     __metadata("design:type", user_entity_1.default)
 ], AdminDeletedReservation.prototype, "user", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => [reservation_material_entity_1.ReservationMaterial]),
+    (0, type_graphql_1.Field)(() => [reservation_material_entity_1.default]),
     __metadata("design:type", Array)
 ], AdminDeletedReservation.prototype, "reservationMaterials", void 0);
 __decorate([
@@ -207,7 +207,7 @@ __decorate([
     __metadata("design:type", user_entity_1.default)
 ], AdminGetReservations.prototype, "user", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => [reservation_material_entity_1.ReservationMaterial]),
+    (0, type_graphql_1.Field)(() => [reservation_material_entity_1.default]),
     __metadata("design:type", Array)
 ], AdminGetReservations.prototype, "reservationMaterials", void 0);
 __decorate([

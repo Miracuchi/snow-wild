@@ -38,10 +38,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const category_entity_1 = __importStar(require("./../entities/category.entity"));
 const type_graphql_1 = require("type-graphql");
+const category_entity_1 = require("../entities/category.entity");
 const category_service_1 = __importDefault(require("../services/category.service"));
-const category_entity_2 = require("../entities/category.entity");
+const category_entity_2 = __importStar(require("./../entities/category.entity"));
 let CategoryResolver = class CategoryResolver {
     async categories() {
         return await new category_service_1.default().listCategories();
@@ -50,12 +50,12 @@ let CategoryResolver = class CategoryResolver {
         return await new category_service_1.default().findCategory(id);
     }
     async createCategory(data) {
-        const findedCategory = await new category_service_1.default().findCategoryByName(data.name);
-        console.log("findedCategory: ", findedCategory);
-        if (findedCategory) {
-            throw new Error("This name alredy used");
-            // return findedCategory
-        }
+        // const findedCategory = await new CategoryService().findCategoryByName(data.name)
+        // console.log("findedCategory: ", findedCategory)
+        // if(findedCategory) {
+        //   throw new Error("This name alredy used")
+        //   // return findedCategory
+        // }
         const newCategory = await new category_service_1.default().createCategory({
             ...data,
         });
@@ -64,7 +64,7 @@ let CategoryResolver = class CategoryResolver {
     async updateCategory(data) {
         const { id } = data;
         const findedCategory = await new category_service_1.default().find(id);
-        console.log("findedCategory: ", findedCategory);
+        console.log('findedCategory: ', findedCategory);
         // if(!findedCategory) {
         //   throw new Error("Error, This category id doesn't exist !")
         // }
@@ -78,34 +78,34 @@ let CategoryResolver = class CategoryResolver {
     }
 };
 __decorate([
-    (0, type_graphql_1.Query)(() => [category_entity_1.default]),
+    (0, type_graphql_1.Query)(() => [category_entity_2.default]),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], CategoryResolver.prototype, "categories", null);
 __decorate([
-    (0, type_graphql_1.Query)(() => category_entity_1.default),
+    (0, type_graphql_1.Query)(() => category_entity_2.default),
     __param(0, (0, type_graphql_1.Arg)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], CategoryResolver.prototype, "findCategory", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => category_entity_1.default),
+    (0, type_graphql_1.Mutation)(() => category_entity_2.default),
     __param(0, (0, type_graphql_1.Arg)('data')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [category_entity_2.CreateCategoryInput]),
+    __metadata("design:paramtypes", [category_entity_1.CreateCategoryInput]),
     __metadata("design:returntype", Promise)
 ], CategoryResolver.prototype, "createCategory", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => category_entity_1.default),
+    (0, type_graphql_1.Mutation)(() => category_entity_2.default),
     __param(0, (0, type_graphql_1.Arg)('data')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [category_entity_1.AdminUpdateCategoryInput]),
+    __metadata("design:paramtypes", [category_entity_2.AdminUpdateCategoryInput]),
     __metadata("design:returntype", Promise)
 ], CategoryResolver.prototype, "updateCategory", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => category_entity_1.default),
+    (0, type_graphql_1.Mutation)(() => category_entity_2.default),
     __param(0, (0, type_graphql_1.Arg)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

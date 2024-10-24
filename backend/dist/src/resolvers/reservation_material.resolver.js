@@ -18,6 +18,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const type_graphql_1 = require("type-graphql");
 const reservation_material_service_1 = __importDefault(require("../services/reservation_material.service"));
 const reservation_material_entity_1 = require("./../entities/reservation_material.entity");
+const reservation_material_entity_2 = __importDefault(require("../entities/reservation_material.entity"));
 let ReservationMaterialResolver = class ReservationMaterialResolver {
     async reservations() {
         return await new reservation_material_service_1.default().listReservationsMaterial();
@@ -36,20 +37,20 @@ let ReservationMaterialResolver = class ReservationMaterialResolver {
     }
 };
 __decorate([
-    (0, type_graphql_1.Query)(() => [reservation_material_entity_1.ReservationMaterial]),
+    (0, type_graphql_1.Query)(() => [reservation_material_entity_2.default]),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ReservationMaterialResolver.prototype, "reservations", null);
 __decorate([
-    (0, type_graphql_1.Query)(() => [reservation_material_entity_1.ReservationMaterial]),
+    (0, type_graphql_1.Query)(() => [reservation_material_entity_2.default]),
     __param(0, (0, type_graphql_1.Arg)('data')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [reservation_material_entity_1.FindReservationMaterialsBetweenTwoDateInput]),
     __metadata("design:returntype", Promise)
 ], ReservationMaterialResolver.prototype, "reservationMaterialBetweenDates", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => reservation_material_entity_1.ReservationMaterial),
+    (0, type_graphql_1.Mutation)(() => reservation_material_entity_2.default),
     __param(0, (0, type_graphql_1.Arg)('data')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [reservation_material_entity_1.UpdateReservationMaterialInput]),
