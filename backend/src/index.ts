@@ -146,6 +146,8 @@ async function main() {
   )
 
   await datasource.initialize()
+  console.log()
+
   // await new Promise<void>((resolve) =>
   //   httpServer.listen({ port: PORT }, resolve)
   // )
