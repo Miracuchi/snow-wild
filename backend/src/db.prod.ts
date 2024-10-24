@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm'
-
+import Category from './entities/category.entity'
 export default new DataSource({
   type: 'postgres',
   host: process.env.DB_HOST,
@@ -10,11 +10,14 @@ export default new DataSource({
   synchronize: true, //en dev, en prod on préfera utiliser les migrations
   logging: true,
   entities: [
+    Category,
     './entities/category.entity.ts',
-    'src/entities/*',
-    'src/entities',
-    'dist/src/entities',
-    'dist/src/entities/*',
-    'dist/src/entities/category.entity.ts',
+    './src/entities/*',
+    './src/entities',
+    './dist/src/entities',
+    './dist/src/entities/*',
+    './dist/src/entities/category.entity.ts',
+    'app/dist/src/entities/category.entity.ts',
+    'app/src/entities/category.entity.ts',
   ],
 })
