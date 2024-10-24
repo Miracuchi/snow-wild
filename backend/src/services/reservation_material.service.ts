@@ -1,5 +1,5 @@
 import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm'
-import datasource from '../db.prod'
+import datasource from '../db.dev'
 import Material from '../entities/material.entity'
 import Reservation from '../entities/reservation.entity'
 import ReservationMaterial from '../entities/reservation_material.entity'

@@ -16,8 +16,8 @@ import User from './user.entity'
 //                           OBJECT TYPE
 // =================================================================
 
-@Entity({ name: 'Reservation' })
 @ObjectType()
+@Entity()
 export default class Reservation {
   @Field()
   @PrimaryGeneratedColumn('uuid')

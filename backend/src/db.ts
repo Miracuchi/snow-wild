@@ -1,13 +1,12 @@
-import { DataSource } from 'typeorm'
+import type { DataSource } from 'typeorm'
+let datasource: DataSource
 
-export default new DataSource({
-  type: 'postgres',
-  host: 'localhost',
-  port: 5432,
-  username: 'postgres', //process.env.POSTGRES_USER
-  password: 'postgres',
-  database: 'snowwild',
-  synchronize: true, //en dev, en prod on préfera utiliser les migrations
-  logging: true,
-  entities: ['src/entities/*.ts'],
-})
+if (process.env.NODE_ENV === 'production') {
+  // Importer db.prod uniquement en production
+  datasource = require('./db.prod').default
+} else {
+  // Importer db en développement
+  datasource = require('./db').default
+}
+
+export default datasource

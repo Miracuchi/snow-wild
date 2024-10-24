@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm'
-import datasource from '../db.prod'
+import datasource from '../db.dev'
 import User, {
   InputAdminCreateUser,
   InputAdminUpdateUser,
@@ -50,6 +50,12 @@ export default class UserService {
       firstName,
       phone,
     })
+    const existingUser = await this.db.findOne({
+      where: { email: newUser.email },
+    })
+    if (existingUser) {
+      throw new Error('Un utilisateur avec cet e-mail existe déjà.')
+    }
     return await this.db.save(newUser)
   }
 

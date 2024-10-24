@@ -17,8 +17,8 @@ import Reservation from './reservation.entity'
 // =================================================================
 //                           OBJECT TYPE
 // =================================================================
-@Entity({ name: 'User' })
 @ObjectType()
+@Entity()
 export default class User {
   @BeforeInsert()
   @BeforeUpdate()

@@ -19,12 +19,14 @@ export default class CategoryResolver {
 
   @Mutation(() => Category)
   async createCategory(@Arg('data') data: CreateCategoryInput) {
-    // const findedCategory = await new CategoryService().findCategoryByName(data.name)
-    // console.log("findedCategory: ", findedCategory)
-    // if(findedCategory) {
-    //   throw new Error("This name alredy used")
-    //   // return findedCategory
-    // }
+    const findedCategory = await new CategoryService().findCategoryByName(
+      data.name
+    )
+    console.log('findedCategory: ', findedCategory)
+    if (findedCategory) {
+      throw new Error('This name alredy used')
+      // return findedCategory
+    }
     const newCategory = await new CategoryService().createCategory({
       ...data,
     })

@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 import { DataSource } from 'typeorm'
+// import datasource from './db'
 import Category from './entities/category.entity'
 import Material from './entities/material.entity'
 import Reservation from './entities/reservation.entity'
@@ -7,7 +8,7 @@ import ReservationMaterial from './entities/reservation_material.entity'
 import User from './entities/user.entity'
 dotenv.config()
 
-export default new DataSource({
+const datasource = new DataSource({
   type: 'postgres',
   host: process.env.DB_HOST,
   port: 5432, // Assure-toi de convertir en nombre
@@ -18,6 +19,8 @@ export default new DataSource({
   logging: true,
   entities: [Category, Material, ReservationMaterial, User, Reservation],
 })
+
+export default datasource
 // Category, Material, ReservationMaterial, User, Reservation
 //__dirname + '../dist/src/entities/*.entity.{js,ts}'
 // 'dist/src/entities/*.entity.{js,ts}'

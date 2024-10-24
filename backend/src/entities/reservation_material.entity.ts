@@ -13,8 +13,8 @@ import Reservation from './reservation.entity'
 // =================================================================
 //                           OBJECT TYPE
 // =================================================================
-@Entity({ name: 'ReservationMaterial' })
 @ObjectType()
+@Entity()
 export default class ReservationMaterial {
   @Field()
   @PrimaryGeneratedColumn('uuid')

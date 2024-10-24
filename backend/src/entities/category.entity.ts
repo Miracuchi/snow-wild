@@ -8,8 +8,8 @@ import {
 } from 'typeorm'
 import Material from './material.entity'
 
-@Entity({ name: 'Category' })
 @ObjectType()
+@Entity()
 export default class Category {
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
