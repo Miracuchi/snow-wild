@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm'
-import datasource from '../db'
+import datasource from '../db.prod'
 import Reservation, {
   CreateReservationInput,
   UpdateReservationInput,

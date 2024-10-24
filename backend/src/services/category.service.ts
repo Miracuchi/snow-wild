@@ -1,7 +1,7 @@
-import { Repository } from 'typeorm'
-import datasource from '../db'
-import Category, { AdminUpdateCategoryInput, CreateCategoryInput } from '../entities/category.entity'
 import { Arg } from 'type-graphql'
+import { Repository } from 'typeorm'
+import datasource from '../db.prod'
+import Category, { AdminUpdateCategoryInput, CreateCategoryInput } from '../entities/category.entity'
 
 export default class CategoryService {
   db: Repository<Category>
