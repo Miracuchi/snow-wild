@@ -7,4 +7,5 @@ COPY src src
 COPY public public
 # COPY codegen.ts .
 COPY tsconfig.json .
+RUN npm run build
 CMD npm run start
