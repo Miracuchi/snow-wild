@@ -119,8 +119,6 @@ async function main() {
       origin: [
         'http://localhost:3000',
         'http://localhost:8000',
-        'http://localhost:8080',
-        'https://snow-wild-production.up.railway.app/',
         'https://snow-wild.vercel.app/',
       ],
       credentials: true,
