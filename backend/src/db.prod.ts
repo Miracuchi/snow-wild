@@ -9,5 +9,5 @@ export default new DataSource({
   database: process.env.DB_NAME,
   synchronize: true, //en dev, en prod on préfera utiliser les migrations
   logging: true,
-  entities: ['./../dist/entities/*.js'],
+  entities: ['./../dist/src/entities/*.js'],
 })
