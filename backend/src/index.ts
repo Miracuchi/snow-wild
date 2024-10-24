@@ -63,7 +63,6 @@ async function main() {
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   })
   await server.start()
-  console.log(process.env.NODE_ENV)
 
   app.post(
     '/webhooks',

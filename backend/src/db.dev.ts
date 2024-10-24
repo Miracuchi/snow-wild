@@ -4,7 +4,7 @@ import Material from './entities/material.entity'
 import Reservation from './entities/reservation.entity'
 import ReservationMaterial from './entities/reservation_material.entity'
 import User from './entities/user.entity'
-const isProduction = process.env.NODE_ENV === 'production'
+const isProduction = process.env.APP_ENV === 'production'
 
 const host = isProduction ? process.env.DB_HOST : 'localhost'
 const username = isProduction ? process.env.DB_USER : 'postgres'
