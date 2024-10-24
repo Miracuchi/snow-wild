@@ -151,10 +151,8 @@ async function main() {
   await new Promise<void>((resolve) =>
     httpServer.listen({ port: PORT }, resolve)
   )
-  // app.listen(PORT, () => {
-  //   console.log(`Example app listening on port ${PORT}`)
-  // })
-  console.log(`🚀 Server lancé sur http://localhost:4000/`)
+
+  console.log(`🚀 Server lancé sur http://localhost:${PORT}/`)
 }
 
 main()
