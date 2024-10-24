@@ -8,6 +8,6 @@ export default new DataSource({
   database: process.env.DB_NAME,
   synchronize: true, //en dev, en prod on préfera utiliser les migrations
   logging: true,
-  entities: ['dist/src/entities/*.js'],
+  entities: [__dirname + '../dist/src/entities/*.entity.{js,ts}'],
 })
 // Category, Material, ReservationMaterial, User, Reservation
