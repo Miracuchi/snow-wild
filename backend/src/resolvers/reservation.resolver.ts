@@ -8,7 +8,7 @@ import Reservation, {
   ReservationDeleted,
   UpdateReservationInput,
 } from '../entities/reservation.entity'
-import { ReservationMaterial } from '../entities/reservation_material.entity'
+import ReservationMaterial from '../entities/reservation_material.entity'
 import ReservationService from '../services/reservation.service'
 import ReservationMaterialService from '../services/reservation_material.service'
 
