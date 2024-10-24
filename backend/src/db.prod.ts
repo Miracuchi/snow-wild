@@ -12,11 +12,11 @@ export default new DataSource({
   synchronize: true, //en dev, en prod on préfera utiliser les migrations
   logging: true,
   entities: [
-    __dirname + '/dist/**/category.entity.js',
-    __dirname + '/dist/**/material.entity.js',
-    __dirname + '/dist/**/user.entity.js',
-    __dirname + '/dist/**/reservation_material.entity.js',
-    __dirname + '/dist/**/reservation.entity.js',
+    'dist/**/category.entity.js',
+    'dist/**/material.entity.js',
+    'dist/**/user.entity.js',
+    'dist/**/reservation_material.entity.js',
+    'dist/**/reservation.entity.js',
   ],
 })
 // Category, Material, ReservationMaterial, User, Reservation
