@@ -7,12 +7,9 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import type { AppProps } from "next/app";
 
 import "@/styles/globals.css";
-const isProduction = process.env.APP_ENV === "production";
-const uri = isProduction
-  ? process.env.NEXT_PUBLIC_API_URL
-  : process.env.NEXT_PUBLIC_BACK_URL;
+
 const client = new ApolloClient({
-  uri: uri,
+  uri: process.env.NEXT_PUBLIC_API_URL,
   cache: new InMemoryCache({ addTypename: false }),
   credentials: "include",
 });
