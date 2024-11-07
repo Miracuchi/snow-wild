@@ -3,15 +3,23 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { CartProvider } from "@/contexts/CartContext";
 import { DateProvider } from "@/contexts/DateContext";
 import LayoutClient from "@/user/components/layout-elements/LayoutClient";
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import {
+  ApolloClient,
+  ApolloProvider,
+  HttpLink,
+  InMemoryCache,
+} from "@apollo/client";
 import type { AppProps } from "next/app";
 
 import "@/styles/globals.css";
 
 const client = new ApolloClient({
-  uri: process.env.NEXT_PUBLIC_API_URL,
+  link: new HttpLink({
+    uri: process.env.NEXT_PUBLIC_API_URL,
+    credentials: "include",
+  }),
+
   cache: new InMemoryCache({ addTypename: false }),
-  credentials: "include",
 });
 
 export default function App({ Component, pageProps, router }: AppProps) {
