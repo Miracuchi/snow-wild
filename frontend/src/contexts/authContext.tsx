@@ -12,7 +12,7 @@ type UserType = {
 
 const COOKIE_KEY = "authUser";
 
-export const AuthContext = createContext<{
+const AuthContext = createContext<{
   user: UserType | null;
   setAuthUser: ({
     userId,
@@ -31,7 +31,7 @@ export const AuthContext = createContext<{
   logout: () => {},
   authReady: false,
 });
-
+export default AuthContext;
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const [user, setUser] = useState<UserType | null>(null);
