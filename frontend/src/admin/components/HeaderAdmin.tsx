@@ -1,3 +1,4 @@
+import AuthContext from "@/contexts/AuthContext";
 import { Button } from "@/ui/Button";
 import { Card } from "@/ui/Card";
 import { Input } from "@/ui/Input";
@@ -13,7 +14,6 @@ import {
 import { Bell, CircleUser, Menu, Package2, Search } from "lucide-react";
 import Link from "next/link";
 import { useContext } from "react";
-import AuthContext from "../../contexts/AuthContext";
 import Navigation from "./Navigation";
 
 const HeaderAdmin = () => {
