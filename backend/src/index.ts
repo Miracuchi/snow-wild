@@ -11,7 +11,7 @@ import http from 'http'
 import { jwtVerify } from 'jose'
 import 'reflect-metadata'
 import { buildSchema } from 'type-graphql'
-import datasource from './db.prod'
+import datasource from './db'
 import User from './entities/user.entity'
 import { customAuthChecker } from './lib/authChecker'
 import CategoryResolver from './resolvers/category.resolver'
@@ -63,6 +63,8 @@ async function main() {
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   })
   await server.start()
+  console.log(process.env.APP_ENV)
+
   app.post(
     '/webhooks',
     express.raw({ type: 'application/json' }), // Utiliser express.raw pour les webhooks Stripe
@@ -146,13 +148,13 @@ async function main() {
   )
 
   await datasource.initialize()
-  // await new Promise<void>((resolve) =>
-  //   httpServer.listen({ port: PORT }, resolve)
-  // )
-  app.listen(PORT, () => {
-    console.log(`Example app listening on port ${PORT}`)
-  })
-  console.log(`🚀 Server lancé sur http://localhost:4000/`)
+  console.log()
+
+  await new Promise<void>((resolve) =>
+    httpServer.listen({ port: PORT }, resolve)
+  )
+
+  console.log(`🚀 Server lancé ${PORT} sur http://localhost:${PORT}/`)
 }
 
 main()

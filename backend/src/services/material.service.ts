@@ -13,10 +13,9 @@ export default class MaterialService {
     this.db = datasource.getRepository(Material)
   }
 
-
   async listMaterials() {
     return this.db.find({
-      relations: { category: true }
+      relations: { category: true },
     })
   }
 
@@ -34,10 +33,9 @@ export default class MaterialService {
   async listByCategory(id: string) {
     return await this.db.find({
       where: { category: { id } },
-      relations: { category: true }
-    });
+      relations: { category: true },
+    })
   }
-
 
   async createMaterial(data: CreateMaterialInput) {
     const categoryToLink = await new CategoryService().find(data?.category?.id)
@@ -67,7 +65,7 @@ export default class MaterialService {
     const categoryToLink = await new CategoryService().find(data?.category.id)
     const materialToUpdate = await this.findMaterialById(id)
     if (!materialToUpdate) {
-      throw new Error("Error, material id not found!")
+      throw new Error('Error, material id not found!')
     }
 
     const materialToSave = this.db.merge(materialToUpdate, {

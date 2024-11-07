@@ -2,10 +2,10 @@ import { Arg, Mutation, Query, Resolver } from 'type-graphql'
 import ReservationMaterialService from '../services/reservation_material.service'
 import {
   FindReservationMaterialsBetweenTwoDateInput,
-  ReservationMaterial,
   UpdateReservationMaterialInput,
 } from './../entities/reservation_material.entity'
 
+import ReservationMaterial from '../entities/reservation_material.entity'
 @Resolver()
 export default class ReservationMaterialResolver {
   @Query(() => [ReservationMaterial])

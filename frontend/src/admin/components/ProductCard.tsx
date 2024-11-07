@@ -1,9 +1,7 @@
-"use client";
-
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { useToast } from "@/components/ui/use-toast";
 import { DELETE_MATERIAL_ADMIN } from "@/requetes/mutations/material.mutations";
+import { Button } from "@/ui/Button";
+import { Card, CardContent, CardFooter } from "@/ui/Card";
+import { useToast } from "@/ui/use-toast";
 import { useMutation } from "@apollo/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -49,7 +47,7 @@ const ProductCard = ({ product }: { product: ProductType }) => {
           title: "Delete",
           description: "Product successfully delete",
         });
-        router.push("/admin/products");
+        router.push("/admin/products/list");
       },
       onError: (error) => {
         console.log("Error when try to deleted");
@@ -63,7 +61,7 @@ const ProductCard = ({ product }: { product: ProductType }) => {
       <CardContent>
         <div className="flex gap-4">
           <div className="flex justify-center w-1/3">
-            <img src={picture} width="100" />
+            <img src={picture} width="100" alt={name} />
           </div>
 
           <div className="flex flex-col gap-4 w-2/3">

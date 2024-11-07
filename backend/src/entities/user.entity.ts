@@ -168,7 +168,7 @@ export class InputAdminCreateUser {
 
   @Field({ nullable: false })
   password: string
-  
+
   @Field({ nullable: false })
   phone: string
 
@@ -189,7 +189,7 @@ export class InputAdminUpdateUser extends User {
 
   @Field({ nullable: false })
   password: string
-  
+
   @Field({ nullable: false })
   phone: string
 
@@ -199,11 +199,7 @@ export class InputAdminUpdateUser extends User {
 
 @ObjectType()
 export class UpdateUserWithoutPassword
-  implements
-    Omit<
-      User,
-      'password' | 'reservations'
-    >
+  implements Omit<User, 'password' | 'reservations'>
 {
   @Field()
   id: string
@@ -217,12 +213,9 @@ export class UpdateUserWithoutPassword
   @Field()
   email: string
 
-
   @Field()
   phone: string
 
   @Field(() => String)
   role: UserRoleEnum
 }
-
-

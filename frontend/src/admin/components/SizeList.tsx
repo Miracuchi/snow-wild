@@ -1,6 +1,6 @@
+// import { SizeType } from "@/types";
 // import { useState } from "react";
 // import SizeItem from "./SizeItem";
-// import { SizeType } from "@/types";
 
 // const SizeList = ({ sizes, onFormSelectedSize } : { sizes: SizeType[], onFormSelectedSize: () => void}) => {
 

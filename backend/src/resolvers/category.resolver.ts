@@ -1,7 +1,9 @@
-import Category, { AdminUpdateCategoryInput } from './../entities/category.entity'
 import { Arg, Mutation, Query, Resolver } from 'type-graphql'
-import CategoryService from '../services/category.service'
 import { CreateCategoryInput } from '../entities/category.entity'
+import CategoryService from '../services/category.service'
+import Category, {
+  AdminUpdateCategoryInput,
+} from './../entities/category.entity'
 
 @Resolver()
 export default class CategoryResolver {
@@ -17,10 +19,12 @@ export default class CategoryResolver {
 
   @Mutation(() => Category)
   async createCategory(@Arg('data') data: CreateCategoryInput) {
-    const findedCategory = await new CategoryService().findCategoryByName(data.name)
-    console.log("findedCategory: ", findedCategory)
-    if(findedCategory) {
-      throw new Error("This name alredy used")
+    const findedCategory = await new CategoryService().findCategoryByName(
+      data.name
+    )
+    console.log('findedCategory: ', findedCategory)
+    if (findedCategory) {
+      throw new Error('This name alredy used')
       // return findedCategory
     }
     const newCategory = await new CategoryService().createCategory({
@@ -31,16 +35,14 @@ export default class CategoryResolver {
 
   @Mutation(() => Category)
   async updateCategory(@Arg('data') data: AdminUpdateCategoryInput) {
-    const { id } = data;
+    const { id } = data
 
     const findedCategory = await new CategoryService().find(id)
-    console.log("findedCategory: ", findedCategory)
+    console.log('findedCategory: ', findedCategory)
     // if(!findedCategory) {
     //   throw new Error("Error, This category id doesn't exist !")
     // }
-    const updatedCategory = await new CategoryService().updateCategory(
-      data
-    )
+    const updatedCategory = await new CategoryService().updateCategory(data)
     return updatedCategory
   }
 

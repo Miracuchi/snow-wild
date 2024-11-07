@@ -9,7 +9,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm'
 import { StatutReservation } from '../types'
-import { ReservationMaterial } from './reservation_material.entity'
+import ReservationMaterial from './reservation_material.entity'
 import User from './user.entity'
 
 // =================================================================

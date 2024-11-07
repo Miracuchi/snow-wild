@@ -2,11 +2,12 @@ import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm'
 import datasource from '../db'
 import Material from '../entities/material.entity'
 import Reservation from '../entities/reservation.entity'
+import ReservationMaterial from '../entities/reservation_material.entity'
 import {
   FindReservationMaterialsBetweenTwoDateInput,
-  ReservationMaterial,
   UpdateReservationMaterialInput,
 } from './../entities/reservation_material.entity'
+
 import MaterialService from './material.service'
 import ReservationService from './reservation.service'
 
