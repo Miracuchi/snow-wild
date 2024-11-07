@@ -18,11 +18,11 @@
  * La clé secrète de stripe obtenue depuis le dashboard stripe doit également être côté backend
  *
  *------------------------**/
-import PaymentModule from "@/components/layout-elements/PaymentModule";
 import { useCart } from "@/contexts/CartContext";
+import { formatMoney } from "@/lib/utilities";
 import { CREATE_SESSION } from "@/requetes/queries/payment.queries";
 import { Reservation } from "@/types/reservation";
-import { formatMoney } from "@/utilities";
+import PaymentModule from "@/user/components/payment-stripe/PaymentModule";
 import { useLazyQuery } from "@apollo/client";
 import { useEffect } from "react";
 
@@ -40,7 +40,6 @@ function ReservationPaiementStep() {
   const usableReservationObject: Reservation =
     reservationObject && JSON.parse(reservationObject);
 
-  console.log("MEGARDHDGHDGHGD", usableReservationObject);
   const calculatePrices = (): Prices => {
     const taxRate = 0.2; // 20% taxe par défaut
     const shippingCost = 0.0; // frais d'envoi par défaut

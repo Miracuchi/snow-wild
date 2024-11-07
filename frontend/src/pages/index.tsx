@@ -1,6 +1,6 @@
-import ListMaterial from "@/components/ListMaterial";
-import { AuthContext } from "@/contexts/authContext";
+import { AuthContext } from "@/contexts/AuthContext";
 import styles from "@/styles/Home.module.css";
+import ListMaterial from "@/user/components/ListMaterial";
 import { Inter } from "next/font/google";
 import Head from "next/head";
 import { useContext } from "react";
@@ -9,7 +9,6 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const { user } = useContext(AuthContext);
-  console.log("USER HOME", user);
 
   return (
     <>

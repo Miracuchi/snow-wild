@@ -13,6 +13,7 @@ const database = isProduction ? process.env.DB_NAME : 'snowwild'
 const entities = isProduction
   ? [Category, Material, ReservationMaterial, User, Reservation]
   : ['src/entities/*.ts']
+
 export default new DataSource({
   type: 'postgres',
   host: host,

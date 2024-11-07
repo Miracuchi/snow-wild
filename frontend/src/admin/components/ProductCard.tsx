@@ -1,9 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { useToast } from "@/components/ui/use-toast";
 import { DELETE_MATERIAL_ADMIN } from "@/requetes/mutations/material.mutations";
+import { Button } from "@/ui/Button";
+import { Card, CardContent, CardFooter } from "@/ui/Card";
+import { useToast } from "@/ui/use-toast";
 import { useMutation } from "@apollo/client";
 import Link from "next/link";
 import { useRouter } from "next/router";

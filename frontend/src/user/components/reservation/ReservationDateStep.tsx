@@ -1,4 +1,5 @@
-import { useStepper } from "@/components/stepper";
+import { DATES_STORAGE_KEY } from "@/constants";
+import { SetToLocalStorage } from "@/hooks/useLocalStorage";
 import {
   Form,
   FormControl,
@@ -6,17 +7,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { toast } from "@/components/ui/use-toast";
-import { DATES_STORAGE_KEY } from "@/constants";
-import { SetToLocalStorage } from "@/hooks/useLocalStorage";
+} from "@/ui/Form";
 
+import { useDate } from "@/contexts/DateContext";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import DatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import BasketComponent from "./BasketComponent";
+import CartWithoutActions from "../cart/CartWithoutActions";
 
 const FirstFormSchema = z.object({
   date: z
@@ -32,17 +31,13 @@ export interface DateFormInfos {
   start_date: Date;
   end_date: Date;
 }
-function ReservationDateStep() {
-  const { nextStep } = useStepper();
-  const actualDate = new Date(Date.now());
-  const [formInfos, setFormInfos] = useState<DateFormInfos>({
-    start_date: actualDate,
-    end_date: new Date(
-      actualDate.getFullYear(),
-      actualDate.getMonth(),
-      actualDate.getDate() + 7
-    ),
-  });
+function ReservationDateStep({
+  handleSubmit,
+}: {
+  handleSubmit: () => Promise<void>;
+}) {
+  const { formInfos, setFormInfos } = useDate();
+
   useEffect(() => {
     if (formInfos) {
       SetToLocalStorage(DATES_STORAGE_KEY, formInfos);
@@ -56,17 +51,10 @@ function ReservationDateStep() {
     },
   });
 
-  function onSubmit(_data: z.infer<typeof FirstFormSchema>) {
-    nextStep();
-    toast({
-      title: "First step submitted!",
-    });
-  }
-
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 ">
+        <form className="space-y-6 ">
           <FormField
             control={form.control}
             name="date"
@@ -114,14 +102,13 @@ function ReservationDateStep() {
                     <span id="divider" />
                   </div>
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
           />
         </form>
       </Form>
-      <BasketComponent dateFormInfo={formInfos} />
+      <CartWithoutActions handleSubmit={handleSubmit} />
     </>
   );
 }

@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/ui/Button";
 import { useRouter } from "next/router";
-type HandleSubmitProps = () => Promise<void>;
+type HandleSubmitProps = () => void;
 
 function StepperFormActions({
   handleSubmit,
@@ -11,7 +11,7 @@ function StepperFormActions({
   const backToHomePage = () => {
     router.push("/");
   };
-  
+
   return (
     <div className="w-full flex justify-center mt-4 items-center gap-2">
       <>
@@ -24,7 +24,7 @@ function StepperFormActions({
         </Button>
         <Button
           onClick={backToHomePage}
-          className=" bg-red-500 text-white rounded-full w-full hover:bg-red-700"
+          className="bg-red-500 text-white rounded-full w-full hover:bg-red-700"
         >
           Abandonner
         </Button>

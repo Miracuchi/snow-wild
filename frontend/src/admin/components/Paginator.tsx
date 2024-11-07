@@ -6,8 +6,8 @@ import {
   PaginationItem,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
-import { generatePaginationLinks } from "./generate-pages";
+} from "@/ui/Pagination";
+import { generatePaginationLinks } from "./GeneratePages";
 
 type PaginatorProps = {
   currentPage: number;
@@ -29,7 +29,7 @@ export default function Paginator({
           <PaginationItem>
             <PaginationPrevious
               onClick={() => onPageChange(currentPage - 1)}
-              // disabled={currentPage - 1 < 1}
+              size={undefined} // disabled={currentPage - 1 < 1}
             />
           </PaginationItem>
         ) : null}
@@ -38,7 +38,7 @@ export default function Paginator({
           <PaginationItem>
             <PaginationNext
               onClick={() => onPageChange(currentPage + 1)}
-              // disabled={currentPage > totalPages - 1}
+              size={undefined} // disabled={currentPage > totalPages - 1}
             />
           </PaginationItem>
         ) : null}

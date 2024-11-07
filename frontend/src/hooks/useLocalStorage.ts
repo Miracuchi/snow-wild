@@ -1,6 +1,6 @@
 "use client";
 import { CartItem } from "@/contexts/CartContext";
-import { DateFormInfos } from "@/pages/user/reservation/ReservationDateStep";
+import { DateFormInfos } from "@/user/components/reservation/ReservationDateStep";
 // FormDataCard : FOR LATER MAYBE
 export const EmptyLocalStorage = (...storageKeys: string[]) => {
   storageKeys.forEach((key: string) => {

@@ -1,42 +1,48 @@
 import LayoutAdmin from "@/admin/components/LayoutAdmin";
-import LayoutClient from "@/components/layout-elements/LayoutClient";
-import { AuthProvider } from "@/contexts/authContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { CartProvider } from "@/contexts/CartContext";
+import { DateProvider } from "@/contexts/DateContext";
+import LayoutClient from "@/user/components/layout-elements/LayoutClient";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import type { AppProps } from "next/app";
 
 import "@/styles/globals.css";
-
+const isProduction = process.env.APP_ENV === "production";
+const uri = isProduction
+  ? process.env.NEXT_PUBLIC_API_URL
+  : process.env.NEXT_PUBLIC_BACK_URL;
 const client = new ApolloClient({
-  uri: "http://localhost:4000",
+  uri: uri,
   cache: new InMemoryCache({ addTypename: false }),
   credentials: "include",
 });
 
-export default function App(
-  { Component, pageProps, router }: AppProps
-) {
+export default function App({ Component, pageProps, router }: AppProps) {
   if (router.pathname.startsWith("/admin")) {
     return (
       <ApolloProvider client={client}>
-        <AuthProvider>
-          <LayoutAdmin>
-            <Component {...pageProps} />
-          </LayoutAdmin>
-        </AuthProvider>
+        <DateProvider>
+          <AuthProvider>
+            <LayoutAdmin>
+              <Component {...pageProps} />
+            </LayoutAdmin>
+          </AuthProvider>
+        </DateProvider>
       </ApolloProvider>
     );
   }
 
   return (
     <ApolloProvider client={client}>
-      <AuthProvider>
-        <CartProvider>
-          <LayoutClient>
-            <Component {...pageProps} />
-          </LayoutClient>
-        </CartProvider>
-      </AuthProvider>
+      <DateProvider>
+        <AuthProvider>
+          <CartProvider>
+            <LayoutClient>
+              <Component {...pageProps} />
+            </LayoutClient>
+          </CartProvider>
+        </AuthProvider>
+      </DateProvider>
     </ApolloProvider>
-  )
-};
+  );
+}

@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui/button";
-import { AuthContext } from "@/contexts/authContext";
+import { AuthContext } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
 import { GET_RESERVATIONS_BY_USER_ID } from "@/requetes/queries/reservation.queries";
 import {
@@ -7,6 +6,7 @@ import {
   ReservationsByUserIdResponse,
   ReservationsByUserIdVariables,
 } from "@/types/reservation";
+import { Button } from "@/ui/Button";
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import { useContext } from "react";
@@ -44,7 +44,7 @@ const UserReservations = () => {
   const handlePaiement = (reservation: Reservation) => {
     // Rediriger vers /user/reservation avec la query step=2 et reservationId
     setCart([]);
-    router.push(`/user/reservation?step=2`);
+    router.push(`/user/reservations/create?step=2`);
     localStorage.setItem("reservation", JSON.stringify(reservation));
     localStorage.removeItem("cart");
   };

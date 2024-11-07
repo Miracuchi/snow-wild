@@ -1,18 +1,17 @@
-"use client"
-import React, { useState } from "react";
-import { buttonVariants } from "@/components/ui/button";
-import Link from 'next/link'
+"use client";
+import { buttonVariants } from "@/ui/Button";
 import {
   ColumnDef,
   ColumnFiltersState,
   SortingState,
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
+import Link from "next/link";
+import React, { useState } from "react";
 
 import {
   Table,
@@ -21,16 +20,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/ui/Table";
 
-import { Button } from "@/components/ui/button"
-import Paginator from "./paginator";
+import Paginator from "./Paginator";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-  title?: string
-  createEntity: string
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  title?: string;
+  createEntity: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -39,11 +37,10 @@ export function DataTable<TData, TValue>({
   title,
   createEntity,
 }: DataTableProps<TData, TValue>) {
-
-  const [sorting, setSorting] = useState<SortingState>([])
+  const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
-  )
+  );
   const table = useReactTable({
     data,
     columns,
@@ -54,14 +51,14 @@ export function DataTable<TData, TValue>({
     state: {
       sorting,
     },
-  })
+  });
 
   return (
     <div className="w-full sm:p-4">
       <div className="flex justify-between w-full items-center">
-        <h2 className="p-4">{title ? title : 'All links'}</h2>
+        <h2 className="p-4">{title ? title : "All links"}</h2>
         <div>
-          <Link 
+          <Link
             className={buttonVariants({ variant: "outline" })}
             href={`/admin/${createEntity}/create`}
           >
@@ -69,11 +66,9 @@ export function DataTable<TData, TValue>({
           </Link>
         </div>
       </div>
-      
+
       <div className="rounded-md sm:border">
-        <Table
-          className="relative w-full overflow-x-auto"
-        >
+        <Table className="relative w-full overflow-x-auto">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -87,7 +82,7 @@ export function DataTable<TData, TValue>({
                             header.getContext()
                           )}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
@@ -101,14 +96,20 @@ export function DataTable<TData, TValue>({
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
                   No results.
                 </TableCell>
               </TableRow>
@@ -117,18 +118,20 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
       <div className="flex items-center justify-between space-x-2 py-4">
-        
-        <div className="justify-start">{table.getFilteredRowModel().rows.length} row(s)</div>
-        <div className="flex justify-end">        
-          
+        <div className="justify-start">
+          {table.getFilteredRowModel().rows.length} row(s)
+        </div>
+        <div className="flex justify-end">
           <Paginator
             currentPage={table.getState().pagination.pageIndex + 1}
             totalPages={table.getPageCount()}
-            onPageChange={(pageNumber: number) => table.setPageIndex(pageNumber - 1)}
+            onPageChange={(pageNumber: number) =>
+              table.setPageIndex(pageNumber - 1)
+            }
             showPreviousNext
           />
         </div>
       </div>
     </div>
-  )
+  );
 }

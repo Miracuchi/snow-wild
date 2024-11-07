@@ -1,9 +1,9 @@
-import Cookies from "js-cookie";
-import { createContext, useEffect, useState } from "react";
+import { LOGOUT } from "@/requetes/queries/auth.queries";
+import { toast } from "@/ui/use-toast";
 import { useLazyQuery } from "@apollo/client";
-import { LOGOUT } from '@/requetes/queries/auth.queries';
+import Cookies from "js-cookie";
 import { useRouter } from "next/router";
-import { toast } from "@/components/ui/use-toast";
+import { createContext, useEffect, useState } from "react";
 type UserType = {
   email: string | undefined;
   userId: string | undefined;
@@ -29,14 +29,13 @@ export const AuthContext = createContext<{
   setAuthUser: () => {},
   logout: () => {},
   authReady: false,
-
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const router= useRouter();
+  const router = useRouter();
   const [user, setUser] = useState<UserType | null>(null);
   const [authReady, setAuthReady] = useState<boolean>(false);
-  const [userLogout] = useLazyQuery(LOGOUT)
+  const [userLogout] = useLazyQuery(LOGOUT);
   const setAuthUser = ({
     userId,
     role,
@@ -59,10 +58,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const logout = () => {
-// Nettoyer le localStorage lors de la déconnexion
+    // Nettoyer le localStorage lors de la déconnexion
     userLogout({
       onCompleted: (data) => {
-        console.log('user Logout: ', data)
+        console.log("user Logout: ", data);
         setUser(null);
         Cookies.remove(COOKIE_KEY);
         Cookies.remove("userId");
@@ -70,11 +69,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         Cookies.remove("email");
         toast({
           title: "Logout",
-          description: data.logout.message
-        })
-        router.push("/")
+          description: data.logout.message,
+        });
+        router.push("/");
       },
-    })
+    });
   };
 
   return (

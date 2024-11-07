@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
-import { AuthContext } from "@/contexts/authContext";
+import { AuthContext } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
+import CartItem from "@/user/components/cart/CartItem";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
@@ -22,7 +23,7 @@ const Basket: React.FC = () => {
 
   const handleCheckout = () => {
     if (user?.userId) {
-      router.push("/user/reservation");
+      router.push("/user/reservations/create");
     } else {
       router.push("/auth/login?redirect=/user/reservation");
     }
@@ -71,62 +72,20 @@ const Basket: React.FC = () => {
         </h1>
         <div className="space-y-4">
           {cart.map((item) => (
-            <div
+            <CartItem
               key={`${item.id}-${item.selectedSize}`}
-              className=" flex rounded-lg  overflow-hidden border-4 border-blue-300 shadow-lg"
-            >
-              <div className="relative h-48">
-                <img
-                  className="m-5 max-w-28 object-contain"
-                  src={process.env.NEXT_PUBLIC_IMAGE_URL + item.picture}
-                  alt={item.name}
-                />
-              </div>
-              <div className="p-6 flex justify-between items-center">
-                <div>
-                  <h2 className="text-2xl font-bold mb-2">{item.name}</h2>
-                  <p className="text-gray-700 w-9/12 line-clamp-3">
-                    {item.description}
-                  </p>
-
-                  <div className=" flex mt-5 items-center gap-6 ">
-                    <p className="text-gray-700">
-                      Taille :{" "}
-                      <span className="underline">{item.selectedSize}</span>
-                    </p>
-                    <div className="flex items-center">
-                      <span className="mr-2">Quantité:</span>
-                      <select
-                        value={item.quantity}
-                        onChange={(e) =>
-                          updateQuantity(
-                            item.id,
-                            item.selectedSize,
-                            parseInt(e.target.value)
-                          )
-                        }
-                        className="px-2 py-1 border rounded"
-                      >
-                        {[1, 2, 3, 4, 5].map((q) => (
-                          <option key={q} value={q}>
-                            {q}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <button
-                      onClick={() =>
-                        confirmRemoveItem(item.id, item.selectedSize)
-                      }
-                      className="ml-4 text-red-500 hover:text-red-700"
-                    >
-                      supprimer
-                    </button>
-                  </div>
-                </div>
-                <p className="text-gray-700 text-xl font-bold">{item.price}€</p>
-              </div>
-            </div>
+              id={item.id}
+              name={item.name}
+              picture={item.picture}
+              selectedSize={item.selectedSize}
+              quantity={item.quantity}
+              price={item.price}
+              description={item.description}
+              onQuantityChange={(quantity) =>
+                updateQuantity(item.id, item.selectedSize, quantity)
+              }
+              onRemove={() => confirmRemoveItem(item.id, item.selectedSize)}
+            />
           ))}
         </div>
       </div>
@@ -141,6 +100,7 @@ const Basket: React.FC = () => {
             <p className="text-gray-700">Total :</p>
             <p className="text-gray-700">{totalPrice}€</p>
           </div>
+
           <button
             onClick={handleCheckout}
             className="p-4 bg-neutral-900 w-full text-white rounded-full hover:bg-neutral-700 mt-6 "
