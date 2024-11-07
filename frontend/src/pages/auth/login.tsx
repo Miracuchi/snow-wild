@@ -21,15 +21,18 @@ function Login() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData) as unknown as InputLogin;
+    console.log("data send", data);
     if (data.email && data.password) {
       login({
         variables: { infos: { email: data.email, password: data.password } },
         onCompleted: (data) => {
+          console.log("completed and received", data);
           if (data) {
             setAuthUser({
               userId: data.login.id,
               email: data.login.email,
               role: data.login.role,
+              token: data.login.token,
             });
             const redirectTo = router.query.redirect || "/";
             if (data?.login?.role === "ADMIN") {

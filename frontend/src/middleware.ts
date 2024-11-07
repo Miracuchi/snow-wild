@@ -11,27 +11,23 @@ interface Payload {
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || "";
 
-export default async function middleware(request: NextRequest) {
-  const { cookies } = request;
-  const token = cookies.get("token");
-  console.log("TOKKENMIDDL", token?.value);
-
-  return await checkToken(token?.value, request);
-}
-
 export async function verify(token: string): Promise<Payload> {
+  console.log("HOLA");
+
   const { payload } = await jwtVerify<Payload>(
     token,
     new TextEncoder().encode(JWT_SECRET_KEY)
   );
+  console.log("PAYE", payload);
 
   return payload;
 }
 
 async function checkToken(token: string | undefined, request: NextRequest) {
   const currentRoute = findRouteByPathname(request.nextUrl.pathname);
-
+  console.log("HELLO", token, currentRoute);
   let response = NextResponse.next();
+  console.log("HELLO2");
 
   if (!token) {
     if (currentRoute && currentRoute.protected !== "PUBLIC") {
@@ -44,9 +40,11 @@ async function checkToken(token: string | undefined, request: NextRequest) {
     return response;
   }
   //On delete les cookies existants
+  console.log("HELLO3");
 
   try {
     const { email, role, userId } = await verify(token);
+    console.log("HELLO4");
 
     if (currentRoute?.protected === "ADMIN" && role !== "ADMIN") {
       response = NextResponse.redirect(new URL("/errors", request.url)); // redirige sur la Page error
@@ -113,6 +111,170 @@ function findRouteByPathname(url: string) {
   return null;
 }
 
-// export const config = {
-//   matcher: "/:path*",
-// };
+export default async function middleware(request: NextRequest) {
+  const authUser = request.cookies.get("authUser");
+  let token = undefined;
+  if (authUser && authUser.value) {
+    token = JSON.parse(authUser?.value).token;
+  }
+  console.log("token", token);
+
+  return await checkToken(token, request);
+}
+
+// // WITH AUTHUSER
+// import { routes } from "@/routes";
+// import { NextRequest, NextResponse } from "next/server";
+
+// async function middleware(request: NextRequest) {
+//   const authUser = request.cookies.get("authUser")?.value;
+//   const currentRoute = findRouteByPathname(request.nextUrl.pathname);
+
+//   let response = NextResponse.next();
+
+//   if (!authUser) {
+//     // Si l'utilisateur n'est pas authentifié, redirigez vers /auth/login
+//     if (currentRoute && currentRoute.protected !== "PUBLIC") {
+//       response = NextResponse.redirect(new URL("/auth/login", request.url));
+//     }
+//     response.cookies.delete("email");
+//     response.cookies.delete("role");
+//     response.cookies.delete("userId");
+//     return response;
+//   }
+
+//   try {
+//     const { email, role, userId } = JSON.parse(authUser);
+
+//     // Vérification du rôle pour les routes protégées "ADMIN"
+//     if (currentRoute?.protected === "ADMIN" && role !== "ADMIN") {
+//       return NextResponse.redirect(new URL("/errors", request.url));
+//     }
+
+//     // Ajout des cookies avec les informations de l'utilisateur
+//     response.cookies.set("email", email);
+//     response.cookies.set("role", role);
+//     response.cookies.set("userId", userId);
+
+//     return response;
+//   } catch (err) {
+//     console.error("Erreur de vérification de l'utilisateur", err);
+//     response = NextResponse.redirect(new URL("/auth/login", request.url));
+//     // Suppression des cookies en cas d'échec
+//     response.cookies.delete("email");
+//     response.cookies.delete("role");
+//     response.cookies.delete("userId");
+//     return response;
+//   }
+// }
+
+// // Fonction pour trouver la route correspondante à partir du pathname
+// function findRouteByPathname(url: string) {
+//   if (url === "/") {
+//     return routes.home;
+//   }
+//   const routeKeys = Object.keys(routes).filter((e) => e !== "home");
+//   for (const key of routeKeys) {
+//     if (url.includes(routes[key].pathname)) {
+//       return routes[key];
+//     }
+//   }
+//   return null;
+// }
+
+// export default middleware;
+
+// // WITHTOKENCONDENSED
+// import { routes } from "@/routes";
+// import { jwtVerify } from "jose";
+// import type { NextRequest } from "next/server";
+// import { NextResponse } from "next/server";
+
+// interface Payload {
+//   email: string;
+//   role: string;
+//   userId: string;
+// }
+
+// const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || "";
+
+// export default async function middleware(request: NextRequest) {
+//   // Récupérer le token depuis les cookies
+//   console.log("COOKIETOKEN", request.cookies);
+
+//   const token = request.cookies.get("token")?.value;
+//   console.log("TOKKENMIDDL", token);
+
+//   // Trouver la route actuelle en fonction de l'URL
+//   const currentRoute = findRouteByPathname(request.nextUrl.pathname);
+//   console.log("HELLO", token, currentRoute);
+
+//   let response = NextResponse.next();
+
+//   // Si le token n'est pas présent
+//   if (!token) {
+//     if (currentRoute && currentRoute.protected !== "PUBLIC") {
+//       response = NextResponse.redirect(new URL("/auth/login", request.url));
+//     }
+//     response.cookies.delete("email");
+//     response.cookies.delete("role");
+//     response.cookies.delete("userId");
+//     console.log("HELLO35");
+//     return response;
+//   }
+//   console.log("HELLO36");
+
+//   // Si le token est présent, on essaie de le vérifier
+//   try {
+//     const jwtResult = await jwtVerify<Payload>(
+//       token,
+//       new TextEncoder().encode(JWT_SECRET_KEY)
+//     );
+//     const { email, role, userId } = jwtResult.payload; // Accès au payload
+//     console.log("PAYE", { email, role, userId });
+
+//     // Si la route est protégée et que l'utilisateur n'est pas ADMIN, redirection
+//     if (currentRoute?.protected === "ADMIN" && role !== "ADMIN") {
+//       return NextResponse.redirect(new URL("/errors", request.url)); // Redirige vers une page d'erreur
+//     }
+
+//     // Si le token est valide, on ajoute les cookies
+//     response.cookies.set("email", email);
+//     response.cookies.set("role", role);
+//     response.cookies.set("userId", userId);
+
+//     // Si la route est protégée par ADMIN, et que l'utilisateur est ADMIN, on continue
+//     if (currentRoute?.protected === "ADMIN" && role === "ADMIN") {
+//       console.log(request.nextUrl.pathname);
+//     }
+
+//     return response;
+//   } catch (err) {
+//     console.error("Verification echouée", err);
+//     response = NextResponse.redirect(new URL("/auth/login", request.url));
+
+//     // On supprime tous les cookies en cas d'échec de vérification du token
+//     response.cookies.delete("token");
+//     response.cookies.delete("email");
+//     response.cookies.delete("role");
+//     response.cookies.delete("userId");
+
+//     return response;
+//   }
+// }
+
+// // Fonction pour trouver la route à partir du pathname
+// function findRouteByPathname(url: string) {
+//   if (url === "/") {
+//     return routes.home;
+//   }
+
+//   const routeKeys = Object.keys(routes).filter((e) => e !== "home");
+//   for (const key of routeKeys) {
+//     if (url.includes(routes[key].pathname)) {
+//       console.log("routes[key].pathname: ", routes[key].pathname);
+//       return routes[key];
+//     }
+//   }
+//   return null;
+// }

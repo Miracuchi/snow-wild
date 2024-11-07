@@ -18,10 +18,12 @@ const AuthContext = createContext<{
     userId,
     email,
     role,
+    token,
   }: {
     userId: string;
     email: string;
     role: string;
+    token: string;
   }) => void;
   logout: () => void;
   authReady: boolean;
@@ -41,13 +43,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     userId,
     role,
     email,
+    token,
   }: {
     userId: string;
     email: string;
     role: string;
+    token: string;
   }) => {
-    const userData = { userId, email, role };
+    const userData = { userId, email, role, token };
     setUser(userData);
+    console.log("auth context setting cookies", userData);
     Cookies.set(COOKIE_KEY, JSON.stringify(userData), { expires: 7 });
   };
   useEffect(() => {
@@ -68,6 +73,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         Cookies.remove("userId");
         Cookies.remove("role");
         Cookies.remove("email");
+        Cookies.remove("token");
         toast({
           title: "Logout",
           description: data.logout.message,

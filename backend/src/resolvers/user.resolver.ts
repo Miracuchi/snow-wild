@@ -24,6 +24,7 @@ export default class UserResolver {
 
   @Mutation(() => UserWithoutPassword)
   async login(@Arg('infos') infos: InputLogin, @Ctx() ctx: MyContext) {
+    console.log('into login')
     const user = await new UserService().findUserByEmail(infos.email)
     if (!user) {
       throw new Error('Vérifiez vos informations')
@@ -44,18 +45,24 @@ export default class UserResolver {
         .setExpirationTime('2h')
         .sign(new TextEncoder().encode(process.env.JWT_SECRET_KEY))
       const cookies = new Cookies(ctx.req, ctx.res)
+      console.log('PROCESS', process.env.APP_ENV)
+
       cookies.set('token', token, {
-        httpOnly: true,
-        // secure: process.env.APP_ENV === 'production',
+        httpOnly: process.env.APP_ENV === 'development',
+        // httpOnly: true,
+        secure: process.env.APP_ENV === 'production',
         sameSite: 'none',
         path: '/',
       })
       console.log('token gen', token)
+      // return user
+      return {
+        ...user,
+        token,
+      }
     } else {
       throw Error('Vérifiez vos informations')
     }
-
-    return user
   }
 
   @Query(() => Message)

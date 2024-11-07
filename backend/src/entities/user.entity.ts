@@ -108,6 +108,9 @@ export class UserWithoutPassword
 
   @Field(() => String)
   role: UserRoleEnum
+
+  @Field()
+  token: string
 }
 
 @InputType()

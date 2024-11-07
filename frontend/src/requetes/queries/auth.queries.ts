@@ -6,6 +6,7 @@ export const LOGIN = gql`
       email
       id
       role
+      token
     }
   }
 `;
