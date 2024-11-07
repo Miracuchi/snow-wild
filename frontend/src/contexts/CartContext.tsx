@@ -1,4 +1,4 @@
-import { CART_STORAGE_KEY } from "@/constants";
+import { CART_STORAGE_KEY } from "@/constants/localStrotageKeys";
 import {
   GetFromLocalStorage,
   SetToLocalStorage,

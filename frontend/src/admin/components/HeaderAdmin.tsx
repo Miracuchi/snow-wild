@@ -11,60 +11,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
-import {
-  Bell,
-  CircleUser,
-  Home,
-  Menu,
-  Package,
-  Package2,
-  Search,
-  ShoppingCart,
-  Users,
-} from "lucide-react";
+import { Bell, CircleUser, Menu, Package2, Search } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useContext } from "react";
 import Navigation from "./Navigation";
 
-type LinkType = {
-  name: string;
-  link: string;
-  icon: JSX.Element;
-};
-
-const links = [
-  {
-    name: "Dashboard",
-    link: "/admin/dashboard",
-    icon: <Home className="h-4 w-4" />,
-  },
-  {
-    name: "Users",
-    link: "/admin/users",
-    icon: <Users className="h-4 w-4" />,
-  },
-  {
-    name: "Products",
-    link: "/admin/products",
-    icon: <Package className="h-4 w-4" />,
-  },
-  {
-    name: "Reservations",
-    link: "/admin/reservations",
-    icon: <ShoppingCart className="h-4 w-4" />,
-  },
-  {
-    name: "Categories",
-    link: "/admin/categories",
-    icon: <Package2 className="h-4 w-4" />,
-  },
-];
-
 const HeaderAdmin = () => {
-  const router = useRouter();
   const authCtx = useContext(AuthContext);
-  const { pathname } = router;
 
   const handleLogout = () => {
     console.log("click to logout");

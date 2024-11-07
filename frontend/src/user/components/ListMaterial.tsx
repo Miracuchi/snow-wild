@@ -39,7 +39,6 @@ const ListMaterial: React.FC = () => {
   const materialsToDisplay = selectedCategory
     ? materialsData?.findMaterialByCategories
     : allMaterialsData?.listMaterials;
-  console.log(materialsToDisplay);
 
   return (
     <div className="container mx-auto px-4 py-8 font-poppins">

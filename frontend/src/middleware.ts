@@ -10,13 +10,11 @@ interface Payload {
 }
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || "";
-console.log("KEYFRONT", JWT_SECRET_KEY);
 
 export default async function middleware(request: NextRequest) {
   const { cookies } = request;
   const token = cookies.get("token");
-  // console.log("request.nextUrl.pathname: ----->", request.nextUrl.pathname);
-  // console.log("token in middleware: ", token)
+
   return await checkToken(token?.value, request);
 }
 
@@ -25,22 +23,16 @@ export async function verify(token: string): Promise<Payload> {
     token,
     new TextEncoder().encode(JWT_SECRET_KEY)
   );
-  console.log("patedefeffjdbvhvhgvhvghdvhdbh", payload);
 
   return payload;
 }
 
 async function checkToken(token: string | undefined, request: NextRequest) {
   const currentRoute = findRouteByPathname(request.nextUrl.pathname);
-  console.log("token front", token);
 
-  console.log("current ROUTE VAUT: ", currentRoute);
   let response = NextResponse.next();
 
   if (!token) {
-    // console.log('currentRoute: ', currentRoute)
-    // console.log('currentRoute.protected: ', currentRoute?.protected)
-
     if (currentRoute && currentRoute.protected !== "PUBLIC") {
       response = NextResponse.redirect(new URL("/auth/login", request.url));
     }

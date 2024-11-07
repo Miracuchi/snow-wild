@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 
-const Basket: React.FC = () => {
+export default function Cart() {
   const { cart, removeFromCart, updateQuantity } = useCart();
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [itemIdToRemove, setItemIdToRemove] = useState<string | null>(null);
@@ -139,6 +139,4 @@ const Basket: React.FC = () => {
       )}
     </main>
   );
-};
-
-export default Basket;
+}

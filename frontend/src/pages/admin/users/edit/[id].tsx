@@ -1,12 +1,8 @@
 import { UPDATE_USER_BY_ADMIN } from "@/admin/requetes/mutations/user.mutations";
 import { GET_USER_BY_ID } from "@/admin/requetes/queries/users.queries";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
+import { UserRoleEnum } from "@/types";
+import { Button } from "@/ui/Button";
+import { Card, CardContent, CardFooter, CardHeader } from "@/ui/Card";
 import {
   Form,
   FormControl,
@@ -14,8 +10,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from "@/ui/Form";
+import { Input } from "@/ui/Input";
 import {
   Select,
   SelectContent,
@@ -23,9 +19,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { useToast } from "@/components/ui/use-toast";
-import { UserRoleEnum } from "@/types";
+} from "@/ui/Select";
+import { useToast } from "@/ui/use-toast";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
@@ -116,7 +111,7 @@ const AdminEditUser = () => {
           title: "Success",
           description: "Successfully updated user",
         });
-        router.push("/admin/users");
+        router.push("/admin/users/list");
       },
       onError: (err) => {
         console.log("error");

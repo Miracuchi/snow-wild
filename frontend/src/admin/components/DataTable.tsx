@@ -1,4 +1,3 @@
-"use client";
 import { buttonVariants } from "@/ui/Button";
 import {
   ColumnDef,
