@@ -14,6 +14,7 @@ const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || "";
 export default async function middleware(request: NextRequest) {
   const { cookies } = request;
   const token = cookies.get("token");
+  console.log("TOKKENMIDDL", token?.value);
 
   return await checkToken(token?.value, request);
 }
