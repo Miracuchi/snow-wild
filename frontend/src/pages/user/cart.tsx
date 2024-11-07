@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { AuthContext } from "@/contexts/AuthContext";
+import AuthContext from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
 import CartItem from "@/user/components/cart/CartItem";
 import Link from "next/link";

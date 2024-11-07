@@ -1,4 +1,4 @@
-import { AuthContext } from "@/contexts/AuthContext";
+import AuthContext from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
 import { GET_RESERVATIONS_BY_USER_ID } from "@/requetes/queries/reservation.queries";
 import {

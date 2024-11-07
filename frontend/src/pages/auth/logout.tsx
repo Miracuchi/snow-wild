@@ -1,4 +1,4 @@
-import { AuthContext } from "@/contexts/AuthContext";
+import AuthContext from "@/contexts/AuthContext";
 import { LOGOUT } from "@/requetes/queries/auth.queries";
 import { useQuery } from "@apollo/client";
 import Cookies from "js-cookie";

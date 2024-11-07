@@ -1,4 +1,4 @@
-import { AuthContext } from "@/contexts/AuthContext";
+import AuthContext from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
 import { useDate } from "@/contexts/DateContext";
 import { CREATE_RESERVATION } from "@/requetes/mutations/reservation.mutations";
