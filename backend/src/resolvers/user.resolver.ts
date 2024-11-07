@@ -46,7 +46,7 @@ export default class UserResolver {
       const cookies = new Cookies(ctx.req, ctx.res)
       cookies.set('token', token, {
         httpOnly: true,
-        secure: process.env.APP_ENV === 'production',
+        // secure: process.env.APP_ENV === 'production',
         sameSite: 'none',
         path: '/',
       })
