@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const logout = () => {
-    // Nettoyer le localStorage lors de la déconnexion
+    // Nettoyer le localStorage lors de la déconnexio
     userLogout({
       onCompleted: (data) => {
         console.log("user Logout: ", data);
