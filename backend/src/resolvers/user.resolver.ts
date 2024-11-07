@@ -49,8 +49,6 @@ export default class UserResolver {
 
       cookies.set('token', token, {
         httpOnly: process.env.APP_ENV === 'development',
-        // httpOnly: true,
-        secure: process.env.APP_ENV === 'production',
         sameSite: 'none',
         path: '/',
       })
