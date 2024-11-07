@@ -44,7 +44,7 @@ export default class UserResolver {
         .setExpirationTime('2h')
         .sign(new TextEncoder().encode(process.env.JWT_SECRET_KEY))
       const cookies = new Cookies(ctx.req, ctx.res)
-      cookies.set('token', token, { httpOnly: true })
+      cookies.set('token', token, { httpOnly: true, secure: true })
       console.log('token gen', token)
     } else {
       throw Error('Vérifiez vos informations')
