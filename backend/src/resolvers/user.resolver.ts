@@ -45,8 +45,8 @@ export default class UserResolver {
         .sign(new TextEncoder().encode(process.env.JWT_SECRET_KEY))
       const cookies = new Cookies(ctx.req, ctx.res)
       cookies.set('token', token, {
-        httpOnly: true,
-        secure: process.env.APP_ENV === 'production',
+        // httpOnly: true,
+        // secure: process.env.APP_ENV === 'production',
       })
       console.log('token gen', token)
     } else {
