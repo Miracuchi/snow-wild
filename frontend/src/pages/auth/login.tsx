@@ -36,6 +36,7 @@ function Login() {
             });
             const redirectTo = router.query.redirect || "/";
             if (data?.login?.role === "ADMIN") {
+              console.log("DataLogin to Admin", data?.login.role);
               router.push("/admin/dashboard");
             } else {
               router.push(redirectTo as string);
