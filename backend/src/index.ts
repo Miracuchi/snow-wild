@@ -115,7 +115,7 @@ async function main() {
       origin: [
         'http://localhost:3000',
         'http://localhost:8000',
-        'https://snow-wild.vercel.app/',
+        'https://snow-wild.vercel.app',
       ],
       credentials: true,
     }),
