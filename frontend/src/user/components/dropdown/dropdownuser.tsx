@@ -1,7 +1,5 @@
 import AuthContext from "@/contexts/AuthContext";
-import { LOGIN } from "@/requetes/queries/auth.queries";
 import { Button } from "@/ui/Button";
-import { useLazyQuery } from "@apollo/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext } from "react";
@@ -9,7 +7,6 @@ import React, { useContext } from "react";
 const DropdownUser: React.FC = () => {
   const { user, setAuthUser, logout } = useContext(AuthContext);
   const router = useRouter();
-  const [login, { data, error }] = useLazyQuery(LOGIN);
 
   console.log(user?.role);
 

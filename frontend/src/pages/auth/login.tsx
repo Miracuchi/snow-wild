@@ -1,7 +1,7 @@
 import AuthContext from "@/contexts/AuthContext";
 import { LOGIN } from "@/requetes/queries/auth.queries";
 import { InputLogin } from "@/types/auth";
-import { useLazyQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext } from "react";
@@ -9,7 +9,7 @@ import { useContext } from "react";
 function Login() {
   const { user, setAuthUser, logout } = useContext(AuthContext);
   const router = useRouter();
-  const [login, { data, error }] = useLazyQuery(LOGIN);
+  const [login, { data, error }] = useMutation(LOGIN);
 
   const handleLogout = () => {
     logout();

@@ -22,7 +22,7 @@ export default class UserResolver {
     return await new UserService().listUser()
   }
 
-  @Query(() => UserWithoutPassword)
+  @Mutation(() => UserWithoutPassword)
   async login(@Arg('infos') infos: InputLogin, @Ctx() ctx: MyContext) {
     const user = await new UserService().findUserByEmail(infos.email)
     if (!user) {
