@@ -1,4 +1,3 @@
-"use client";
 import { CartItem } from "@/contexts/CartContext";
 import { DateFormInfos } from "@/user/components/reservation/ReservationDateStep";
 // FormDataCard : FOR LATER MAYBE

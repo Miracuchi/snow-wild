@@ -1,5 +1,4 @@
-"use client";
-import { AuthContext } from "@/contexts/AuthContext";
+import AuthContext from "@/contexts/AuthContext";
 import { LOGIN } from "@/requetes/queries/auth.queries";
 import { Button } from "@/ui/Button";
 import { useLazyQuery } from "@apollo/client";
