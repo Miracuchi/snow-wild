@@ -11,6 +11,7 @@ type UserType = {
 };
 
 const COOKIE_KEY = "authUser";
+
 export const AuthContext = createContext<{
   user: UserType | null;
   setAuthUser: ({
