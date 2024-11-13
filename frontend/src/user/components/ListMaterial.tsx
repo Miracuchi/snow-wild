@@ -42,14 +42,14 @@ const ListMaterial: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 font-poppins">
-      <div className="flex justify-center space-x-4 mb-6">
+      <div className="mb-6 justify-center space-x-4 lg:flex">
         {categoriesLoading && <p>Loading categories...</p>}
         {categoriesError && (
           <p>Error loading categories: {categoriesError.message}</p>
         )}
         <button
           onClick={() => handleCategoryClick(null)}
-          className="px-4 py-2 w-48 border uppercase border-stone-950 text-black rounded-lg hover:bg-stone-950 hover:text-white transition"
+          className="w-48 rounded-lg border border-stone-950 px-4 py-2 uppercase text-black transition hover:bg-stone-950 hover:text-white"
         >
           Tous les produits
         </button>
@@ -57,7 +57,7 @@ const ListMaterial: React.FC = () => {
           <button
             key={c.id}
             onClick={() => handleCategoryClick(c.id)}
-            className="px-4 py-2 w-48 border uppercase border-stone-950 text-black rounded-lg hover:bg-stone-950 hover:text-white transition"
+            className="w-48 rounded-lg border border-stone-950 px-4 py-2 uppercase text-black transition hover:bg-stone-950 hover:text-white"
           >
             {c.name}
           </button>
@@ -71,39 +71,44 @@ const ListMaterial: React.FC = () => {
         <p className="text-red-500">Erreur lors du chargement des articles.</p>
       )}
 
-      {materialsToDisplay && (
-        <main className="container mx-auto px-4 py-8 font-poppins">
-          <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {materialsToDisplay.map((item) => (
-              <li
-                key={item.id.toString()}
-                className="bg-white  overflow-hidden transform transition duration-500 hover:scale-105"
-              >
-                <Link href={`product/${item.id}`}>
-                  <div className="block">
-                    <div className="relative flex rounded-lg shadow-lg justify-center items-center h-52 overflow-hidden  rounded-t-lg">
-                      <img
-                        className="object-cover h-full "
-                        src={process.env.NEXT_PUBLIC_IMAGE_URL + item.picture}
-                        alt={item.name}
-                      />
-                      <div className="absolute   inset-0 bg-gradient-to-b from-transparent to-neutral-700  opacity-50"></div>
+      {materialsToDisplay && materialsToDisplay.length > 0 ? (
+        <div className="container mx-auto px-4 py-8 font-poppins">
+          <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
+            {materialsToDisplay.map((item) => {
+              console.log(item.name);
+
+              return (
+                <li
+                  key={item.id.toString()}
+                  className="transform overflow-hidden bg-white transition duration-500 hover:scale-105"
+                >
+                  <Link href={`product/${item.id}`}>
+                    <div className="block">
+                      <div className="relative flex h-52 items-center justify-center overflow-hidden rounded-lg rounded-t-lg shadow-lg">
+                        <img
+                          className="h-full object-cover"
+                          src={process.env.NEXT_PUBLIC_IMAGE_URL + item.picture}
+                          alt={item.name}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-neutral-700 opacity-50"></div>
+                      </div>
+                      <div className="relative p-6">
+                        <h2 className="text-xl font-bold uppercase text-neutral-950">
+                          {item.name}
+                        </h2>
+                        <p className="line-clamp-3 text-sm text-neutral-950">
+                          {item.description}
+                        </p>
+                      </div>
                     </div>
-                    <div className="relative p-6">
-                      <h2 className=" uppercase text-xl text-neutral-950 font-bold ">
-                        {item.name}
-                      </h2>
-                      <p className=" text-neutral-950 text-sm ">
-                        {item.description.slice(0, 80)}
-                        {item.description.length > 80 ? "..." : ""}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              </li>
-            ))}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
-        </main>
+        </div>
+      ) : (
+        <div> Aucun matériel trouvé dans cette catégorie.</div>
       )}
     </div>
   );
