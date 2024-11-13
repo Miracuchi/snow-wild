@@ -8,6 +8,7 @@ type UserType = {
   email: string | undefined;
   userId: string | undefined;
   role: string | undefined;
+  token: string | undefined;
 };
 
 const COOKIE_KEY = "authUser";

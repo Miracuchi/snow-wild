@@ -79,7 +79,7 @@ const ListMaterial: React.FC = () => {
                 key={item.id.toString()}
                 className="bg-white  overflow-hidden transform transition duration-500 hover:scale-105"
               >
-                <Link href={`/${item.id}`}>
+                <Link href={`product/${item.id}`}>
                   <div className="block">
                     <div className="relative flex rounded-lg shadow-lg justify-center items-center h-52 overflow-hidden  rounded-t-lg">
                       <img
