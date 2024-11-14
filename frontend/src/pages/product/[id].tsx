@@ -2,6 +2,7 @@
 import { useCart } from "@/contexts/CartContext";
 import { GET_MATERIAL_BY_ID } from "@/requetes/queries/material.queries";
 import { Material } from "@/types/material";
+import { Button } from "@/ui/Button";
 import { toast } from "@/ui/use-toast";
 import { useLazyQuery } from "@apollo/client";
 import Link from "next/link";
@@ -45,33 +46,33 @@ function MaterialDetail() {
   };
 
   return (
-    <main className="container mx-auto px-4 py-8 font-poppins">
-      <div className="bg-white py-5 flex rounded-lg shadow-lg border-4 border-blue-300 overflow-hidden">
-        <div className="flex-auto w-64 flex items-center justify-center">
+    <main className="container mx-auto font-poppins">
+      <div className="mx-auto mt-10 overflow-hidden rounded-lg border-4 border-blue-300 py-5 shadow-lg lg:flex lg:w-11/12">
+        <div className="flex h-96 flex-auto justify-center self-center lg:w-96">
           <img
-            className="max-w-28 object-contain"
+            className="flex h-full self-center"
             src={process.env.NEXT_PUBLIC_IMAGE_URL + material?.picture}
             alt={material?.name}
           />
         </div>
-        <div className="p-6 flex-auto w-32">
-          <h1 className="text-3xl text-neutral-950 font-bold mb-1">
+        <div className="flex-auto items-center p-6 lg:w-32">
+          <h1 className="mb-1 text-3xl font-bold text-neutral-950">
             {material?.name}
           </h1>
-          <p className="text-2xl font-bold text-gray mb-8">
+          <p className="text-gray mb-8 text-2xl font-bold">
             {material?.price}€
           </p>
           <p className="text-gray mb-8">{material?.description}</p>
           <p className="mx-2">Sélectionner une taille</p>
-          <div className="text-gray flex ">
+          <div className="text-gray mt-2 flex">
             {material?.sizes?.map(
               (sizeDetail: { size: string; quantity: number }, index: Key) => (
                 <div key={index} className="mb-2">
                   <button
-                    className={`button px-4 py-2 rounded border ${
+                    className={`button rounded border px-4 py-2 ${
                       selectedSize === sizeDetail.size
                         ? "bg-white-500 text-neutral border-blue-500"
-                        : "bg-black text-white "
+                        : "bg-black text-white"
                     }`}
                     onClick={() => setSelectedSize(sizeDetail.size)}
                   >
@@ -79,18 +80,18 @@ function MaterialDetail() {
                   </button>
                   <br />
                 </div>
-              )
+              ),
             )}
           </div>
 
           <div className="p-6">
             <div className="mt-4 flex justify-end">
-              <button
+              <Button
                 onClick={handleAddToCart}
-                className="button bg-black text-white"
+                className="button w-full rounded bg-black text-white hover:text-black"
               >
                 Ajouter au panier
-              </button>
+              </Button>
             </div>
           </div>
         </div>

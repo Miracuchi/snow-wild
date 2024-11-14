@@ -41,7 +41,7 @@ const ListMaterial: React.FC = () => {
     : allMaterialsData?.listMaterials;
 
   return (
-    <div className="container mx-auto px-4 py-8 font-poppins">
+    <div className="mx-auto h-fit px-4 py-8 font-poppins">
       <div className="mb-6 justify-center space-x-4 lg:flex">
         {categoriesLoading && <p>Loading categories...</p>}
         {categoriesError && (
@@ -72,7 +72,7 @@ const ListMaterial: React.FC = () => {
       )}
 
       {materialsToDisplay && materialsToDisplay.length > 0 ? (
-        <div className="container mx-auto px-4 py-8 font-poppins">
+        <div className="mx-auto px-4 py-8 font-poppins">
           <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
             {materialsToDisplay.map((item) => {
               console.log(item.name);
@@ -80,7 +80,7 @@ const ListMaterial: React.FC = () => {
               return (
                 <li
                   key={item.id.toString()}
-                  className="transform overflow-hidden bg-white transition duration-500 hover:scale-105"
+                  className="transform overflow-hidden rounded-xl bg-white transition duration-500 hover:scale-105"
                 >
                   <Link href={`product/${item.id}`}>
                     <div className="block">
@@ -108,7 +108,10 @@ const ListMaterial: React.FC = () => {
           </ul>
         </div>
       ) : (
-        <div> Aucun matériel trouvé dans cette catégorie.</div>
+        <div className="h-full">
+          {" "}
+          Aucun matériel trouvé dans cette catégorie.
+        </div>
       )}
     </div>
   );

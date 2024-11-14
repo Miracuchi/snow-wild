@@ -5,22 +5,19 @@ type LayoutItems = {
   text: string | JSX.Element;
   path: string;
 };
-export default function RenderLayoutElement({
+export default function RenderItems({
   layoutItems,
   className,
+  toggleMenu,
 }: {
   layoutItems: LayoutItems[];
   className: string;
+  toggleMenu?: () => void;
 }) {
-  const renderLayoutItem = layoutItems.map((layoutItem, index) => (
-    <li key={index} className={cn(className)}>
-      <Link href={layoutItem.path}>{layoutItem.text}</Link>
-    </li>
-  ));
   return (
     <>
       {layoutItems.map((layoutItem, index) => (
-        <li key={index} className={cn(className)}>
+        <li key={index} className={cn(className)} onClick={toggleMenu}>
           <Link href={layoutItem.path}>{layoutItem.text}</Link>
         </li>
       ))}

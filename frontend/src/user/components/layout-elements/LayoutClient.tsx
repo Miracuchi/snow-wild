@@ -5,7 +5,7 @@ import TopBar from "./Topbar";
 
 function LayoutClient({ children }: { children: JSX.Element }) {
   return (
-    <div>
+    <div className="h-[100vh]">
       <MenuProvider>
         <TopBar />
         {children}

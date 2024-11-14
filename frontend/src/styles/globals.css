@@ -65,16 +65,24 @@
     --ring: 216 12.2% 83.9%;
   }
 } */
+
+body {
+  min-height: 100vh;
+}
+
+#__next {
+  min-height: 100vh;
+}
 main {
-  padding-top: 64px;
+  padding-top: 96px;
   padding-bottom: 64px;
-  background-color: grey;
+  min-height: 100vh;
 }
 .button {
   display: inline-block;
   padding: 0.5rem 1rem;
   margin-left: 0.5rem;
-  border-radius: 0.25rem;
+  /* border-radius: 0.25rem; */
   border: 2px solid #171717;
   cursor: pointer;
 }

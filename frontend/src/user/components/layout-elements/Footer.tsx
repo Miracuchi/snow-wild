@@ -2,7 +2,7 @@
 import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
 import Link from "next/link";
 import LogoIcon from "./LogoIcon";
-import RenderLayoutElement from "./RenderLayoutElement";
+import RenderItems from "./RenderItems";
 
 function Footer() {
   const helpNeededText = `Besoin d'aide ?`;
@@ -38,7 +38,7 @@ function Footer() {
       <div className="flex flex-col space-x-4 space-y-1">
         <p className="font-bold">Légal</p>
         <ul>
-          <RenderLayoutElement
+          <RenderItems
             layoutItems={footerItems}
             className="hover:text-gray-400"
           />

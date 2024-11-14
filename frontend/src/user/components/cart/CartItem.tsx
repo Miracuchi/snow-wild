@@ -1,3 +1,5 @@
+import { Button } from "@/ui/Button";
+import { Trash2 } from "lucide-react";
 import React from "react";
 
 interface CartItemProps {
@@ -26,33 +28,37 @@ const CartItem: React.FC<CartItemProps> = ({
   return (
     <div
       key={`${id}-${selectedSize}`}
-      className="flex overflow-hidden relative border-4 border-blue-300 rounded-lg shadow-lg"
+      className="relative flex overflow-hidden rounded-lg border-4 border-blue-300 shadow-lg"
     >
-      <div className="relative h-48">
+      {/* <Trash2
+        className="absolute right-0 h-12 w-12 cursor-pointer bg-red-500 text-xl"
+        onClick={onRemove}
+      /> */}
+      <div className="flex h-72 w-72 justify-center self-center">
         <img
-          className="m-5 max-w-28 object-contain"
+          className="flex h-full self-center"
           src={process.env.NEXT_PUBLIC_IMAGE_URL + picture}
           alt={name}
         />
       </div>
-      <div className="p-6 flex justify-between items-center">
+      <div className="w-4/5 items-center justify-between p-6 lg:flex">
         <div>
-          <h2 className="text-2xl font-bold mb-2">{name}</h2>
+          <h2 className="mb-2 text-2xl font-bold">{name}</h2>
           {description && (
-            <p className="text-gray-700 w-9/12 line-clamp-3">{description}</p>
+            <p className="line-clamp-3 w-9/12 text-gray-700">{description}</p>
           )}
 
-          <div className="flex mt-5 items-center gap-6">
+          <div className="mt-5 gap-6 lg:flex lg:items-center">
             <p className="text-gray-700">
-              Taille: <span className="underline">{selectedSize}</span>
+              Taille : <span className="underline">{selectedSize}</span>
             </p>
             <div className="flex items-center">
-              <span className="mr-2">Quantité : {quantity}</span>
+              <span className="mr-2">Quantité : </span>
               {onQuantityChange && (
                 <select
                   value={quantity}
                   onChange={(e) => onQuantityChange(parseInt(e.target.value))}
-                  className="px-2 py-1 border rounded"
+                  className="rounded border px-2 py-1"
                 >
                   {[1, 2, 3, 4, 5].map((q) => (
                     <option key={q} value={q}>
@@ -63,16 +69,18 @@ const CartItem: React.FC<CartItemProps> = ({
               )}
             </div>
             {onRemove && (
-              <button
+              <Button
                 onClick={onRemove}
-                className="ml-4 text-red-500 hover:text-red-700"
+                className="rounded-xl bg-red-500 text-start text-white hover:bg-red-700"
               >
-                supprimer
-              </button>
+                {" "}
+                <Trash2 className="mr-2" />
+                Supprimer
+              </Button>
             )}
           </div>
         </div>
-        <p className="text-gray-700 text-xl font-bold">{price}€</p>
+        <p className="mt-2 text-xl font-bold text-gray-700">{price}€</p>
       </div>
     </div>
   );
