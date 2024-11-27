@@ -48,8 +48,9 @@ function ReservationPaiementStep() {
       cart.reduce((sum, item) => {
         return sum + item.price * item.quantity;
       }, 0) ||
-      (reservationObject.reservationMaterials &&
-        reservationObject.reservationMaterials.reduce((sum, item) => {
+      (reservationObject &&
+        reservationObject.reservationMaterials &&
+        reservationObject.reservationMaterials?.reduce((sum, item) => {
           return sum + item.price * item.quantity;
         }, 0));
 
@@ -74,12 +75,16 @@ function ReservationPaiementStep() {
         data:
           cart.length > 0
             ? cart.map(({ id, quantity }) => ({ id, quantity }))
-            : reservationObject.reservationMaterials &&
+            : reservationObject &&
+              reservationObject.reservationMaterials &&
               reservationObject.reservationMaterials.map((item) => ({
                 id: item.material.id,
                 quantity: item.quantity,
               })),
-        reservationId: cart.length > 0 ? reservationId : reservationObject.id,
+        reservationId:
+          cart.length > 0
+            ? reservationId
+            : reservationObject && reservationObject.id,
       },
       onError(error) {
         console.log(error);
@@ -140,7 +145,8 @@ function ReservationPaiementStep() {
                   </tbody>
 
                   <tbody>
-                    {reservationObject.reservationMaterials &&
+                    {reservationObject &&
+                      reservationObject.reservationMaterials &&
                       reservationObject.reservationMaterials.map((d) => (
                         <tr key={d.id}>
                           <td className="py-4">
