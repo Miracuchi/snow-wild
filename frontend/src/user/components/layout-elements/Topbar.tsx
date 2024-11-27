@@ -1,5 +1,5 @@
 import { useState } from "react";
-import DropdownUser from "../dropdown/DropdownUser";
+import DropdownUser from "../dropdown/Dropdownuser";
 import CartIcon from "./CartIcon";
 import LogoIcon from "./LogoIcon";
 import MenuItems from "./MenuItems";
