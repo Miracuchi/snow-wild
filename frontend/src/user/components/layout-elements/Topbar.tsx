@@ -1,4 +1,4 @@
-import DropdownUser from "@/user/components/dropdown/DropdownUser";
+import DropdownUser from "@/user/components/layout-elements/DropdownUser";
 import { useState } from "react";
 import CartIcon from "./CartIcon";
 import LogoIcon from "./LogoIcon";
