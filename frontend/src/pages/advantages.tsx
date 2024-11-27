@@ -22,7 +22,7 @@ const Advantages = () => {
               Équipement de Haute Qualité
             </h2>
             <p className="text-gray-700">
-              Nous renouvelons régulièrement notre parc de matériel pour vous
+              Nous renouvelons régulièrement no tre parc de matériel pour vous
               offrir les dernières nouveautés en termes de technologie et de
               confort. Louer chez nous, c'est l'assurance de disposer d'un
               équipement en parfait état.
