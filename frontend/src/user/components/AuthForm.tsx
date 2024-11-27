@@ -44,8 +44,14 @@ function AuthForm({ mode }: AuthFormProps) {
             role: response.data.login.role,
             token: response.data.login.token,
           });
+          console.log("ROUTER", router);
+
           router.push(
-            response.data.login.role === "ADMIN" ? "/admin/dashboard" : "/",
+            response.data.login.role === "ADMIN"
+              ? "/admin/dashboard"
+              : router.query.redirect
+                ? (router.query.redirect as string)
+                : "/",
           );
         } catch (err) {
           setError("Login failed. Please try again.");

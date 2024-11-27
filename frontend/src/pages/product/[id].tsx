@@ -63,8 +63,8 @@ function MaterialDetail() {
             {material?.price}€
           </p>
           <p className="text-gray mb-8">{material?.description}</p>
-          <p className="mx-2">Sélectionner une taille</p>
-          <div className="text-gray mt-2 flex">
+          <p className="mx-2 text-center">Sélectionner une taille</p>
+          <div className="text-gray mt-2 flex justify-center">
             {material?.sizes?.map(
               (sizeDetail: { size: string; quantity: number }, index: Key) => (
                 <div key={index} className="mb-2">
@@ -85,10 +85,10 @@ function MaterialDetail() {
           </div>
 
           <div className="p-6">
-            <div className="mt-4 flex justify-end">
+            <div className="mt-4 flex justify-center lg:justify-end">
               <Button
                 onClick={handleAddToCart}
-                className="button w-full rounded bg-black text-white hover:text-black"
+                className="button w-10/12 rounded bg-black text-white hover:text-black lg:w-full"
               >
                 Ajouter au panier
               </Button>

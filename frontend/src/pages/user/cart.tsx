@@ -23,9 +23,11 @@ export default function Cart() {
 
   const handleCheckout = () => {
     if (user?.userId) {
-      router.push("/user/reservations/create");
+      router.push("/user/reservations/create/booking");
     } else {
-      router.push("/auth/login?redirect=/user/reservation");
+      console.log("redirectif");
+
+      router.push(`/auth/login?redirect=/user/reservations/create/booking`);
     }
   };
 
@@ -65,8 +67,8 @@ export default function Cart() {
   }
 
   return (
-    <main className="container mx-auto grid grid-cols-1 gap-8 font-poppins lg:grid-cols-3">
-      <div className="col-span-2">
+    <main className="container mx-auto grid grid-cols-1 font-poppins lg:grid-cols-3 lg:gap-8">
+      <div className="col-span-2 max-w-fit">
         <h1 className="mb-8 text-3xl font-bold text-neutral-950">
           Votre panier
         </h1>
@@ -89,8 +91,8 @@ export default function Cart() {
           ))}
         </div>
       </div>
-      <div className="col-span-1 mt-[69px]">
-        <div className="rounded-lg border-4 border-blue-300 p-5 shadow-lg">
+      <div className="col-span-1 mt-16 w-full">
+        <div className="rounded-xl border-4 border-blue-300 p-5 shadow-lg">
           <h2 className="mb-6 text-2xl font-bold">Récapitulatif</h2>
           <div className="flex items-center justify-between border-b-2 pb-2">
             <p className="text-gray-700">{numberOfArticleText}</p>

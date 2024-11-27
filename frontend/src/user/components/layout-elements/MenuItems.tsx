@@ -14,7 +14,7 @@ export default function MenuItems({ className }: { className: string }) {
     { text: "Qui sommes-nous", path: "/" },
     { text: "Nos avantages", path: "/advantages" },
     { text: "Notre station", path: "/station" },
-    { text: "Notre materiel", path: "/" },
+    { text: "Notre materiel", path: "/products" },
   ];
 
   return (
@@ -37,6 +37,7 @@ export default function MenuItems({ className }: { className: string }) {
         </div>
       </div>
       <div
+        onClick={toggleMenu}
         className={`absolute left-0 top-0 z-10 flex h-screen w-full flex-col content-stretch overflow-hidden bg-white pb-16 pt-0 shadow-xl transition-all duration-500 ease-in-out ${
           isMenuOpen
             ? "translate-y-0 opacity-100"

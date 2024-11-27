@@ -1,14 +1,20 @@
 import AuthContext from "@/contexts/AuthContext";
+import { useClickOutside } from "@/hooks/useClickOutside";
 import { Button } from "@/ui/Button";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext } from "react";
-
-export default function DropdownUser({ toggle }: { toggle: () => void }) {
-  const { user, setAuthUser, logout } = useContext(AuthContext);
+import { useContext, useRef } from "react";
+export default function DropdownUser({
+  toggleDropdown,
+  id,
+}: {
+  toggleDropdown: () => void;
+  id: string;
+}) {
+  const { user, logout } = useContext(AuthContext);
   const router = useRouter();
-
-  console.log(user?.role);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  useClickOutside(dropdownRef, toggleDropdown, id);
 
   const handleConnect = () => {
     router.push("/auth/login");
@@ -22,10 +28,13 @@ export default function DropdownUser({ toggle }: { toggle: () => void }) {
 
     router.push("/auth/login");
   };
+
   return (
     <div
+      ref={dropdownRef}
       className="absolute top-16 z-50 mt-2 h-[100vh] w-full bg-white shadow-lg lg:right-6 lg:top-10 lg:h-min lg:w-96 lg:rounded-xl"
-      onClick={toggle}
+      onClick={toggleDropdown}
+      id={id}
     >
       <div className="p-5">
         <h2 className="text-left text-2xl">Mon compte</h2>

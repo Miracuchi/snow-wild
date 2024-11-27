@@ -44,6 +44,7 @@ import {
 import { z } from "zod";
 
 import SizeLabel from "@/admin/components/SizeLabel";
+import UseLocalStorage from "@/hooks/useLocalStorage";
 import axios from "axios";
 import { CircleX } from "lucide-react";
 
@@ -57,7 +58,7 @@ const formSchema = z.object({
           .number()
           .min(1, { message: "Quantity should be more than 0" })
           .positive({ message: "Quantity should be more than 0" }),
-      })
+      }),
     )
     .min(1, { message: "At minimum a size is required" })
     .nonempty({ message: "Some size should be selected" })
@@ -66,9 +67,11 @@ const formSchema = z.object({
   description: z
     .string()
     .min(1, { message: "Product should have a description" }),
-  picture: z.custom<File>((v) => v instanceof File, {
-    message: "Image is required",
-  }),
+  picture: z
+    .custom<File>((v) => v instanceof File, {
+      message: "Image is required",
+    })
+    .optional(),
   price: z.number().min(1, { message: "A price is required" }),
 });
 
@@ -138,7 +141,7 @@ const EditProductAdmin = () => {
 
   const handleChangeCategory = (
     value: string,
-    field: ControllerRenderProps<FieldValues, "category">
+    field: ControllerRenderProps<FieldValues, "category">,
   ) => {
     let name = findNameOfCategorie(value);
     if (name) {
@@ -148,7 +151,7 @@ const EditProductAdmin = () => {
 
   const handleClickSize = (
     field: ControllerRenderProps<FieldValues, "sizes">,
-    size: string
+    size: string,
   ) => {
     if (!watchSizes?.some((e) => e.size === size)) {
       console.log(watchSizes);
@@ -161,38 +164,78 @@ const EditProductAdmin = () => {
   };
 
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
+    const file = inputFileRef?.current?.files[0]; // Récupérer le fichier sélectionné
+    const { GetFromLocalStorage, RemoveFromLocalStorage } = UseLocalStorage();
+    const pictureFromLocalStorage = GetFromLocalStorage("product_row");
+    const currentPicture = pictureFromLocalStorage._valuesCache.picture; // Récupérer l'image actuelle du produit
+    RemoveFromLocalStorage("product_row");
+    // Créer un FormData pour envoyer les données
     const formData = new FormData();
-    formData.append(
-      "file",
-      inputFileRef?.current?.files[0],
-      inputFileRef?.current?.files[0]?.name
-    );
-    // console.log('formData: ', formData)
-    axios
-      .post(`${process.env.NEXT_PUBLIC_IMAGE_URL}/upload`, formData)
-      .then((result) => {
-        console.log("result", result);
-        if (result?.data?.status == "success") {
-          updateMaterial({
-            variables: {
-              data: {
-                ...data,
-                id: router.query.id,
-                picture: result.data.filename,
+
+    // Si un fichier est sélectionné, l'ajouter au FormData
+    if (file) {
+      formData.append("file", file, file.name);
+    }
+
+    // Si aucune nouvelle image n'est sélectionnée, vérifier si une image existante est présente
+    const pictureToSend = file ? file.name : currentPicture || null;
+
+    // Si pictureToSend est null, cela signifie qu'aucune image n'est disponible
+    if (!pictureToSend) {
+      console.log("Aucune image à envoyer");
+    }
+
+    // Envoyer le FormData avec l'image si un fichier est ajouté
+    if (file) {
+      axios
+        .post(`${process.env.NEXT_PUBLIC_IMAGE_URL}/upload`, formData)
+        .then((result) => {
+          console.log("result", result);
+          if (result?.data?.status === "success") {
+            updateMaterial({
+              variables: {
+                data: {
+                  ...data,
+                  id: router.query.id,
+                  picture: result.data.filename || currentPicture, // Utiliser l'URL de l'image directement ici
+                },
               },
-            },
-          })
-            .then((res) => {
-              console.log("res: =======>", res);
-              if (res.data) {
-                router.push("/admin/products/list");
-              }
             })
-            .catch((err) => {
-              console.log("err ===>", err);
-            });
-        }
-      });
+              .then((res) => {
+                console.log("res: =======>", res);
+                if (res.data) {
+                  router.push("/admin/products/list");
+                }
+              })
+              .catch((err) => {
+                console.log("err ===>", err);
+              });
+          }
+        })
+        .catch((err) => {
+          console.log("Error uploading file: ", err);
+        });
+    } else {
+      // Si aucun fichier n'est envoyé, on utilise l'ancienne image
+      updateMaterial({
+        variables: {
+          data: {
+            ...data,
+            id: router.query.id,
+            picture: pictureToSend || "", // S'assurer que la valeur passée est une chaîne (URL ou vide)
+          },
+        },
+      })
+        .then((res) => {
+          console.log("res: =======>", res);
+          if (res.data) {
+            router.push("/admin/products/list");
+          }
+        })
+        .catch((err) => {
+          console.log("err ===>", err);
+        });
+    }
   };
 
   const renderSizesByCategory = (field: any) => {
@@ -274,7 +317,7 @@ const EditProductAdmin = () => {
           render={({ field }) => (
             <FormItem className="mb-3" {...field}>
               <FormControl>
-                <div className="flex flex-row justify-start flex-wrap gap-1">
+                <div className="flex flex-row flex-wrap justify-start gap-1">
                   {renderSizesByCategory(field)}
                 </div>
               </FormControl>
@@ -300,8 +343,8 @@ const EditProductAdmin = () => {
                   <FormItem>
                     <FormLabel>Quantity per size(s)</FormLabel>
                     <FormControl>
-                      <div className="flex items-center justify-strat gap-2">
-                        <div className="flex items-center justify-center text-white text-sm bg-gray-950 rounded-md h-9 px-3 w-14">
+                      <div className="justify-strat flex items-center gap-2">
+                        <div className="flex h-9 w-14 items-center justify-center rounded-md bg-gray-950 px-3 text-sm text-white">
                           {field.value[index]?.size}
                         </div>
                         <ControlledInput
@@ -310,10 +353,10 @@ const EditProductAdmin = () => {
                           form={form}
                         />
                         <CircleX
-                          className="hover:text-red-400 hover:cursor-pointer"
+                          className="hover:cursor-pointer hover:text-red-400"
                           onClick={() => {
                             let arrCopy: any = watchSizes.filter(
-                              (s) => s.size !== field.value[index].size
+                              (s) => s.size !== field.value[index].size,
                             );
 
                             form.setValue("sizes", arrCopy);
@@ -328,7 +371,7 @@ const EditProductAdmin = () => {
             }}
           />
         );
-      }
+      },
     );
   };
 
@@ -389,7 +432,7 @@ const EditProductAdmin = () => {
                   <FormItem className="mb-3">
                     <FormLabel>Price</FormLabel>
                     <FormControl>
-                      <div className="flex items-center mb-3">
+                      <div className="mb-3 flex items-center">
                         <Input
                           {...field}
                           type="number"
@@ -416,6 +459,7 @@ const EditProductAdmin = () => {
                     <FormControl>
                       <Input
                         {...fieldProps}
+                        required={false}
                         type="file"
                         placeholder="image.jpeg"
                         ref={inputFileRef}
@@ -464,7 +508,7 @@ const EditProductAdmin = () => {
                                       {c.name}
                                     </SelectItem>
                                   );
-                                }
+                                },
                               )}
                           </SelectGroup>
                         </SelectContent>

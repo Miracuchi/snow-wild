@@ -28,7 +28,7 @@ const CartItem: React.FC<CartItemProps> = ({
   return (
     <div
       key={`${id}-${selectedSize}`}
-      className="relative flex overflow-hidden rounded-lg border-4 border-blue-300 shadow-lg"
+      className="relative flex overflow-hidden rounded-xl border-4 border-blue-300 shadow-lg"
     >
       {/* <Trash2
         className="absolute right-0 h-12 w-12 cursor-pointer bg-red-500 text-xl"
@@ -48,7 +48,7 @@ const CartItem: React.FC<CartItemProps> = ({
             <p className="line-clamp-3 w-9/12 text-gray-700">{description}</p>
           )}
 
-          <div className="mt-5 gap-6 lg:flex lg:items-center">
+          <div className="mt-5 gap-6 space-y-4 lg:flex lg:items-center lg:space-y-0">
             <p className="text-gray-700">
               Taille : <span className="underline">{selectedSize}</span>
             </p>
@@ -73,7 +73,6 @@ const CartItem: React.FC<CartItemProps> = ({
                 onClick={onRemove}
                 className="rounded-xl bg-red-500 text-start text-white hover:bg-red-700"
               >
-                {" "}
                 <Trash2 className="mr-2" />
                 Supprimer
               </Button>

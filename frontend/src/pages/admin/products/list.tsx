@@ -1,5 +1,6 @@
 import { DataTable } from "@/admin/components/DataTable";
 import { DELETE_MATERIAL_BY_ADMIN } from "@/admin/requetes/mutations/material.mutations";
+import UseLocalStorage from "@/hooks/useLocalStorage";
 import { LIST_CATEGORIES } from "@/requetes/queries/category.queries";
 import { LIST_MATERIAL } from "@/requetes/queries/material.queries";
 import { CategoryType } from "@/types";
@@ -13,8 +14,8 @@ import { Eye, Pen, Trash } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-
 const ProductsAdminPage = () => {
+  const { SetToLocalStorage } = UseLocalStorage();
   const { toast } = useToast();
   const [deleteProduct] = useMutation(DELETE_MATERIAL_BY_ADMIN);
   const { data, loading, error } = useQuery(LIST_MATERIAL, {
@@ -42,6 +43,10 @@ const ProductsAdminPage = () => {
       },
       fetchPolicy: "no-cache",
     });
+  };
+
+  const toLs = () => {
+    localStorage.setItem("key", JSON.stringify(data));
   };
 
   useEffect(() => {
@@ -146,7 +151,7 @@ const ProductsAdminPage = () => {
           <div className="flex gap-2 lowercase">
             {row.original.sizes.map((s) => (
               <div key={s.size} className="flex flex-col items-center">
-                <div className="flex bg-black text-white rounded-md px-2 py-1">
+                <div className="flex rounded-md bg-black px-2 py-1 text-white">
                   {s.size}
                 </div>
                 {s.quantity}
@@ -159,26 +164,19 @@ const ProductsAdminPage = () => {
     {
       header: "Action",
       cell: ({ row }) => {
-        // console.log('row: ', row)
-        // console.log('row.original: ', row.original)
         return (
-          <div className="flex lowercase gap-2">
+          <div className="flex gap-2 lowercase">
             <Link href={`/admin/products/${row.original.id}`}>
-              <div
-                className="
-                flex rounded-full bg-gray-200 shadow-sm p-2
-                hover:bg-black hover:text-white transition-all"
-              >
+              <div className="flex rounded-full bg-gray-200 p-2 shadow-sm transition-all hover:bg-black hover:text-white">
                 <Eye />
               </div>
             </Link>
 
-            <Link href={`/admin/products/edit/${row.original.id}`}>
-              <div
-                className="
-                flex rounded-full bg-gray-200 shadow-sm p-2
-                hover:bg-black hover:text-white transition-all"
-              >
+            <Link
+              href={`/admin/products/edit/${row.original.id}`}
+              onClick={() => SetToLocalStorage("product_row", row)}
+            >
+              <div className="flex rounded-full bg-gray-200 p-2 shadow-sm transition-all hover:bg-black hover:text-white">
                 <Pen />
               </div>
             </Link>
@@ -188,11 +186,7 @@ const ProductsAdminPage = () => {
                 handleDeleteProduct(row.original.id);
               }}
             >
-              <div
-                className="
-                flex rounded-full bg-gray-200 shadow-sm p-2
-                hover:bg-black hover:text-white transition-all"
-              >
+              <div className="flex rounded-full bg-gray-200 p-2 shadow-sm transition-all hover:bg-black hover:text-white">
                 <Trash />
               </div>
             </div>
@@ -204,7 +198,7 @@ const ProductsAdminPage = () => {
 
   return (
     <div className="">
-      <div className="flex items-cente bg-white py-4">
+      <div className="items-cente flex bg-white py-4">
         {data && (
           <DataTable
             columns={columns}

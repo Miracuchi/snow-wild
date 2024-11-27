@@ -1,31 +1,34 @@
-import { useCart } from "@/contexts/CartContext";
 import { useState } from "react";
 import DropdownUser from "../dropdown/DropdownUser";
 import CartIcon from "./CartIcon";
 import LogoIcon from "./LogoIcon";
 import MenuItems from "./MenuItems";
-import UserAuth from "./UserAuth";
+import UserDropdownIcon from "./UserDropdownIcon";
 
 const TopBar: React.FC = () => {
-  const { getItemCount } = useCart();
-  const itemCount = getItemCount();
   const [showDropdownUser, setShowDropdowUser] = useState(false);
 
   const toggleDropdown = () => {
     setShowDropdowUser(!showDropdownUser);
   };
+
   return (
     <header className="fixed z-10 w-full bg-slate-300">
       <div className="z-50 mx-3 flex w-full min-w-fit items-center justify-between">
         <LogoIcon />
         <div className="mr-6 flex items-center justify-end gap-x-5 lg:mr-12 lg:w-full">
           <CartIcon className="lg:order-2" />
-          <UserAuth className="lg:order-3" toggle={toggleDropdown} />
+          <UserDropdownIcon
+            className="lg:order-3"
+            toggleDropdown={toggleDropdown}
+          />
 
           <MenuItems className="lg:order-1" />
         </div>
       </div>
-      {showDropdownUser && <DropdownUser toggle={toggleDropdown} />}
+      {showDropdownUser && (
+        <DropdownUser toggleDropdown={toggleDropdown} id="menu-button" />
+      )}
     </header>
   );
 };

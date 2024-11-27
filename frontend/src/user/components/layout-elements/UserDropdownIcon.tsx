@@ -1,15 +1,16 @@
 import { cn } from "@/lib/utils";
 import { UserIcon } from "lucide-react";
 
-export default function UserAuth({
+export default function UserDropdownIcon({
   className,
-  toggle,
+
+  toggleDropdown,
 }: {
   className: string;
-  toggle: () => void;
+  toggleDropdown: () => void;
 }) {
   return (
-    <button onClick={toggle} className={cn(className)}>
+    <button onClick={toggleDropdown} className={cn(className)}>
       <UserIcon />
     </button>
   );

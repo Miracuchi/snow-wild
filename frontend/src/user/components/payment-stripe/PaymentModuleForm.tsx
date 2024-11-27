@@ -1,3 +1,5 @@
+import UseLocalStorage from "@/hooks/useLocalStorage";
+import { Button } from "@/ui/Button";
 import {
   PaymentElement,
   useElements,
@@ -8,7 +10,7 @@ import React from "react";
 function PaymentModuleForm() {
   const stripe = useStripe();
   const elements = useElements();
-
+  const { RemoveFromLocalStorage } = UseLocalStorage();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -28,19 +30,21 @@ function PaymentModuleForm() {
       console.log(result.error.message);
     }
   };
+
   const deleteLS = () => {
-    localStorage.removeItem("reservation");
+    RemoveFromLocalStorage("reservation");
   };
+
   return (
     <form onSubmit={handleSubmit}>
       <PaymentElement />
-      <button
+      <Button
         onClick={deleteLS}
         disabled={!stripe || !elements}
-        className="bg-blue-500 text-white py-2 px-4 rounded-lg mt-4 w-full"
+        className="mt-4 w-full rounded-lg bg-blue-500 px-4 py-2 text-white"
       >
         {stripe || elements ? "Procéder au paiement" : "Veuillez patienter"}
-      </button>
+      </Button>
     </form>
   );
 }
