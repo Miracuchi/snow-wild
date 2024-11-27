@@ -11,7 +11,7 @@ export default function DropdownUser({
 }: {
   toggleDropdown: () => void;
   id: string;
-}) {
+}): JSX.Element {
   const { user, logout } = useContext(AuthContext);
   const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
