@@ -23,9 +23,11 @@ export default function Cart() {
 
   const handleCheckout = () => {
     if (user?.userId) {
-      router.push("/user/reservations/create");
+      router.push("/user/reservations/create/booking");
     } else {
-      router.push("/auth/login?redirect=/user/reservation");
+      console.log("redirectif");
+
+      router.push(`/auth/login?redirect=/user/reservations/create/booking`);
     }
   };
 
@@ -46,13 +48,13 @@ export default function Cart() {
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
   const totalPrice = cart.reduce(
     (acc, item) => acc + item.price * item.quantity,
-    0
+    0,
   );
 
   if (cart.length === 0) {
     return (
-      <main className="container mx-auto px-4 py-8 font-poppins">
-        <h1 className="text-3xl text-neutral-950 font-bold mb-8">
+      <main className="container mx-auto font-poppins">
+        <h1 className="mb-8 text-3xl font-bold text-neutral-950">
           Votre panier est vide
         </h1>
         <Link href="/">
@@ -65,9 +67,9 @@ export default function Cart() {
   }
 
   return (
-    <main className="container mx-auto px-4 py-8 font-poppins grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <div className="col-span-2">
-        <h1 className="text-3xl text-neutral-950 font-bold mb-8">
+    <main className="container mx-auto grid grid-cols-1 font-poppins lg:grid-cols-3 lg:gap-8">
+      <div className="col-span-2 max-w-fit">
+        <h1 className="mb-8 text-3xl font-bold text-neutral-950">
           Votre panier
         </h1>
         <div className="space-y-4">
@@ -89,21 +91,21 @@ export default function Cart() {
           ))}
         </div>
       </div>
-      <div className="col-span-1 mt-[69px]">
-        <div className=" p-5 rounded-lg border-4 border-blue-300 shadow-lg">
-          <h2 className="text-2xl font-bold mb-6">Récapitulatif</h2>
-          <div className="flex justify-between items-center border-b-2 pb-2">
+      <div className="col-span-1 mt-16 w-full">
+        <div className="rounded-xl border-4 border-blue-300 p-5 shadow-lg">
+          <h2 className="mb-6 text-2xl font-bold">Récapitulatif</h2>
+          <div className="flex items-center justify-between border-b-2 pb-2">
             <p className="text-gray-700">{numberOfArticleText}</p>
             <p className="text-gray-700">{totalItems}</p>
           </div>
-          <div className="flex justify-between items-center pt-2">
+          <div className="flex items-center justify-between pt-2">
             <p className="text-gray-700">Total :</p>
             <p className="text-gray-700">{totalPrice}€</p>
           </div>
 
           <button
             onClick={handleCheckout}
-            className="p-4 bg-neutral-900 w-full text-white rounded-full hover:bg-neutral-700 mt-6 "
+            className="mt-6 w-full rounded-full bg-neutral-900 p-4 text-white hover:bg-neutral-700"
           >
             Finaliser la commande
           </button>
@@ -116,20 +118,20 @@ export default function Cart() {
       </div>
       {showConfirmation && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-4 rounded shadow-lg">
+          <div className="w-11/12 rounded bg-white p-4 shadow-lg lg:w-1/2">
             <p>
               Êtes-vous sûr de vouloir supprimer cet article de votre panier?
             </p>
             <div className="mt-4 flex justify-end">
               <button
                 onClick={handleCancelRemove}
-                className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 mr-2"
+                className="mr-2 rounded bg-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-400"
               >
                 Annuler
               </button>
               <button
                 onClick={handleRemoveItem}
-                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700"
+                className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-700"
               >
                 Oui
               </button>

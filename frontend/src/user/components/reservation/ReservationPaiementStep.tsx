@@ -19,13 +19,13 @@
  *
  *------------------------**/
 import { useCart } from "@/contexts/CartContext";
+import UseLocalStorage from "@/hooks/useLocalStorage";
 import { formatMoney } from "@/lib/utilities";
 import { CREATE_SESSION } from "@/requetes/queries/payment.queries";
 import { Reservation } from "@/types/reservation";
 import PaymentModule from "@/user/components/payment-stripe/PaymentModule";
 import { useLazyQuery } from "@apollo/client";
 import { useEffect } from "react";
-
 interface Prices {
   subtotal: number;
   totalTax: number;
@@ -34,11 +34,11 @@ interface Prices {
 }
 
 function ReservationPaiementStep() {
-  const { addToCart, cart, removeFromCart } = useCart();
-  const reservationId = localStorage.getItem("reservationId");
-  const reservationObject = localStorage.getItem("reservation");
-  const usableReservationObject: Reservation =
-    reservationObject && JSON.parse(reservationObject);
+  const { cart } = useCart();
+  const { GetFromLocalStorage } = UseLocalStorage();
+  const reservationId = GetFromLocalStorage("reservationId");
+  const reservationObject: Reservation = GetFromLocalStorage("reservation");
+  console.log("resbo", reservationObject);
 
   const calculatePrices = (): Prices => {
     const taxRate = 0.2; // 20% taxe par défaut
@@ -48,9 +48,10 @@ function ReservationPaiementStep() {
       cart.reduce((sum, item) => {
         return sum + item.price * item.quantity;
       }, 0) ||
-      usableReservationObject.reservationMaterials.reduce((sum, item) => {
-        return sum + item.price * item.quantity;
-      }, 0);
+      (reservationObject.reservationMaterials &&
+        reservationObject.reservationMaterials.reduce((sum, item) => {
+          return sum + item.price * item.quantity;
+        }, 0));
 
     const totalTax = subtotal * taxRate;
     const total = subtotal + totalTax + shippingCost;
@@ -73,12 +74,12 @@ function ReservationPaiementStep() {
         data:
           cart.length > 0
             ? cart.map(({ id, quantity }) => ({ id, quantity }))
-            : usableReservationObject.reservationMaterials.map((item) => ({
+            : reservationObject.reservationMaterials &&
+              reservationObject.reservationMaterials.map((item) => ({
                 id: item.material.id,
                 quantity: item.quantity,
               })),
-        reservationId:
-          cart.length > 0 ? reservationId : usableReservationObject.id,
+        reservationId: cart.length > 0 ? reservationId : reservationObject.id,
       },
       onError(error) {
         console.log(error);
@@ -89,13 +90,13 @@ function ReservationPaiementStep() {
     handleGetStripeSession();
   }, []);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between pb-24">
-      <div className=" h-screen w-screen py-8">
+    <div className="flex min-h-screen flex-col items-center justify-between pb-24">
+      <div className="h-screen w-screen py-8">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl text-neutral-950 font-bold mb-4">Panier</h1>
-          <div className="flex flex-col md:flex-row gap-4">
+          <h1 className="mb-4 text-3xl font-bold text-neutral-950">Panier</h1>
+          <div className="flex flex-col gap-4 md:flex-row">
             <div className="md:w-3/4">
-              <div className="bg-white rounded-lg shadow-lg border-4 border-blue-300 p-6 mb-4">
+              <div className="mb-4 rounded-lg border-4 border-blue-300 bg-white p-6 shadow-lg">
                 <table className="w-full">
                   <thead>
                     <tr>
@@ -126,7 +127,7 @@ function ReservationPaiementStep() {
                         <td className="py-4">{formatMoney(d.price)}</td>
                         <td className="py-4">
                           <div className="flex items-center">
-                            <span className="text-center w-8">
+                            <span className="w-8 text-center">
                               {d.quantity}
                             </span>
                           </div>
@@ -139,8 +140,8 @@ function ReservationPaiementStep() {
                   </tbody>
 
                   <tbody>
-                    {usableReservationObject &&
-                      usableReservationObject.reservationMaterials.map((d) => (
+                    {reservationObject.reservationMaterials &&
+                      reservationObject.reservationMaterials.map((d) => (
                         <tr key={d.id}>
                           <td className="py-4">
                             <div className="flex items-center">
@@ -159,7 +160,7 @@ function ReservationPaiementStep() {
                           <td className="py-4">{formatMoney(d.price)}</td>
                           <td className="py-4">
                             <div className="flex items-center">
-                              <span className="text-center w-8">
+                              <span className="w-8 text-center">
                                 {d.quantity}
                               </span>
                             </div>
@@ -171,22 +172,22 @@ function ReservationPaiementStep() {
                 </table>
               </div>
             </div>
-            <div className="md:w-1/4 rounded-lg shadow-lg border-4 border-blue-300 ">
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-lg font-semibold mb-4">Résumé</h2>
-                <div className="flex justify-between mb-2">
+            <div className="rounded-lg border-4 border-blue-300 shadow-lg md:w-1/4">
+              <div className="rounded-lg bg-white p-6 shadow-md">
+                <h2 className="mb-4 text-lg font-semibold">Résumé</h2>
+                <div className="mb-2 flex justify-between">
                   <span>Sous-total</span>
                   <span>{formatMoney(prices.subtotal)}</span>
                 </div>
-                <div className="flex justify-between mb-2">
+                <div className="mb-2 flex justify-between">
                   <span>Taxes</span>
                   <span>{formatMoney(prices.totalTax)}</span>
                 </div>
-                <div className="flex justify-between mb-2">
+                <div className="mb-2 flex justify-between">
                   <span>Frais de livraison</span>
                   <span>{formatMoney(prices.shipping)}</span>
                 </div>
-                <div className="flex justify-between mb-2">
+                <div className="mb-2 flex justify-between">
                   <span className="font-semibold">Total</span>
                   <span className="font-semibold">
                     {formatMoney(prices.total)}
@@ -207,7 +208,7 @@ function ReservationPaiementStep() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
 

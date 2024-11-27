@@ -1,5 +1,5 @@
 import { DATES_STORAGE_KEY } from "@/constants/localStrotageKeys";
-import { SetToLocalStorage } from "@/hooks/useLocalStorage";
+import UseLocalStorage from "@/hooks/useLocalStorage";
 import {
   Form,
   FormControl,
@@ -37,7 +37,7 @@ function ReservationDateStep({
   handleSubmit: () => Promise<void>;
 }) {
   const { formInfos, setFormInfos } = useDate();
-
+  const { SetToLocalStorage } = UseLocalStorage();
   useEffect(() => {
     if (formInfos) {
       SetToLocalStorage(DATES_STORAGE_KEY, formInfos);
@@ -54,50 +54,48 @@ function ReservationDateStep({
   return (
     <>
       <Form {...form}>
-        <form className="space-y-6 ">
+        <form className="space-y-6">
           <FormField
             control={form.control}
             name="date"
             render={() => (
               <FormItem>
-                <FormLabel className="text-3xl  text-neutral-950 font-bold ml-3 mb-10">
+                <FormLabel className="mb-10 ml-3 w-full text-center text-3xl font-bold text-neutral-950">
                   Mes dates de location
                 </FormLabel>
                 <FormControl className="mt-4">
-                  <div className="flex justify-center h-20 ">
-                    <div className="datePickerContainer bg-blue-300 rounded-lg shadow-lg h-20 flex items-center justify-evenly w-full max-w-4xl">
-                      <>
-                        <span>Du</span>
-                        <DatePicker
-                          selected={formInfos.start_date}
-                          onChange={(date) => {
-                            if (date) {
-                              setFormInfos({ ...formInfos, start_date: date });
-                            }
-                          }}
-                          selectsStart
-                          startDate={formInfos.start_date}
-                          endDate={formInfos.end_date}
-                          placeholderText="Date de début"
-                          className="  rounded-lg border-2  border-black py-2 text-center mx-2"
-                        />
-                        <span>au</span>
-                        <DatePicker
-                          selected={formInfos.end_date}
-                          onChange={(date) => {
-                            console.log("date selected:", date);
-                            if (date) {
-                              setFormInfos({ ...formInfos, end_date: date });
-                            }
-                          }}
-                          selectsEnd
-                          startDate={formInfos.start_date}
-                          endDate={formInfos.end_date}
-                          minDate={formInfos.start_date}
-                          placeholderText="Date de fin"
-                          className="  rounded-lg border-2 border-black py-2 text-center mx-2"
-                        />
-                      </>
+                  <div className="flex justify-center lg:h-20">
+                    <div className="datePickerContainer h-full w-10/12 max-w-4xl items-center rounded-lg bg-blue-300 py-3 text-center shadow-lg md:flex md:justify-evenly">
+                      <div>Du</div>
+                      <DatePicker
+                        selected={formInfos.start_date}
+                        onChange={(date) => {
+                          if (date) {
+                            setFormInfos({ ...formInfos, start_date: date });
+                          }
+                        }}
+                        selectsStart
+                        startDate={formInfos.start_date}
+                        endDate={formInfos.end_date}
+                        placeholderText="Date de début"
+                        className="mx-2 rounded-lg border-2 border-black py-2 text-center"
+                      />
+                      <div>au</div>
+                      <DatePicker
+                        selected={formInfos.end_date}
+                        onChange={(date) => {
+                          console.log("date selected:", date);
+                          if (date) {
+                            setFormInfos({ ...formInfos, end_date: date });
+                          }
+                        }}
+                        selectsEnd
+                        startDate={formInfos.start_date}
+                        endDate={formInfos.end_date}
+                        minDate={formInfos.start_date}
+                        placeholderText="Date de fin"
+                        className="mx-2 rounded-lg border-2 border-black py-2 text-center"
+                      />
                     </div>
                     <span id="divider" />
                   </div>
