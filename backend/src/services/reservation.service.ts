@@ -39,8 +39,13 @@ export default class ReservationService {
         'reservationMaterials.material',
       ],
     })
-
     return reservationByUserId
+
+    // SELECT r.*, u.*, rm.*, m.* FROM reservations r
+    // LEFT JOIN user u ON r.user_id = u.id
+    // LEFT JOIN reservation_materials rm ON r.reservationId = rm.id
+    // LEFT JOIN materials m ON rm.materialId = m.id
+    // WHERE u.id = $1
   }
 
   async findReservationsByDate(date: Date) {
@@ -51,6 +56,9 @@ export default class ReservationService {
     })
 
     return reservationsByDate
+
+    // SELECT * FROM reservations
+    // WHERE createdAt = $1 => '2024-12-20'
   }
 
   async createReservation(data: CreateReservationInput) {

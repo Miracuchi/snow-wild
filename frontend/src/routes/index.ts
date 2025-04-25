@@ -12,6 +12,16 @@ export const routes: { [key: string]: Route } = {
     title: "Accueil",
     protected: "PUBLIC",
   },
+  admin: {
+    pathname: "/admin",
+    title: "Dashboard",
+    protected: "ADMIN",
+  },
+  profil: {
+    pathname: "/profil",
+    title: "Votre compte",
+    protected: "PRIVATE",
+  },
   login: {
     pathname: "/auth/login",
     title: "Connexion",
@@ -61,15 +71,5 @@ export const routes: { [key: string]: Route } = {
     pathname: "/admin/reservations/list",
     title: "Gestion des reservations",
     protected: "ADMIN",
-  },
-  admin: {
-    pathname: "/admin",
-    title: "Dashboard",
-    protected: "ADMIN",
-  },
-  profil: {
-    pathname: "/profil",
-    title: "Votre compte",
-    protected: "PRIVATE",
   },
 };

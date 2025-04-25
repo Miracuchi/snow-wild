@@ -12,23 +12,16 @@ interface Payload {
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || "";
 
 export async function verify(token: string): Promise<Payload> {
-  console.log("HOLA");
-
   const { payload } = await jwtVerify<Payload>(
     token,
-    new TextEncoder().encode(JWT_SECRET_KEY)
+    new TextEncoder().encode(JWT_SECRET_KEY),
   );
-  console.log("PAYE", payload);
-
   return payload;
 }
 
 async function checkToken(token: string | undefined, request: NextRequest) {
   const currentRoute = findRouteByPathname(request.nextUrl.pathname);
-  console.log("HELLO", token, currentRoute);
   let response = NextResponse.next();
-  console.log("HELLO2");
-
   if (!token) {
     if (currentRoute && currentRoute.protected !== "PUBLIC") {
       response = NextResponse.redirect(new URL("/auth/login", request.url));
@@ -40,24 +33,18 @@ async function checkToken(token: string | undefined, request: NextRequest) {
     return response;
   }
   //On delete les cookies existants
-  console.log("HELLO3");
-
   try {
     const { email, role, userId } = await verify(token);
-    console.log("HELLO4");
 
     if (currentRoute?.protected === "ADMIN" && role !== "ADMIN") {
-      response = NextResponse.redirect(new URL("/errors", request.url)); // redirige sur la Page error
+      response = NextResponse.redirect(new URL("/errors", request.url));
     }
 
     if (email && role && userId) {
-      //On vérifie que le role de l'utilisateur est "ADMIN" pour les routes "ADMIN"
-
       if (currentRoute?.protected === "ADMIN" && role !== "ADMIN") {
-        response = NextResponse.redirect(new URL("/errors", request.url)); // Créer une page "Access denied"
+        response = NextResponse.redirect(new URL("/errors", request.url));
       }
 
-      //On ajoute des cookie avec les infos du user
       response.cookies.set("email", email);
       response.cookies.set("role", role);
       response.cookies.set("userId", userId);

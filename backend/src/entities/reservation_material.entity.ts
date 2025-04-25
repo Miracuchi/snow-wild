@@ -20,13 +20,9 @@ export default class ReservationMaterial {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Field()
-  @Column()
-  quantity: number
-
   @Field(() => Reservation)
   @JoinColumn()
-  @ManyToOne(() => Reservation, (reservation) => reservation.id, {
+  @ManyToOne(() => Reservation, (r) => r.reservationMaterials, {
     cascade: true,
     onDelete: 'CASCADE',
   })
@@ -34,11 +30,15 @@ export default class ReservationMaterial {
 
   @Field(() => Material)
   @JoinColumn()
-  @ManyToOne(() => Material, (material) => material.id, {
+  @ManyToOne(() => Material, (m) => m.reservationMaterials, {
     cascade: true,
     onDelete: 'CASCADE',
   })
   material: Material
+
+  @Field()
+  @Column()
+  quantity: number
 
   @Field(() => Float)
   @Column({ type: 'float' })
@@ -47,8 +47,6 @@ export default class ReservationMaterial {
   @Field()
   @Column()
   size: string
-
-  //avoir le prix ici (prix de CE material pour CETTE réservation)
 }
 
 // =================================================================

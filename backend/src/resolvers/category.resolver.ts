@@ -22,7 +22,7 @@ export default class CategoryResolver {
     const findedCategory = await new CategoryService().findCategoryByName(
       data.name
     )
-    console.log('findedCategory: ', findedCategory)
+
     if (findedCategory) {
       throw new Error('This name alredy used')
       // return findedCategory

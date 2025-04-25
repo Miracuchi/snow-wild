@@ -9,18 +9,16 @@ import Material from './../entities/material.entity'
 
 @Resolver()
 export default class MaterialResolver {
-  @Query(() => [Material])
-  async listMaterials() {
-    const materials = await new MaterialService().listMaterials()
-    return materials
-  }
-
   @Query(() => Material)
   async findMaterialById(@Arg('id') id: string) {
     const materials = await new MaterialService().findMaterialById(id)
     return materials
   }
-
+  @Query(() => [Material])
+  async listMaterials() {
+    const materials = await new MaterialService().listMaterials()
+    return materials
+  }
   @Query(() => [Material])
   async findMaterialByCategories(@Arg('id') id: string) {
     const category = await new CategoryService().find(id)

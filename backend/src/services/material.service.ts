@@ -13,12 +13,6 @@ export default class MaterialService {
     this.db = datasource.getRepository(Material)
   }
 
-  async listMaterials() {
-    return this.db.find({
-      relations: { category: true },
-    })
-  }
-
   async findMaterialById(id: string) {
     const material = await this.db.findOne({
       where: { id },
@@ -28,6 +22,16 @@ export default class MaterialService {
       throw new Error("Ce matériel n'existe pas")
     }
     return material
+    // SELECT * FROM material m
+    // INNER JOIN category c ON m.categoryId = c.id
+    // WHERE m.id = $1
+  }
+
+  async listMaterials() {
+    return this.db.find({
+      relations: { category: true },
+    })
+    // SELECT * FROM material
   }
 
   async listByCategory(id: string) {
@@ -35,6 +39,9 @@ export default class MaterialService {
       where: { category: { id } },
       relations: { category: true },
     })
+    // SELECT * FROM material m
+    // INNER JOIN category c ON m.categoryId = c.id
+    // WHERE m.categoryId = $1
   }
 
   async createMaterial(data: CreateMaterialInput) {
@@ -51,6 +58,8 @@ export default class MaterialService {
     const errors = await validate(newMaterial)
     console.log('ERRORS => ', errors)
     return await this.db.save(newMaterial)
+    // INSERT INTO material (name, picture, price, description, sizes, categoryId)
+    // VALUES ($1, $2, $3, $4, $5, $6)
   }
 
   async deleteMaterial(id: string) {

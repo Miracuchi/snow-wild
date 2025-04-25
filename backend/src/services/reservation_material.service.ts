@@ -72,6 +72,7 @@ export default class ReservationMaterialService {
     size: string // Ajoutez le champ size
   }) {
     const { material, quantity, size } = data
+
     const materialData: Material | null =
       await new MaterialService().findMaterialById(material.id)
     if (!materialData) {

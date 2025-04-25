@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const CREATE_SESSION = gql`
-  query CreateSession(
+  mutation CreateSession(
     $data: [ProductForSessionInput!]!
     $reservationId: String!
   ) {

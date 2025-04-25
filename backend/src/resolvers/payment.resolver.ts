@@ -1,5 +1,5 @@
 import { GraphQLJSON } from 'graphql-scalars'
-import { Arg, Field, InputType, Int, Query, Resolver } from 'type-graphql'
+import { Arg, Field, InputType, Int, Query, Resolver, Mutation } from 'type-graphql';
 import PaymentService from '../services/payment.service'
 
 @InputType()
@@ -12,7 +12,7 @@ export class ProductForSessionInput {
 }
 @Resolver()
 export default class PaymentResolver {
-  @Query(() => GraphQLJSON)
+  @Mutation(() => GraphQLJSON)
   async createSession(
     @Arg('data', () => [ProductForSessionInput]) data: ProductForSessionInput[],
     @Arg('reservationId') reservationId: string

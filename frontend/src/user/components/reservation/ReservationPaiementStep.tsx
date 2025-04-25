@@ -24,7 +24,7 @@ import { formatMoney } from "@/lib/utilities";
 import { CREATE_SESSION } from "@/requetes/queries/payment.queries";
 import { Reservation } from "@/types/reservation";
 import PaymentModule from "@/user/components/payment-stripe/PaymentModule";
-import { useLazyQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useEffect } from "react";
 interface Prices {
   subtotal: number;
@@ -66,7 +66,7 @@ function ReservationPaiementStep() {
   };
   const prices = calculatePrices();
 
-  const [getStripeSession, { data }] = useLazyQuery(CREATE_SESSION);
+  const [getStripeSession, { data }] = useMutation(CREATE_SESSION);
   console.log(data);
 
   const handleGetStripeSession = () => {

@@ -12,20 +12,21 @@ import { Key, useEffect, useState } from "react";
 function MaterialDetail() {
   const router = useRouter();
 
-  const [getAd, { data, loading, error }] = useLazyQuery(GET_MATERIAL_BY_ID);
+  const [getMaterial, { data, loading, error }] =
+    useLazyQuery(GET_MATERIAL_BY_ID);
   console.log(data);
   const { addToCart } = useCart();
   const [selectedSize, setSelectedSize] = useState<string>();
 
   useEffect(() => {
     if (router.query.id) {
-      getAd({
+      getMaterial({
         variables: {
           findMaterialByIdId: router.query.id,
         },
       });
     }
-  }, [getAd, router.query.id]);
+  }, [getMaterial, router.query.id]);
 
   if (loading) {
     return <div>Chargement en cours</div>;

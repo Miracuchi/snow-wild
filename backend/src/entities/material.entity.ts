@@ -52,8 +52,12 @@ export default class Material {
 
   @Field(() => [ReservationMaterial])
   @JoinColumn()
-  @OneToMany(() => ReservationMaterial, (r) => r.material)
+  @OneToMany(() => ReservationMaterial, (rm) => rm.material)
   reservationMaterials: ReservationMaterial[]
+
+  // @Field(() => [Reservation])
+  // @ManyToMany(() => Reservation, (r) => r.materials)
+  // reservations: Reservation[]
 }
 
 @ObjectType()

@@ -55,8 +55,13 @@ export default class Reservation {
 
   @Field(() => [ReservationMaterial])
   @JoinColumn()
-  @OneToMany(() => ReservationMaterial, (r) => r.reservation)
+  @OneToMany(() => ReservationMaterial, (rm) => rm.reservation)
   reservationMaterials: ReservationMaterial[]
+
+  // @Field(() => [Material])
+  // @JoinTable()
+  // @ManyToMany(() => Material, (m) => m.reservations)
+  // materials: Material[]
 }
 
 // Quand on fait un ObjectType à supprimer, ne pas mettre d'id. Il sera supprimé, donc pas de retour.

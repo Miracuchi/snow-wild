@@ -71,6 +71,11 @@ export default class ReservationResolver {
 
     newReservation.reservationMaterials = reservationMaterials
     return newReservation
+    // INSERT INTO reservation (start_date, end_date, createdAt, status)
+    // VALUES ($1, $2, $3, $4)
+
+    // INSERT INTO reservation_material (reservationId, materialId, quantity, size, price)
+    // VALUES ($1, $2, $3, $4, $5)
   }
 
   // Update Reservation start_date or end_date
